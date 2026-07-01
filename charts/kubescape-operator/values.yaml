@@ -531,8 +531,8 @@ storage:
   # -- source code: https://github.com/kubescape/storage
   image:
     # -- source code: https://github.com/kubescape/storage
-    repository: quay.io/kubescape/storage
-    tag: v0.0.274
+    repository: ghcr.io/k8sstormcenter/storage
+    tag: sbob-rc3
     pullPolicy: IfNotPresent
 
   nodeSelector:
@@ -600,8 +600,8 @@ nodeAgent:
   gomemlimitPercentage: 0.8
   image:
     # -- source code: https://github.com/kubescape/node-agent
-    repository: quay.io/kubescape/node-agent
-    tag: v0.3.119
+    repository: ghcr.io/k8sstormcenter/node-agent
+    tag: sbob-rc3
     pullPolicy: IfNotPresent
 
   config:
@@ -813,7 +813,7 @@ nodeAgent:
     name: sbom-scanner
     image:
       # Same image as node-agent — shared pull, different entrypoint
-      repository: quay.io/kubescape/node-agent
+      repository: ghcr.io/k8sstormcenter/node-agent
       tag: ""
       pullPolicy: IfNotPresent
     command: ["/usr/bin/sbom-scanner"]
