@@ -532,7 +532,7 @@ storage:
   image:
     # -- source code: https://github.com/kubescape/storage
     repository: ghcr.io/k8sstormcenter/storage
-    tag: sbob-rc3
+    tag: sbob-rc4
     pullPolicy: IfNotPresent
 
   nodeSelector:
@@ -601,7 +601,7 @@ nodeAgent:
   image:
     # -- source code: https://github.com/kubescape/node-agent
     repository: ghcr.io/k8sstormcenter/node-agent
-    tag: sbob-rc3
+    tag: sbob-rc4
     pullPolicy: IfNotPresent
 
   config:
