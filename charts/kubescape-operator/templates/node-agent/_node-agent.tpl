@@ -156,6 +156,16 @@ Parameters:
   mountPath: /etc/config/config.json
   readOnly: true
   subPath: "config.json"
+{{- if .Values.nodeAgent.bundleSigning.enabled }}
+- name: bundle-policy
+  mountPath: /etc/bundle/trust-policy.json
+  readOnly: true
+  subPath: "trust-policy.json"
+- name: bundle-key
+  mountPath: /etc/bundle/signing-key.pem
+  readOnly: true
+  subPath: "signing-key.pem"
+{{- end }}
 {{- if ne .Values.global.proxySecretFile "" }}
 - name: proxy-secret
   mountPath: /etc/ssl/certs/proxy.crt
@@ -341,6 +351,14 @@ Parameters:
   - components: $components
 */}}
 {{- define "node-agent.volumes" -}}
+{{- if .Values.nodeAgent.bundleSigning.enabled }}
+- name: bundle-policy
+  configMap:
+    name: node-agent-bundle-policy
+- name: bundle-key
+  secret:
+    secretName: node-agent-bundle-key
+{{- end }}
 {{- if .Values.nodeAgent.volumes }}
 {{ toYaml .Values.nodeAgent.volumes | trim }}
 {{- end }}

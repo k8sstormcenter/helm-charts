@@ -436,6 +436,15 @@ kubevuln:
   # Lower values give the runtime more headroom; raise toward 1.0 only if
   # GC is not aggressive enough.
   gomemlimitPercentage: 0.8
+  # Signed-bundle overlays: when enabled, node-agent boots with the trust
+  # policy + composite signing key mounted at /etc/bundle and the bundle config
+  # keys set — no post-install patching or restarts.
+  bundleSigning:
+    enabled: false
+    # JSON trust policy: {"classes":{"<class>":{"signers":[...],"allowedSpecPaths":[...]}}}
+    trustPolicy: ""
+    # PEM EC private key used to re-sign assembled composites
+    signingKey: ""
 
   image:
     # -- source code: https://github.com/kubescape/kubevuln
@@ -537,7 +546,7 @@ storage:
   image:
     # -- source code: https://github.com/kubescape/storage
     repository: ghcr.io/k8sstormcenter/storage
-    tag: v0.3.172
+    tag: v0.3.176
     pullPolicy: IfNotPresent
 
   nodeSelector:
@@ -595,10 +604,19 @@ nodeAgent:
   # Lower values give the runtime more headroom; raise toward 1.0 only if
   # GC is not aggressive enough.
   gomemlimitPercentage: 0.8
+  # Signed-bundle overlays: when enabled, node-agent boots with the trust
+  # policy + composite signing key mounted at /etc/bundle and the bundle config
+  # keys set — no post-install patching or restarts.
+  bundleSigning:
+    enabled: false
+    # JSON trust policy: {"classes":{"<class>":{"signers":[...],"allowedSpecPaths":[...]}}}
+    trustPolicy: ""
+    # PEM EC private key used to re-sign assembled composites
+    signingKey: ""
   image:
     # -- source code: https://github.com/kubescape/node-agent
     repository: ghcr.io/k8sstormcenter/node-agent
-    tag: v0.3.172
+    tag: v0.3.176
     pullPolicy: IfNotPresent
 
   config:
