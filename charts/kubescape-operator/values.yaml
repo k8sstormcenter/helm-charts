@@ -437,14 +437,13 @@ kubevuln:
   # GC is not aggressive enough.
   gomemlimitPercentage: 0.8
   # Signed-bundle overlays: when enabled, node-agent boots with the trust
-  # policy + composite signing key mounted at /etc/bundle and the bundle config
-  # keys set — no post-install patching or restarts.
+  # policy (public-key fingerprints) mounted at /etc/bundle and the bundle
+  # config key set — no post-install patching or restarts. node-agent only
+  # VERIFIES fragment signatures; no signing key is ever deployed to the cluster.
   bundleSigning:
     enabled: false
     # JSON trust policy: {"classes":{"<class>":{"signers":[...],"allowedSpecPaths":[...]}}}
     trustPolicy: ""
-    # PEM EC private key used to re-sign assembled composites
-    signingKey: ""
 
   image:
     # -- source code: https://github.com/kubescape/kubevuln
@@ -605,18 +604,17 @@ nodeAgent:
   # GC is not aggressive enough.
   gomemlimitPercentage: 0.8
   # Signed-bundle overlays: when enabled, node-agent boots with the trust
-  # policy + composite signing key mounted at /etc/bundle and the bundle config
-  # keys set — no post-install patching or restarts.
+  # policy (public-key fingerprints) mounted at /etc/bundle and the bundle
+  # config key set — no post-install patching or restarts. node-agent only
+  # VERIFIES fragment signatures; no signing key is ever deployed to the cluster.
   bundleSigning:
     enabled: false
     # JSON trust policy: {"classes":{"<class>":{"signers":[...],"allowedSpecPaths":[...]}}}
     trustPolicy: ""
-    # PEM EC private key used to re-sign assembled composites
-    signingKey: ""
   image:
     # -- source code: https://github.com/kubescape/node-agent
     repository: ghcr.io/k8sstormcenter/node-agent
-    tag: v0.3.177
+    tag: v0.3.180
     pullPolicy: IfNotPresent
 
   config:

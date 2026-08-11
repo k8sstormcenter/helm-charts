@@ -47,7 +47,6 @@ data:
         "maxSniffingTimePerContainer": "{{ .Values.nodeAgent.config.maxLearningPeriod }}",
         {{- if .Values.nodeAgent.bundleSigning.enabled }}
         "bundleTrustPolicyPath": "/etc/bundle/trust-policy.json",
-        "bundleSigningKeyPath": "/etc/bundle/signing-key.pem",
         {{- end }}
         {{- if ne .Values.includeNamespaces "" }}
         "includeNamespaces": "{{ .Values.includeNamespaces }}",

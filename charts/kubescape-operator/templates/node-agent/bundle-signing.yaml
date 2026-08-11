@@ -1,6 +1,7 @@
 {{- if .Values.nodeAgent.bundleSigning.enabled }}
-# Signed-bundle overlays: per-class trust policy for fragment verification and
-# the cluster key node-agent uses to re-sign assembled composites.
+# Signed-bundle overlays: per-class trust policy (public-key fingerprints) that
+# node-agent uses to VERIFY fragment signatures. No signing key is deployed to
+# the cluster — node-agent never signs, it only verifies.
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -11,16 +12,4 @@ metadata:
 data:
   trust-policy.json: |
 {{ .Values.nodeAgent.bundleSigning.trustPolicy | indent 4 }}
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: node-agent-bundle-key
-  namespace: {{ .Values.ksNamespace }}
-  labels:
-    kubescape.io/ignore: "true"
-type: Opaque
-stringData:
-  signing-key.pem: |
-{{ .Values.nodeAgent.bundleSigning.signingKey | indent 4 }}
 {{- end }}

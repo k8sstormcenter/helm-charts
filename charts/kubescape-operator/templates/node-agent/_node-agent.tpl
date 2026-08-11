@@ -161,10 +161,6 @@ Parameters:
   mountPath: /etc/bundle/trust-policy.json
   readOnly: true
   subPath: "trust-policy.json"
-- name: bundle-key
-  mountPath: /etc/bundle/signing-key.pem
-  readOnly: true
-  subPath: "signing-key.pem"
 {{- end }}
 {{- if ne .Values.global.proxySecretFile "" }}
 - name: proxy-secret
@@ -355,9 +351,6 @@ Parameters:
 - name: bundle-policy
   configMap:
     name: node-agent-bundle-policy
-- name: bundle-key
-  secret:
-    secretName: node-agent-bundle-key
 {{- end }}
 {{- if .Values.nodeAgent.volumes }}
 {{ toYaml .Values.nodeAgent.volumes | trim }}
