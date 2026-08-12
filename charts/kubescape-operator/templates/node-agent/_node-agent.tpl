@@ -161,6 +161,12 @@ Parameters:
   mountPath: /etc/bundle/trust-policy.json
   readOnly: true
   subPath: "trust-policy.json"
+{{- if .Values.nodeAgent.bundleSigning.rootPublicKey }}
+- name: bundle-policy
+  mountPath: /etc/bundle/root.pub
+  readOnly: true
+  subPath: "root.pub"
+{{- end }}
 {{- end }}
 {{- if ne .Values.global.proxySecretFile "" }}
 - name: proxy-secret

@@ -442,8 +442,8 @@ kubevuln:
   # VERIFIES fragment signatures; no signing key is ever deployed to the cluster.
   bundleSigning:
     enabled: false
-    # JSON trust policy: {"classes":{"<class>":{"signers":[...],"allowedSpecPaths":[...]}}}
     trustPolicy: ""
+    rootPublicKey: ""
 
   image:
     # -- source code: https://github.com/kubescape/kubevuln
@@ -609,8 +609,8 @@ nodeAgent:
   # VERIFIES fragment signatures; no signing key is ever deployed to the cluster.
   bundleSigning:
     enabled: false
-    # JSON trust policy: {"classes":{"<class>":{"signers":[...],"allowedSpecPaths":[...]}}}
     trustPolicy: ""
+    rootPublicKey: ""
   image:
     # -- source code: https://github.com/kubescape/node-agent
     repository: ghcr.io/k8sstormcenter/node-agent

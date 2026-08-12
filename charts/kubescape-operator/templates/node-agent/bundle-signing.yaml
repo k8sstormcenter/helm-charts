@@ -1,7 +1,4 @@
 {{- if .Values.nodeAgent.bundleSigning.enabled }}
-# Signed-bundle overlays: per-class trust policy (public-key fingerprints) that
-# node-agent uses to VERIFY fragment signatures. No signing key is deployed to
-# the cluster — node-agent never signs, it only verifies.
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -12,4 +9,8 @@ metadata:
 data:
   trust-policy.json: |
 {{ .Values.nodeAgent.bundleSigning.trustPolicy | indent 4 }}
+{{- if .Values.nodeAgent.bundleSigning.rootPublicKey }}
+  root.pub: |
+{{ .Values.nodeAgent.bundleSigning.rootPublicKey | indent 4 }}
+{{- end }}
 {{- end }}
