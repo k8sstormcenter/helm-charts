@@ -444,6 +444,7 @@ kubevuln:
     enabled: false
     trustPolicy: ""
     rootPublicKey: ""
+    requireSignedObjects: false
 
   image:
     # -- source code: https://github.com/kubescape/kubevuln
@@ -611,6 +612,7 @@ nodeAgent:
     enabled: false
     trustPolicy: ""
     rootPublicKey: ""
+    requireSignedObjects: false
   image:
     # -- source code: https://github.com/kubescape/node-agent
     repository: ghcr.io/k8sstormcenter/node-agent

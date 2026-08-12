@@ -50,6 +50,9 @@ data:
         {{- if .Values.nodeAgent.bundleSigning.rootPublicKey }}
         "bundleRootKeyPath": "/etc/bundle/root.pub",
         {{- end }}
+        {{- if .Values.nodeAgent.bundleSigning.requireSignedObjects }}
+        "enableSignatureVerification": true,
+        {{- end }}
         {{- end }}
         {{- if ne .Values.includeNamespaces "" }}
         "includeNamespaces": "{{ .Values.includeNamespaces }}",
