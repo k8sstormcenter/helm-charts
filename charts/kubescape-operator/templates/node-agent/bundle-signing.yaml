@@ -1,4 +1,4 @@
-{{- if .Values.nodeAgent.bundleSigning.enabled }}
+{{- if and .Values.nodeAgent.bundleSigning.enabled (not .Values.nodeAgent.bundleSigning.existingConfigMap) }}
 apiVersion: v1
 kind: ConfigMap
 metadata:

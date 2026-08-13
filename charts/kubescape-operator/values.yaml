@@ -436,15 +436,6 @@ kubevuln:
   # Lower values give the runtime more headroom; raise toward 1.0 only if
   # GC is not aggressive enough.
   gomemlimitPercentage: 0.8
-  # Signed-bundle overlays: when enabled, node-agent boots with the trust
-  # policy (public-key fingerprints) mounted at /etc/bundle and the bundle
-  # config key set — no post-install patching or restarts. node-agent only
-  # VERIFIES fragment signatures; no signing key is ever deployed to the cluster.
-  bundleSigning:
-    enabled: false
-    trustPolicy: ""
-    rootPublicKey: ""
-    requireSignedObjects: false
 
   image:
     # -- source code: https://github.com/kubescape/kubevuln
@@ -610,6 +601,15 @@ nodeAgent:
   # VERIFIES fragment signatures; no signing key is ever deployed to the cluster.
   bundleSigning:
     enabled: false
+    # Name of an EXISTING ConfigMap holding trust-policy.json (and optionally
+    # root.pub). When set, the chart mounts that ConfigMap and does NOT render
+    # one, so the policy can be rotated without a helm upgrade and without
+    # pasting the signed artifact into values. Leave empty to have the chart
+    # render the ConfigMap from trustPolicy/rootPublicKey below.
+    existingConfigMap: ""
+    # The root-signed trust policy artifact. Avoid pasting it here by hand —
+    # pass it at install time instead:
+    #   --set-file nodeAgent.bundleSigning.trustPolicy=trust-policy.signed.json
     trustPolicy: ""
     rootPublicKey: ""
     requireSignedObjects: false

@@ -157,16 +157,14 @@ Parameters:
   readOnly: true
   subPath: "config.json"
 {{- if .Values.nodeAgent.bundleSigning.enabled }}
+# Mounted as a DIRECTORY, not with subPath: kubelet never propagates ConfigMap
+# updates into a subPath mount, so a rotated signer or a tightened policy would
+# not reach a running pod. node-agent re-reads /etc/bundle/trust-policy.json and
+# applies a verified change without a restart; a change that does not verify
+# against the root is refused and the policy already in force is kept.
 - name: bundle-policy
-  mountPath: /etc/bundle/trust-policy.json
+  mountPath: /etc/bundle
   readOnly: true
-  subPath: "trust-policy.json"
-{{- if .Values.nodeAgent.bundleSigning.rootPublicKey }}
-- name: bundle-policy
-  mountPath: /etc/bundle/root.pub
-  readOnly: true
-  subPath: "root.pub"
-{{- end }}
 {{- end }}
 {{- if ne .Values.global.proxySecretFile "" }}
 - name: proxy-secret
@@ -356,7 +354,7 @@ Parameters:
 {{- if .Values.nodeAgent.bundleSigning.enabled }}
 - name: bundle-policy
   configMap:
-    name: node-agent-bundle-policy
+    name: {{ .Values.nodeAgent.bundleSigning.existingConfigMap | default "node-agent-bundle-policy" }}
 {{- end }}
 {{- if .Values.nodeAgent.volumes }}
 {{ toYaml .Values.nodeAgent.volumes | trim }}
