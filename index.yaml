@@ -1655,6 +1655,40 @@ entries:
     - https://github.com/k8sstormcenter/helm-charts/releases/download/kubescape-operator-1.40.3-v0.3.171/kubescape-operator-1.40.3-v0.3.171.tgz
     version: 1.40.3-v0.3.171
   - apiVersion: v2
+    appVersion: v0.3.192
+    created: "2026-08-13T19:11:50.568270587Z"
+    dependencies:
+    - condition: alertCRD.scopeClustered
+      name: kubescape-alert-crd
+      repository: file://../dependency_chart/clustered-crds
+      version: 0.0.2
+    - condition: alertCRD.scopeNamespaced
+      name: kubescape-alert-crd-ns
+      repository: file://../dependency_chart/namespaced-crds
+      version: 0.0.2
+    description: Kubescape is an E2E Kubernetes cluster security platform
+    digest: ea3d094838611ff6afb9ac9bb723f5aa2422fcc3d63e8b2b0b7f855f77d77b28
+    home: https://kubescape.io/
+    kubeVersion: '>=1.28.0-0'
+    maintainers:
+    - email: ben@armosec.io
+      name: Ben Hirschberg
+      url: https://www.linkedin.com/in/benyamin-ben-hirschberg-66141890
+    - email: bez@armosec.io
+      name: Bezalel Brandwine
+      url: https://www.linkedin.com/in/bezalel-brandwine
+    - email: matthiasb@armosec.io
+      name: Matthias Bertschy
+      url: https://www.linkedin.com/in/matthias-bertschy-b427b815/
+    - email: amirm@armosec.io
+      name: Amir Malka
+      url: https://www.linkedin.com/in/amirmalka
+    name: kubescape-operator
+    type: application
+    urls:
+    - https://github.com/k8sstormcenter/helm-charts/releases/download/kubescape-operator-1.40.3-sign-rc2/kubescape-operator-1.40.3-sign-rc2.tgz
+    version: 1.40.3-sign-rc2
+  - apiVersion: v2
     appVersion: v0.3.191
     created: "2026-08-13T18:49:24.577334555Z"
     dependencies:
@@ -6737,4 +6771,4 @@ entries:
     urls:
     - https://github.com/kubescape/helm-charts/releases/download/kubescape-relevancy-1.12.0/kubescape-relevancy-1.12.0.tgz
     version: 1.12.0
-generated: "2026-08-13T18:49:24.577637496Z"
+generated: "2026-08-13T19:11:50.568796266Z"
