@@ -436,15 +436,6 @@ kubevuln:
   # Lower values give the runtime more headroom; raise toward 1.0 only if
   # GC is not aggressive enough.
   gomemlimitPercentage: 0.8
-  # Signed-bundle overlays: when enabled, node-agent boots with the trust
-  # policy (public-key fingerprints) mounted at /etc/bundle and the bundle
-  # config key set — no post-install patching or restarts. node-agent only
-  # VERIFIES fragment signatures; no signing key is ever deployed to the cluster.
-  bundleSigning:
-    enabled: false
-    trustPolicy: ""
-    rootPublicKey: ""
-    requireSignedObjects: false
 
   image:
     # -- source code: https://github.com/kubescape/kubevuln
