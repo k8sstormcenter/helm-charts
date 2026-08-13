@@ -354,7 +354,7 @@ Parameters:
 {{- if .Values.nodeAgent.bundleSigning.enabled }}
 - name: bundle-policy
   configMap:
-    name: node-agent-bundle-policy
+    name: {{ .Values.nodeAgent.bundleSigning.existingConfigMap | default "node-agent-bundle-policy" }}
 {{- end }}
 {{- if .Values.nodeAgent.volumes }}
 {{ toYaml .Values.nodeAgent.volumes | trim }}
