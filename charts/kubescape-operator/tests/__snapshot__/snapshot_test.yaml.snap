@@ -3135,6 +3135,7 @@ all capabilities:
         - ruleName: Exec to pod
         - ruleName: Port forward
         - ruleName: Unexpected Egress Network Traffic
+        - ruleName: Unexpected Ingress Network Traffic
         - ruleName: Malicious Ptrace Usage
         - ruleName: Unexpected io_uring Operation Detected
   61: |
@@ -3435,7 +3436,7 @@ all capabilities:
             message: '''Unexpected egress network communication to: '' + event.dstAddr + '':'' + string(event.dstPort) + '' using '' + event.proto + '' from: '' + event.containerName'
             ruleExpression:
               - eventType: network
-                expression: event.pktType == 'OUTGOING' && !net.is_private_ip(event.dstAddr) && !nn.was_address_in_egress(event.containerId, event.dstAddr)
+                expression: event.pktType == 'OUTGOING' && !net.is_private_ip(event.dstAddr) && !cp.was_address_in_egress(event.containerId, event.dstAddr) && !cp.was_selector_in_egress(event.containerId, event.dstNamespace, event.dstPodLabels)
             uniqueId: event.dstAddr + '_' + string(event.dstPort) + '_' + event.proto
           id: R0011
           isTriggerAlert: false
@@ -3444,6 +3445,30 @@ all capabilities:
           name: Unexpected Egress Network Traffic
           profileDataRequired:
             egressAddresses: all
+          profileDependency: 0
+          severity: 5
+          supportPolicy: false
+          tags:
+            - context:kubernetes
+            - whitelisted
+            - network
+            - anomaly
+            - networkprofile
+        - description: Detecting unexpected ingress network traffic that is not whitelisted by application profile.
+          enabled: false
+          expressions:
+            message: '''Unexpected ingress network communication from: '' + event.dstAddr + '':'' + string(event.dstPort) + '' using '' + event.proto + '' to: '' + event.containerName'
+            ruleExpression:
+              - eventType: network
+                expression: event.pktType == 'HOST' && !net.is_private_ip(event.dstAddr) && !cp.was_address_in_ingress(event.containerId, event.dstAddr) && !cp.was_selector_in_ingress(event.containerId, event.dstNamespace, event.dstPodLabels)
+            uniqueId: event.dstAddr + '_' + string(event.dstPort) + '_' + event.proto
+          id: R0012
+          isTriggerAlert: false
+          mitreTactic: TA0011
+          mitreTechnique: T1071
+          name: Unexpected Ingress Network Traffic
+          profileDataRequired:
+            ingressAddresses: all
           profileDependency: 0
           severity: 5
           supportPolicy: false
@@ -16705,6 +16730,7 @@ backend-storage enabled disables scanning capabilities:
         - ruleName: Exec to pod
         - ruleName: Port forward
         - ruleName: Unexpected Egress Network Traffic
+        - ruleName: Unexpected Ingress Network Traffic
         - ruleName: Malicious Ptrace Usage
         - ruleName: Unexpected io_uring Operation Detected
   22: |
@@ -17005,7 +17031,7 @@ backend-storage enabled disables scanning capabilities:
             message: '''Unexpected egress network communication to: '' + event.dstAddr + '':'' + string(event.dstPort) + '' using '' + event.proto + '' from: '' + event.containerName'
             ruleExpression:
               - eventType: network
-                expression: event.pktType == 'OUTGOING' && !net.is_private_ip(event.dstAddr) && !nn.was_address_in_egress(event.containerId, event.dstAddr)
+                expression: event.pktType == 'OUTGOING' && !net.is_private_ip(event.dstAddr) && !cp.was_address_in_egress(event.containerId, event.dstAddr) && !cp.was_selector_in_egress(event.containerId, event.dstNamespace, event.dstPodLabels)
             uniqueId: event.dstAddr + '_' + string(event.dstPort) + '_' + event.proto
           id: R0011
           isTriggerAlert: false
@@ -17014,6 +17040,30 @@ backend-storage enabled disables scanning capabilities:
           name: Unexpected Egress Network Traffic
           profileDataRequired:
             egressAddresses: all
+          profileDependency: 0
+          severity: 5
+          supportPolicy: false
+          tags:
+            - context:kubernetes
+            - whitelisted
+            - network
+            - anomaly
+            - networkprofile
+        - description: Detecting unexpected ingress network traffic that is not whitelisted by application profile.
+          enabled: false
+          expressions:
+            message: '''Unexpected ingress network communication from: '' + event.dstAddr + '':'' + string(event.dstPort) + '' using '' + event.proto + '' to: '' + event.containerName'
+            ruleExpression:
+              - eventType: network
+                expression: event.pktType == 'HOST' && !net.is_private_ip(event.dstAddr) && !cp.was_address_in_ingress(event.containerId, event.dstAddr) && !cp.was_selector_in_ingress(event.containerId, event.dstNamespace, event.dstPodLabels)
+            uniqueId: event.dstAddr + '_' + string(event.dstPort) + '_' + event.proto
+          id: R0012
+          isTriggerAlert: false
+          mitreTactic: TA0011
+          mitreTechnique: T1071
+          name: Unexpected Ingress Network Traffic
+          profileDataRequired:
+            ingressAddresses: all
           profileDependency: 0
           severity: 5
           supportPolicy: false
@@ -25722,6 +25772,7 @@ default capabilities:
         - ruleName: Exec to pod
         - ruleName: Port forward
         - ruleName: Unexpected Egress Network Traffic
+        - ruleName: Unexpected Ingress Network Traffic
         - ruleName: Malicious Ptrace Usage
         - ruleName: Unexpected io_uring Operation Detected
   48: |
@@ -26022,7 +26073,7 @@ default capabilities:
             message: '''Unexpected egress network communication to: '' + event.dstAddr + '':'' + string(event.dstPort) + '' using '' + event.proto + '' from: '' + event.containerName'
             ruleExpression:
               - eventType: network
-                expression: event.pktType == 'OUTGOING' && !net.is_private_ip(event.dstAddr) && !nn.was_address_in_egress(event.containerId, event.dstAddr)
+                expression: event.pktType == 'OUTGOING' && !net.is_private_ip(event.dstAddr) && !cp.was_address_in_egress(event.containerId, event.dstAddr) && !cp.was_selector_in_egress(event.containerId, event.dstNamespace, event.dstPodLabels)
             uniqueId: event.dstAddr + '_' + string(event.dstPort) + '_' + event.proto
           id: R0011
           isTriggerAlert: false
@@ -26031,6 +26082,30 @@ default capabilities:
           name: Unexpected Egress Network Traffic
           profileDataRequired:
             egressAddresses: all
+          profileDependency: 0
+          severity: 5
+          supportPolicy: false
+          tags:
+            - context:kubernetes
+            - whitelisted
+            - network
+            - anomaly
+            - networkprofile
+        - description: Detecting unexpected ingress network traffic that is not whitelisted by application profile.
+          enabled: false
+          expressions:
+            message: '''Unexpected ingress network communication from: '' + event.dstAddr + '':'' + string(event.dstPort) + '' using '' + event.proto + '' to: '' + event.containerName'
+            ruleExpression:
+              - eventType: network
+                expression: event.pktType == 'HOST' && !net.is_private_ip(event.dstAddr) && !cp.was_address_in_ingress(event.containerId, event.dstAddr) && !cp.was_selector_in_ingress(event.containerId, event.dstNamespace, event.dstPodLabels)
+            uniqueId: event.dstAddr + '_' + string(event.dstPort) + '_' + event.proto
+          id: R0012
+          isTriggerAlert: false
+          mitreTactic: TA0011
+          mitreTechnique: T1071
+          name: Unexpected Ingress Network Traffic
+          profileDataRequired:
+            ingressAddresses: all
           profileDependency: 0
           severity: 5
           supportPolicy: false
@@ -40666,6 +40741,7 @@ multiple node agents:
         - ruleName: Exec to pod
         - ruleName: Port forward
         - ruleName: Unexpected Egress Network Traffic
+        - ruleName: Unexpected Ingress Network Traffic
         - ruleName: Malicious Ptrace Usage
         - ruleName: Unexpected io_uring Operation Detected
   62: |
@@ -40966,7 +41042,7 @@ multiple node agents:
             message: '''Unexpected egress network communication to: '' + event.dstAddr + '':'' + string(event.dstPort) + '' using '' + event.proto + '' from: '' + event.containerName'
             ruleExpression:
               - eventType: network
-                expression: event.pktType == 'OUTGOING' && !net.is_private_ip(event.dstAddr) && !nn.was_address_in_egress(event.containerId, event.dstAddr)
+                expression: event.pktType == 'OUTGOING' && !net.is_private_ip(event.dstAddr) && !cp.was_address_in_egress(event.containerId, event.dstAddr) && !cp.was_selector_in_egress(event.containerId, event.dstNamespace, event.dstPodLabels)
             uniqueId: event.dstAddr + '_' + string(event.dstPort) + '_' + event.proto
           id: R0011
           isTriggerAlert: false
@@ -40975,6 +41051,30 @@ multiple node agents:
           name: Unexpected Egress Network Traffic
           profileDataRequired:
             egressAddresses: all
+          profileDependency: 0
+          severity: 5
+          supportPolicy: false
+          tags:
+            - context:kubernetes
+            - whitelisted
+            - network
+            - anomaly
+            - networkprofile
+        - description: Detecting unexpected ingress network traffic that is not whitelisted by application profile.
+          enabled: false
+          expressions:
+            message: '''Unexpected ingress network communication from: '' + event.dstAddr + '':'' + string(event.dstPort) + '' using '' + event.proto + '' to: '' + event.containerName'
+            ruleExpression:
+              - eventType: network
+                expression: event.pktType == 'HOST' && !net.is_private_ip(event.dstAddr) && !cp.was_address_in_ingress(event.containerId, event.dstAddr) && !cp.was_selector_in_ingress(event.containerId, event.dstNamespace, event.dstPodLabels)
+            uniqueId: event.dstAddr + '_' + string(event.dstPort) + '_' + event.proto
+          id: R0012
+          isTriggerAlert: false
+          mitreTactic: TA0011
+          mitreTechnique: T1071
+          name: Unexpected Ingress Network Traffic
+          profileDataRequired:
+            ingressAddresses: all
           profileDependency: 0
           severity: 5
           supportPolicy: false
@@ -55848,6 +55948,7 @@ skipPersistence enabled:
         - ruleName: Exec to pod
         - ruleName: Port forward
         - ruleName: Unexpected Egress Network Traffic
+        - ruleName: Unexpected Ingress Network Traffic
         - ruleName: Malicious Ptrace Usage
         - ruleName: Unexpected io_uring Operation Detected
   61: |
@@ -56148,7 +56249,7 @@ skipPersistence enabled:
             message: '''Unexpected egress network communication to: '' + event.dstAddr + '':'' + string(event.dstPort) + '' using '' + event.proto + '' from: '' + event.containerName'
             ruleExpression:
               - eventType: network
-                expression: event.pktType == 'OUTGOING' && !net.is_private_ip(event.dstAddr) && !nn.was_address_in_egress(event.containerId, event.dstAddr)
+                expression: event.pktType == 'OUTGOING' && !net.is_private_ip(event.dstAddr) && !cp.was_address_in_egress(event.containerId, event.dstAddr) && !cp.was_selector_in_egress(event.containerId, event.dstNamespace, event.dstPodLabels)
             uniqueId: event.dstAddr + '_' + string(event.dstPort) + '_' + event.proto
           id: R0011
           isTriggerAlert: false
@@ -56157,6 +56258,30 @@ skipPersistence enabled:
           name: Unexpected Egress Network Traffic
           profileDataRequired:
             egressAddresses: all
+          profileDependency: 0
+          severity: 5
+          supportPolicy: false
+          tags:
+            - context:kubernetes
+            - whitelisted
+            - network
+            - anomaly
+            - networkprofile
+        - description: Detecting unexpected ingress network traffic that is not whitelisted by application profile.
+          enabled: false
+          expressions:
+            message: '''Unexpected ingress network communication from: '' + event.dstAddr + '':'' + string(event.dstPort) + '' using '' + event.proto + '' to: '' + event.containerName'
+            ruleExpression:
+              - eventType: network
+                expression: event.pktType == 'HOST' && !net.is_private_ip(event.dstAddr) && !cp.was_address_in_ingress(event.containerId, event.dstAddr) && !cp.was_selector_in_ingress(event.containerId, event.dstNamespace, event.dstPodLabels)
+            uniqueId: event.dstAddr + '_' + string(event.dstPort) + '_' + event.proto
+          id: R0012
+          isTriggerAlert: false
+          mitreTactic: TA0011
+          mitreTechnique: T1071
+          name: Unexpected Ingress Network Traffic
+          profileDataRequired:
+            ingressAddresses: all
           profileDependency: 0
           severity: 5
           supportPolicy: false
