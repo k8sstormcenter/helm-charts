@@ -1,4 +1,28 @@
-{{- if and .Values.alertCRD.installDefault }}
+{{- $signing := .Values.nodeAgent.bundleSigning }}
+{{- if $signing.enabled }}
+{{- if not $signing.signedDefaultRules }}
+{{- fail "nodeAgent.bundleSigning is enabled but nodeAgent.bundleSigning.signedDefaultRules is empty. The signature feature signs everything, including the baseline ruleset: sign the default-rules baseline offline and pass it with --set-file nodeAgent.bundleSigning.signedDefaultRules=default-rules-signed.yaml" }}
+{{- end }}
+{{- $signed := fromYaml $signing.signedDefaultRules }}
+{{- if or (not (kindIs "map" $signed)) (not $signed.metadata) (not $signed.spec) }}
+{{- fail "nodeAgent.bundleSigning.signedDefaultRules must be a single signed Rules object (YAML with metadata and spec)" }}
+{{- end }}
+apiVersion: {{ $signed.apiVersion }}
+kind: {{ $signed.kind }}
+metadata:
+  name: {{ $signed.metadata.name }}
+  namespace: {{ .Values.ksNamespace }}
+  annotations:
+    {{- include "kubescape-operator.annotations" (dict "Values" .Values) | nindent 4 }}
+    {{- toYaml $signed.metadata.annotations | nindent 4 }}
+  labels:
+    {{- include "kubescape-operator.labels" (dict "Chart" .Chart "Release" .Release "Values" .Values "app" .Values.nodeAgent.name "tier" .Values.global.namespaceTier) | nindent 4 }}
+    {{- with $signed.metadata.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  {{- toYaml $signed.spec | nindent 2 }}
+{{- else if .Values.alertCRD.installDefault }}
 apiVersion: kubescape.io/v1
 kind: Rules
 metadata:

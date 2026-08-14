@@ -211,7 +211,12 @@ configurations:
 
 # installation of the alertCRD chart
 alertCRD:
-  installDefault: false # install the default CRD
+  # install the chart's default (unsigned) ruleset. IGNORED when
+  # nodeAgent.bundleSigning is enabled: with signing on, every ruleset must be
+  # signed by you, so the ruleset installed is always the one you pass via
+  # nodeAgent.bundleSigning.signedDefaultRules — sign the default baseline to
+  # keep the defaults, or sign your own.
+  installDefault: false
   scopeClustered: true # it is better to have the CRDs in the cluster scope
   scopeNamespaced: false # enable scopeNamespaced when there are no permissions for creating cluster scoped CRDs
 
@@ -632,6 +637,14 @@ nodeAgent:
     #   --set-file nodeAgent.bundleSigning.trustPolicy=trust-policy.signed.json
     trustPolicy: ""
     rootPublicKey: ""
+    # The signed baseline ruleset: a Rules object signed offline with a key the
+    # trust policy trusts. REQUIRED whenever bundleSigning is enabled — the
+    # signature feature signs everything, including the baseline ruleset. With
+    # signing on this is ALWAYS the ruleset installed and
+    # alertCRD.installDefault is ignored: sign the chart's default baseline to
+    # keep the defaults, or sign a ruleset of your own. Pass it at install time:
+    #   --set-file nodeAgent.bundleSigning.signedDefaultRules=default-rules-signed.yaml
+    signedDefaultRules: ""
     requireSignedObjects: false
   image:
     # -- source code: https://github.com/kubescape/node-agent
