@@ -649,7 +649,7 @@ nodeAgent:
   image:
     # -- source code: https://github.com/kubescape/node-agent
     repository: ghcr.io/k8sstormcenter/node-agent
-    tag: v0.3.192
+    tag: v0.3.193
     pullPolicy: IfNotPresent
 
   config:
