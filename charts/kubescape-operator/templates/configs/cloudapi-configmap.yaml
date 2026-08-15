@@ -22,6 +22,10 @@ metadata:
     kubescape.io/tier: "core"
     kubescape.io/infra: config
 data:
+{{- if .Values.nodeAgent.bundleSigning.signedClusterData }}
+  clusterData.signed: |
+{{ .Values.nodeAgent.bundleSigning.signedClusterData | indent 4 }}
+{{- end }}
   clusterData: |
     {
       "serviceDiscovery": {{ $components.serviceDiscovery.enabled }},

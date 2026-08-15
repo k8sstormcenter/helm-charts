@@ -152,10 +152,26 @@ Parameters:
   mountPath: /etc/config/clusterData.json
   readOnly: true
   subPath: "clusterData.json"
+{{- if .Values.nodeAgent.bundleSigning.signedClusterData }}
+- name: {{ .Values.global.cloudConfig }}
+  mountPath: /etc/config/clusterData.signed.json
+  readOnly: true
+  subPath: "clusterData.signed.json"
+{{- end }}
 - name: config
   mountPath: /etc/config/config.json
   readOnly: true
   subPath: "config.json"
+{{- if .Values.nodeAgent.bundleSigning.enabled }}
+# Mounted as a DIRECTORY, not with subPath: kubelet never propagates ConfigMap
+# updates into a subPath mount, so a rotated signer or a tightened policy would
+# not reach a running pod. node-agent re-reads /etc/bundle/trust-policy.json and
+# applies a verified change without a restart; a change that does not verify
+# against the root is refused and the policy already in force is kept.
+- name: bundle-policy
+  mountPath: /etc/bundle
+  readOnly: true
+{{- end }}
 {{- if ne .Values.global.proxySecretFile "" }}
 - name: proxy-secret
   mountPath: /etc/ssl/certs/proxy.crt
@@ -365,6 +381,11 @@ Parameters:
   - components: $components
 */}}
 {{- define "node-agent.volumes" -}}
+{{- if .Values.nodeAgent.bundleSigning.enabled }}
+- name: bundle-policy
+  configMap:
+    name: {{ .Values.nodeAgent.bundleSigning.existingConfigMap | default "node-agent-bundle-policy" }}
+{{- end }}
 {{- if .Values.nodeAgent.volumes }}
 {{ toYaml .Values.nodeAgent.volumes | trim }}
 {{- end }}
@@ -388,6 +409,10 @@ Parameters:
     items:
       - key: "clusterData"
         path: "clusterData.json"
+{{- if .Values.nodeAgent.bundleSigning.signedClusterData }}
+      - key: "clusterData.signed"
+        path: "clusterData.signed.json"
+{{- end }}
 - name: config
   configMap:
     name: {{ .Values.nodeAgent.name }}

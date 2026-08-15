@@ -211,7 +211,12 @@ configurations:
 
 # installation of the alertCRD chart
 alertCRD:
-  installDefault: false # install the default CRD
+  # install the chart's default (unsigned) ruleset. IGNORED when
+  # nodeAgent.bundleSigning is enabled: with signing on, every ruleset must be
+  # signed by you, so the ruleset installed is always the one you pass via
+  # nodeAgent.bundleSigning.signedDefaultRules — sign the default baseline to
+  # keep the defaults, or sign your own.
+  installDefault: false
   scopeClustered: true # it is better to have the CRDs in the cluster scope
   scopeNamespaced: false # enable scopeNamespaced when there are no permissions for creating cluster scoped CRDs
 
@@ -557,7 +562,7 @@ storage:
   image:
     # -- source code: https://github.com/kubescape/storage
     repository: ghcr.io/k8sstormcenter/storage
-    tag: sbob-rc5s
+    tag: v0.3.177
     pullPolicy: IfNotPresent
 
   nodeSelector:
@@ -615,10 +620,43 @@ nodeAgent:
   # Lower values give the runtime more headroom; raise toward 1.0 only if
   # GC is not aggressive enough.
   gomemlimitPercentage: 0.8
+  # Signed-bundle overlays: when enabled, node-agent boots with the trust
+  # policy (public-key fingerprints) mounted at /etc/bundle and the bundle
+  # config key set — no post-install patching or restarts. node-agent only
+  # VERIFIES fragment signatures; no signing key is ever deployed to the cluster.
+  bundleSigning:
+    enabled: false
+    # Name of an EXISTING ConfigMap holding trust-policy.json (and optionally
+    # root.pub). When set, the chart mounts that ConfigMap and does NOT render
+    # one, so the policy can be rotated without a helm upgrade and without
+    # pasting the signed artifact into values. Leave empty to have the chart
+    # render the ConfigMap from trustPolicy/rootPublicKey below.
+    existingConfigMap: ""
+    # The root-signed trust policy artifact. Avoid pasting it here by hand —
+    # pass it at install time instead:
+    #   --set-file nodeAgent.bundleSigning.trustPolicy=trust-policy.signed.json
+    trustPolicy: ""
+    rootPublicKey: ""
+    # The signed baseline ruleset: a Rules object signed offline with a key the
+    # trust policy trusts. REQUIRED whenever bundleSigning is enabled — the
+    # signature feature signs everything, including the baseline ruleset. With
+    # signing on this is ALWAYS the ruleset installed and
+    # alertCRD.installDefault is ignored: sign the chart's default baseline to
+    # keep the defaults, or sign a ruleset of your own. Pass it at install time:
+    #   --set-file nodeAgent.bundleSigning.signedDefaultRules=default-rules-signed.yaml
+    signedDefaultRules: ""
+    # Root-signed clusterData artifact (sign-object sign-config over the
+    # RENDERED clusterData.json). When set it is mounted at
+    # /etc/config/clusterData.signed.json and node-agent uses the VERIFIED
+    # content instead of the mutable ConfigMap copy, refusing to start on a
+    # tampered artifact. Pass it at install time:
+    #   --set-file nodeAgent.bundleSigning.signedClusterData=clusterData.signed.json
+    signedClusterData: ""
+    requireSignedObjects: false
   image:
     # -- source code: https://github.com/kubescape/node-agent
     repository: ghcr.io/k8sstormcenter/node-agent
-    tag: v0.3.171
+    tag: v0.3.193
     pullPolicy: IfNotPresent
 
   config:

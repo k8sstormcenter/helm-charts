@@ -45,6 +45,15 @@ data:
         "nodeProfileInterval": "{{ .Values.nodeAgent.config.nodeProfileInterval }}",
         "networkStreamingInterval": "{{ .Values.nodeAgent.config.networkStreamingInterval }}",
         "maxSniffingTimePerContainer": "{{ .Values.nodeAgent.config.maxLearningPeriod }}",
+        {{- if .Values.nodeAgent.bundleSigning.enabled }}
+        "bundleTrustPolicyPath": "/etc/bundle/trust-policy.json",
+        {{- if .Values.nodeAgent.bundleSigning.rootPublicKey }}
+        "bundleRootKeyPath": "/etc/bundle/root.pub",
+        {{- end }}
+        {{- if .Values.nodeAgent.bundleSigning.requireSignedObjects }}
+        "enableSignatureVerification": true,
+        {{- end }}
+        {{- end }}
         {{- if ne .Values.includeNamespaces "" }}
         "includeNamespaces": "{{ .Values.includeNamespaces }}",
         {{- else if ne .Values.excludeNamespaces "" }}

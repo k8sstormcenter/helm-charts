@@ -1,0 +1,16 @@
+{{- if and .Values.nodeAgent.bundleSigning.enabled (not .Values.nodeAgent.bundleSigning.existingConfigMap) }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: node-agent-bundle-policy
+  namespace: {{ .Values.ksNamespace }}
+  labels:
+    kubescape.io/ignore: "true"
+data:
+  trust-policy.json: |
+{{ .Values.nodeAgent.bundleSigning.trustPolicy | indent 4 }}
+{{- if .Values.nodeAgent.bundleSigning.rootPublicKey }}
+  root.pub: |
+{{ .Values.nodeAgent.bundleSigning.rootPublicKey | indent 4 }}
+{{- end }}
+{{- end }}
