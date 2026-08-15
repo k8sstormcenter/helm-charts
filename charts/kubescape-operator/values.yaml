@@ -645,6 +645,13 @@ nodeAgent:
     # keep the defaults, or sign a ruleset of your own. Pass it at install time:
     #   --set-file nodeAgent.bundleSigning.signedDefaultRules=default-rules-signed.yaml
     signedDefaultRules: ""
+    # Root-signed clusterData artifact (sign-object sign-config over the
+    # RENDERED clusterData.json). When set it is mounted at
+    # /etc/config/clusterData.signed.json and node-agent uses the VERIFIED
+    # content instead of the mutable ConfigMap copy, refusing to start on a
+    # tampered artifact. Pass it at install time:
+    #   --set-file nodeAgent.bundleSigning.signedClusterData=clusterData.signed.json
+    signedClusterData: ""
     requireSignedObjects: false
   image:
     # -- source code: https://github.com/kubescape/node-agent

@@ -152,6 +152,12 @@ Parameters:
   mountPath: /etc/config/clusterData.json
   readOnly: true
   subPath: "clusterData.json"
+{{- if .Values.nodeAgent.bundleSigning.signedClusterData }}
+- name: {{ .Values.global.cloudConfig }}
+  mountPath: /etc/config/clusterData.signed.json
+  readOnly: true
+  subPath: "clusterData.signed.json"
+{{- end }}
 - name: config
   mountPath: /etc/config/config.json
   readOnly: true
@@ -403,6 +409,10 @@ Parameters:
     items:
       - key: "clusterData"
         path: "clusterData.json"
+{{- if .Values.nodeAgent.bundleSigning.signedClusterData }}
+      - key: "clusterData.signed"
+        path: "clusterData.signed.json"
+{{- end }}
 - name: config
   configMap:
     name: {{ .Values.nodeAgent.name }}
