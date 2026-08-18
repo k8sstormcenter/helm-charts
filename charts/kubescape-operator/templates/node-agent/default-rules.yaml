@@ -115,7 +115,7 @@ spec:
       - name: "Syscalls Anomalies in container"
         enabled: true
         id: "R0003"
-        description: "Detects unexpected system calls that are not whitelisted by application profile"
+        description: "Detects unexpected system calls that are not allowlisted by application profile"
         expressions:
           message: "'Unexpected system call detected: ' + event.syscallName + ' with PID ' + string(event.pid)"
           uniqueId: "event.syscallName"
@@ -138,7 +138,7 @@ spec:
       - name: "Linux Capabilities Anomalies in container"
         enabled: true
         id: "R0004"
-        description: "Detects unexpected capabilities that are not whitelisted by application profile"
+        description: "Detects unexpected capabilities that are not allowlisted by application profile"
         expressions:
           message: "'Unexpected capability used: ' + event.capName + ' in syscall ' + event.syscallName + ' with PID ' + string(event.pid)"
           uniqueId: "event.comm + '_' + event.capName"
@@ -161,7 +161,7 @@ spec:
       - name: "DNS Anomalies in container"
         enabled: true
         id: "R0005"
-        description: "Detecting unexpected domain requests that are not whitelisted by application profile."
+        description: "Detecting unexpected domain requests that are not allowlisted by application profile."
         expressions:
           message: "'Unexpected domain communication: ' + event.name + ' from: ' + event.containerName"
           uniqueId: "event.comm + '_' + event.name"
@@ -325,13 +325,13 @@ spec:
       - name: "Unexpected Egress Network Traffic"
         enabled: false
         id: "R0011"
-        description: "Detecting unexpected egress network traffic that is not whitelisted by application profile."
+        description: "Detecting unexpected egress network traffic that is not allowlisted by application profile."
         expressions:
           message: "'Unexpected egress network communication to: ' + event.dstAddr + ':' + string(event.dstPort) + ' using ' + event.proto + ' from: ' + event.containerName"
           uniqueId: "event.dstAddr + '_' + string(event.dstPort) + '_' + event.proto"
           ruleExpression:
             - eventType: "network"
-              expression: "event.pktType == 'OUTGOING' && !net.is_private_ip(event.dstAddr) && !nn.was_address_in_egress(event.containerId, event.dstAddr)"
+              expression: "event.pktType == 'OUTGOING' && !net.is_private_ip(event.dstAddr) && !cp.was_address_port_protocol_in_egress(event.containerId, event.dstAddr, event.dstPort, event.proto) && !cp.was_selector_in_egress(event.containerId, event.dstNamespace, event.dstPodLabels)"
         profileDependency: 0
         profileDataRequired:
           egressAddresses: all
@@ -342,7 +342,31 @@ spec:
         mitreTechnique: "T1041"
         tags:
           - "context:kubernetes"
-          - "whitelisted"
+          - "allowlisted"
+          - "network"
+          - "anomaly"
+          - "networkprofile"
+      - name: "Unexpected Ingress Network Traffic"
+        enabled: false
+        id: "R0012"
+        description: "Detecting unexpected ingress network traffic that is not allowlisted by application profile."
+        expressions:
+          message: "'Unexpected ingress network communication from: ' + event.dstAddr + ':' + string(event.dstPort) + ' using ' + event.proto + ' to: ' + event.containerName"
+          uniqueId: "event.dstAddr + '_' + string(event.dstPort) + '_' + event.proto"
+          ruleExpression:
+            - eventType: "network"
+              expression: "event.pktType == 'HOST' && !net.is_private_ip(event.dstAddr) && !cp.was_address_port_protocol_in_ingress(event.containerId, event.dstAddr, event.dstPort, event.proto) && !cp.was_selector_in_ingress(event.containerId, event.dstNamespace, event.dstPodLabels)"
+        profileDependency: 0
+        profileDataRequired:
+          ingressAddresses: all
+        severity: 5 # Medium
+        supportPolicy: false
+        isTriggerAlert: false
+        mitreTactic: "TA0011"
+        mitreTechnique: "T1071"
+        tags:
+          - "context:kubernetes"
+          - "allowlisted"
           - "network"
           - "anomaly"
           - "networkprofile"

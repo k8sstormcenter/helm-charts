@@ -562,7 +562,7 @@ storage:
   image:
     # -- source code: https://github.com/kubescape/storage
     repository: ghcr.io/k8sstormcenter/storage
-    tag: v0.3.177
+    tag: v0.0.303
     pullPolicy: IfNotPresent
 
   nodeSelector:
@@ -656,7 +656,7 @@ nodeAgent:
   image:
     # -- source code: https://github.com/kubescape/node-agent
     repository: ghcr.io/k8sstormcenter/node-agent
-    tag: v0.3.193
+    tag: node-agent-rc-sofia
     pullPolicy: IfNotPresent
 
   config:
