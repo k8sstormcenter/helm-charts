@@ -555,8 +555,8 @@ storage:
 
   # -- source code: https://github.com/kubescape/storage
   image:
-    repository: quay.io/kubescape/storage
-    tag: v0.0.304
+    repository: ghcr.io/k8sstormcenter/storage
+    tag: rc-rogue
     pullPolicy: IfNotPresent
 
   nodeSelector:
@@ -616,8 +616,8 @@ nodeAgent:
   gomemlimitPercentage: 0.8
   image:
     # -- source code: https://github.com/kubescape/node-agent
-    repository: quay.io/kubescape/node-agent
-    tag: MUSTBERELEASED
+    repository: ghcr.io/k8sstormcenter/node-agent
+    tag: rc-rogue
     pullPolicy: IfNotPresent
 
   config:
