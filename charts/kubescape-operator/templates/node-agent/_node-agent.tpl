@@ -156,6 +156,11 @@ Parameters:
   mountPath: /etc/config/config.json
   readOnly: true
   subPath: "config.json"
+{{- if .Values.nodeAgent.bundleTrustPolicy.enabled }}
+- name: bundle-policy
+  mountPath: /etc/bundle
+  readOnly: true
+{{- end }}
 {{- if ne .Values.global.proxySecretFile "" }}
 - name: proxy-secret
   mountPath: /etc/ssl/certs/proxy.crt
@@ -394,6 +399,11 @@ Parameters:
     items:
       - key: "config.json"
         path: "config.json"
+{{- if .Values.nodeAgent.bundleTrustPolicy.enabled }}
+- name: bundle-policy
+  configMap:
+    name: {{ .Values.nodeAgent.name }}-bundle-policy
+{{- end }}
 {{- if ne .Values.global.proxySecretFile "" }}
 - name: proxy-secret
   secret:

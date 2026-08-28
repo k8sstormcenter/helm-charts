@@ -620,6 +620,13 @@ nodeAgent:
     tag: rc-rogue
     pullPolicy: IfNotPresent
 
+  # Root-signed trust policy for signed-bundle (SBoB) overlays: mounts the
+  # bundle-policy ConfigMap at /etc/bundle and points the agent at it. Without
+  # it bundle overlays stay disabled and label-bound workloads never assemble
+  # their composite profile (bound-but-never-healed).
+  bundleTrustPolicy:
+    enabled: true
+
   config:
     maxLearningPeriod: 24h # duration string
     learningPeriod: 2m # duration string

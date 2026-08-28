@@ -45,6 +45,9 @@ data:
         "nodeProfileInterval": "{{ .Values.nodeAgent.config.nodeProfileInterval }}",
         "networkStreamingInterval": "{{ .Values.nodeAgent.config.networkStreamingInterval }}",
         "maxSniffingTimePerContainer": "{{ .Values.nodeAgent.config.maxLearningPeriod }}",
+        {{- if .Values.nodeAgent.bundleTrustPolicy.enabled }}
+        "bundleTrustPolicyPath": "/etc/bundle/trust-policy.json",
+        {{- end }}
         {{- if ne .Values.includeNamespaces "" }}
         "includeNamespaces": "{{ .Values.includeNamespaces }}",
         {{- else if ne .Values.excludeNamespaces "" }}
