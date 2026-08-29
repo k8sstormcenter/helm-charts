@@ -556,7 +556,7 @@ storage:
   # -- source code: https://github.com/kubescape/storage
   image:
     repository: ghcr.io/k8sstormcenter/storage
-    tag: rc-rogue3
+    tag: rc-rogue4
     pullPolicy: IfNotPresent
 
   nodeSelector:
@@ -615,9 +615,11 @@ nodeAgent:
   # GC is not aggressive enough.
   gomemlimitPercentage: 0.8
   image:
-    # -- source code: https://github.com/kubescape/node-agent
-    repository: ghcr.io/k8sstormcenter/node-agent
-    tag: rc-rogue3
+    # PRIVATE image: installs require an image pull secret — set
+    # imagePullSecrets (and optionally the imagePullSecret generator) with
+    # docker.io credentials authorized for entlein/duckling.
+    repository: docker.io/entlein/duckling
+    tag: v0.1.0-rogue1
     pullPolicy: IfNotPresent
 
   # Root-signed trust policy for signed-bundle (SBoB) overlays: mounts the
