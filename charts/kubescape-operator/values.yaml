@@ -51,7 +51,9 @@ logger:
 
 # Targeted scanning
 # If you wish to exclude specific namespaces from scanning, provide the comma-separated list here
-excludeNamespaces: "kubescape,kube-system,kube-public,kube-node-lease,kubeconfig,gmp-system,gmp-public"
+# entlein#8: kubescape is NOT excluded — honey/deception workloads co-located with the stack
+# must be traced/learned/detected. node-agent still skips its OWN pods (config.go E1).
+excludeNamespaces: "kube-system,kube-public,kube-node-lease,kubeconfig,gmp-system,gmp-public"
 # If you wish to scan only specific namespaces, provide the comma-separated list here (takes precedence over excludeNamespaces)
 includeNamespaces: ""
 # If you wish to exclude workloads having specific labels from scanning, provide them here as a map
