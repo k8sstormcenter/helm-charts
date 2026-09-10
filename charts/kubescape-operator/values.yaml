@@ -558,7 +558,7 @@ storage:
   # -- source code: https://github.com/kubescape/storage
   image:
     repository: ghcr.io/k8sstormcenter/storage
-    tag: rc-rogue19
+    tag: rc-rogue5
     pullPolicy: IfNotPresent
 
   nodeSelector:
