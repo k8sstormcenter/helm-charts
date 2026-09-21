@@ -202,19 +202,23 @@ Parameters:
     httpGet:
       path: /livez
       port: 7888
-    periodSeconds: 3
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
   readinessProbe:
     httpGet:
       path: /readyz
       port: 7888
-    periodSeconds: 3
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
   startupProbe:
     httpGet:
       path: /readyz
       port: 7888
     periodSeconds: 10
     failureThreshold: 30
-    timeoutSeconds: 1
+    timeoutSeconds: 5
   resources:
     {{- include "node-agent.resources" (dict "autoscalerMode" .autoscalerMode "resources" .resources) | nindent 4 }}
   env:
