@@ -161,7 +161,7 @@ spec:
           - eventType: exec
             expression: "(event.comm == 'kubectl' || event.exepath.endsWith('/kubectl')) && !cp.was_executed(event.containerId, parse.get_exec_path(event.args, event.comm, event.exepath))"
           - eventType: network
-            expression: "event.pktType == 'OUTGOING' && k8s.is_api_server_address(event.dstAddr) && !cp.was_address_in_egress(event.containerId, event.dstAddr)"
+            expression: "event.pktType == 'OUTGOING' && k8s.is_api_server_address(event.dstAddr, event.dstPort) && !cp.was_address_in_egress(event.containerId, event.dstAddr)"
         uniqueId: "eventType == 'exec' ? 'exec_' + event.comm : 'network_' + event.dstAddr"
       id: R0007
       isTriggerAlert: false
@@ -245,7 +245,7 @@ spec:
         message: "'Unexpected egress network communication to: ' + event.dstAddr + ':' + string(event.dstPort) + ' using ' + event.proto + ' from: ' + event.containerName"
         ruleExpression:
           - eventType: network
-            expression: "event.pktType == 'OUTGOING' && !event.dstAddr.startsWith('127.') && event.dstAddr != '::1' && !cp.was_address_port_protocol_in_egress(event.containerId, event.dstAddr, event.dstPort, event.proto) && !cp.was_selector_in_egress(event.containerId, event.dstNamespace, event.dstPodLabels, event.dstPort, event.proto)"
+            expression: "event.pktType == 'OUTGOING' && !event.dstAddr.startsWith('127.') && event.dstAddr != '::1' && !cp.was_address_port_protocol_in_egress(event.containerId, event.dstAddr, event.dstPort, event.proto) && !cp.was_selector_in_egress(event.containerId, event.dstNamespace, event.dstPodLabels, event.dstPort, event.proto) && !cp.is_host_peer_egress(event.containerId, event.dstAddr, event.dstPort, event.proto)"
         uniqueId: "event.dstAddr + '_' + string(event.dstPort) + '_' + event.proto"
       id: R0011
       isTriggerAlert: true
@@ -266,7 +266,7 @@ spec:
         message: "'Unexpected ingress network communication from: ' + event.dstAddr + ':' + string(event.dstPort) + ' using ' + event.proto + ' to: ' + event.containerName"
         ruleExpression:
           - eventType: network
-            expression: "event.pktType == 'HOST' && !event.dstAddr.startsWith('127.') && event.dstAddr != '::1' && !cp.was_address_port_protocol_in_ingress(event.containerId, event.dstAddr, event.dstPort, event.proto) && !cp.was_selector_in_ingress(event.containerId, event.dstNamespace, event.dstPodLabels, event.dstPort, event.proto)"
+            expression: "event.pktType == 'HOST' && !event.dstAddr.startsWith('127.') && event.dstAddr != '::1' && !cp.was_address_port_protocol_in_ingress(event.containerId, event.dstAddr, event.dstPort, event.proto) && !cp.was_selector_in_ingress(event.containerId, event.dstNamespace, event.dstPodLabels, event.dstPort, event.proto) && !cp.is_host_peer_ingress(event.containerId, event.dstAddr, event.dstPort, event.proto)"
         uniqueId: "event.dstAddr + '_' + string(event.dstPort) + '_' + event.proto"
       id: R0012
       isTriggerAlert: true
