@@ -22,7 +22,7 @@ version: 1.41.0-duckling25
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 
-appVersion: "v0.1.0-rogue39"
+appVersion: "v0.1.0-rogue40"
 
 maintainers:
 - name: Ben Hirschberg
