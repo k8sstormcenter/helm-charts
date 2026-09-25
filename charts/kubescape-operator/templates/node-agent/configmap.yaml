@@ -72,6 +72,7 @@ data:
         "alertDeduplication": {
             "bypass": {{ .Values.nodeAgent.config.alertDeduplication.bypass }}
         },
+        "scanFailureReporting": {{ .Values.nodeAgent.config.scanFailureReporting | default false }},
         "suggester": {{ .Values.nodeAgent.config.suggester | default (dict "enabled" false) | toJson }}
     }
 ---
