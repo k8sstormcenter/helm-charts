@@ -71,7 +71,8 @@ data:
         },
         "alertDeduplication": {
             "bypass": {{ .Values.nodeAgent.config.alertDeduplication.bypass }}
-        }
+        },
+        "suggester": {{ .Values.nodeAgent.config.suggester | default (dict "enabled" false) | toJson }}
     }
 ---
 {{- if $components.clamAV.enabled }}

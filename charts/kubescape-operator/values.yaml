@@ -659,6 +659,14 @@ nodeAgent:
       ruleCooldownMaxSize: 20000
     alertDeduplication:
       bypass: false # DAST / security-testing only: disables ALL sensor-side dedup/cooldown
+    suggester:
+      enabled: false
+      bobctlPath: /usr/bin/bobctl
+      timeout: 60s
+      mode: whole
+      defaultBundle: ""
+      workDir: /tmp/suggester
+      queueSize: 64
     # Host sensor configuration
     hostSensor:
       enabled: true
