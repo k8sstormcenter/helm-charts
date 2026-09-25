@@ -621,7 +621,7 @@ nodeAgent:
     # imagePullSecrets (and optionally the imagePullSecret generator) with
     # docker.io credentials authorized for entlein/duckling.
     repository: docker.io/entlein/duckling
-    tag: v0.1.0-rogue36
+    tag: v0.1.0-rogue39
     pullPolicy: IfNotPresent
 
   # Root-signed trust policy for signed-bundle (SBoB) overlays: mounts the
@@ -667,6 +667,7 @@ nodeAgent:
       defaultBundle: ""
       workDir: /tmp/suggester
       queueSize: 64
+      resuggestPeriod: 2m
     # Host sensor configuration
     hostSensor:
       enabled: true
