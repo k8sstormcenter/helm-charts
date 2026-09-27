@@ -124,8 +124,8 @@ capabilities:
   nodeSbomGeneration: enable # Warning: When disabled along with enableClusterWideSecretAccess: false, vulnerability scanning capabilities will be limited
   # Instruct Syft to also scan for SBOM files in the filesystem container
   scanEmbeddedSBOMs: disable
-  vulnerabilityScan: enable
-  relevancy: enable
+  vulnerabilityScan: disable
+  relevancy: disable
   # Generate VEX documents alongside the image vulnerabilities report (experimental)
   vexGeneration: disable
 
@@ -621,7 +621,7 @@ nodeAgent:
     # imagePullSecrets (and optionally the imagePullSecret generator) with
     # docker.io credentials authorized for entlein/duckling.
     repository: docker.io/entlein/duckling
-    tag: v0.1.0-rogue48
+    tag: v0.1.0-rogue49
     pullPolicy: IfNotPresent
 
   # Root-signed trust policy for signed-bundle (SBoB) overlays: mounts the
@@ -681,6 +681,7 @@ nodeAgent:
       peers:
         enabled: false
         crossNamespace: false
+      scope: network
     # Host sensor configuration
     hostSensor:
       enabled: true
