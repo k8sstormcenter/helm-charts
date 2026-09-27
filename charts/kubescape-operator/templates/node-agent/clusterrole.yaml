@@ -37,7 +37,10 @@ rules:
   verbs: ["get", "watch", "list"]
 {{- end }}
 - apiGroups: ["spdx.softwarecomposition.kubescape.io"]
-  resources: ["containerprofiles", "sbomsyfts"]
+  resources: ["containerprofiles"]
+  verbs: ["create", "get", "update", "watch", "list", "patch", "delete"]
+- apiGroups: ["spdx.softwarecomposition.kubescape.io"]
+  resources: ["sbomsyfts"]
   verbs: ["create", "get", "update", "watch", "list", "patch"]
 - apiGroups: ["spdx.softwarecomposition.kubescape.io"]
   resources: ["rogueartifacts"]
