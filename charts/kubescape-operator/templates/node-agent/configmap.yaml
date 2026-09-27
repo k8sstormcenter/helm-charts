@@ -73,7 +73,11 @@ data:
             "bypass": {{ .Values.nodeAgent.config.alertDeduplication.bypass }}
         },
         "scanFailureReporting": {{ .Values.nodeAgent.config.scanFailureReporting | default false }},
-        "suggester": {{ .Values.nodeAgent.config.suggester | default (dict "enabled" false) | toJson }}
+        {{- $suggester := .Values.nodeAgent.config.suggester | default (dict "enabled" false) }}
+        {{- if not (hasKey $suggester "skipNamespaces") }}
+        {{- $_ := set $suggester "skipNamespaces" (list "kube-system" .Values.ksNamespace) }}
+        {{- end }}
+        "suggester": {{ $suggester | toJson }}
     }
 ---
 {{- if $components.clamAV.enabled }}
