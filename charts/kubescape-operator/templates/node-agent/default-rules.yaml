@@ -245,7 +245,7 @@ spec:
         message: "'Unexpected egress network communication to: ' + event.dstAddr + ':' + string(event.dstPort) + ' using ' + event.proto + ' from: ' + event.containerName"
         ruleExpression:
           - eventType: network
-            expression: "event.pktType == 'OUTGOING' && !net.is_private_ip(event.dstAddr) && !cp.was_address_in_egress(event.containerId, event.dstAddr)"
+            expression: "event.pktType == 'OUTGOING' && !event.dstAddr.startsWith('127.') && event.dstAddr != '::1' && !cp.was_address_port_protocol_in_egress(event.containerId, event.dstAddr, event.dstPort, event.proto) && !cp.was_selector_in_egress(event.containerId, event.dstNamespace, event.dstPodLabels, event.dstPort, event.proto) && !cp.is_host_peer_egress(event.containerId, event.dstAddr, event.dstPort, event.proto)"
         uniqueId: "event.dstAddr + '_' + string(event.dstPort) + '_' + event.proto"
       id: R0011
       isTriggerAlert: true
@@ -261,7 +261,7 @@ spec:
         - anomaly
         - networkprofile
     - description: "Detecting unexpected ingress network traffic — an inbound connection whose peer is not whitelisted by the application profile ingress."
-      enabled: false
+      enabled: true
       expressions:
         message: "'Unexpected ingress network communication from: ' + event.dstAddr + ':' + string(event.dstPort) + ' using ' + event.proto + ' to: ' + event.containerName"
         ruleExpression:
