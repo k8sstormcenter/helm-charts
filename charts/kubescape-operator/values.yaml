@@ -139,6 +139,7 @@ capabilities:
   nodeProfileService: enable
   admissionController: enable
   httpDetection: enable
+  hostProfileService: disable
   seccompProfileService: enable
   # Storage backend for SeccompProfile resources: "crd" (Kubernetes CRD) or "storage" (aggregated API)
   seccompProfileBackend: crd

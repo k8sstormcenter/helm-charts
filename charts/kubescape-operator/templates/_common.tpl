@@ -125,11 +125,13 @@ that value can never drift apart. See issue #851.
 {{- $nodeProfileService := and $synchronizerEnabled (eq $c.nodeProfileService "enable") -}}
 {{- $networkStreaming := and $submit (eq $c.networkEventsStreaming "enable") -}}
 {{- $httpDetection := and (eq $c.httpDetection "enable") $runtimeDetection -}}
+{{- $hostProfile := and (eq ($c.hostProfileService | default "disable") "enable") $configurations.runtimeObservability -}}
 # effective.* are the node-agent config.json flags, consumed by node-agent/configmap.yaml
 effective:
   nodeProfileServiceEnabled: {{ $nodeProfileService }}
   networkStreamingEnabled: {{ $networkStreaming }}
   httpDetectionEnabled: {{ $httpDetection }}
+  hostProfileServiceEnabled: {{ $hostProfile }}
 # effectiveCapabilities is requested-vs-effective per gated capability, consumed by ks-capabilities
 effectiveCapabilities:
   nodeProfileService: {{ if $nodeProfileService }}enable{{ else }}disable{{ end }}
