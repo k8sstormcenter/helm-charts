@@ -31,6 +31,8 @@ spec:
         - process
         - exec
         - applicationprofile
+        - "context:kubernetes"
+        - "context:host"
     - description: "Process path is allowed by profile but argument vector does not match any profile entry's arg pattern (literal or wildcard ⋯/*)"
       enabled: true
       expressions:
@@ -52,6 +54,8 @@ spec:
         - process
         - exec
         - applicationprofile
+        - "context:kubernetes"
+        - "context:host"
     - description: "Detects unexpected file access that is not in the baseline"
       enabled: false
       expressions:
@@ -73,6 +77,8 @@ spec:
         - file
         - open
         - applicationprofile
+        - "context:kubernetes"
+        - "context:host"
     - description: "Detects unexpected system calls that are not whitelisted by application profile"
       enabled: false
       expressions:
@@ -93,6 +99,8 @@ spec:
         - anomaly
         - syscall
         - applicationprofile
+        - "context:kubernetes"
+        - "context:host"
     - description: "Detects unexpected capabilities that are not whitelisted by application profile"
       enabled: true
       expressions:
@@ -113,6 +121,8 @@ spec:
         - anomaly
         - capabilities
         - applicationprofile
+        - "context:kubernetes"
+        - "context:host"
     - description: "Detecting unexpected domain requests that are not whitelisted by application profile."
       enabled: true
       expressions:
