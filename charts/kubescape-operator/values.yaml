@@ -632,6 +632,12 @@ nodeAgent:
   bundleTrustPolicy:
     enabled: true
 
+  directAlerts:
+    enabled: false
+    port: 50405
+    windowBytes: 67108864
+    jwtPublicKeySecret: node-agent-direct-jwt-pub
+
   config:
     maxLearningPeriod: 24h # duration string
     learningPeriod: 2m # duration string

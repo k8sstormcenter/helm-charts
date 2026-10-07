@@ -27,6 +27,7 @@ data:
         "runtimeDetectionEnabled": {{ eq .Values.capabilities.runtimeDetection "enable" }},
         "httpDetectionEnabled": {{ $gates.httpDetectionEnabled }},
         "hostProfileServiceEnabled": {{ $gates.hostProfileServiceEnabled }},
+        "directAlerts": {"enabled": {{ .Values.nodeAgent.directAlerts.enabled }}, "port": {{ .Values.nodeAgent.directAlerts.port }}, "jwtPublicKeyPath": "/etc/node-agent-direct/public.pem", "windowBytes": {{ .Values.nodeAgent.directAlerts.windowBytes | int64 }}},
         "networkServiceEnabled": {{ eq .Values.capabilities.networkPolicyService "enable" }},
         "malwareDetectionEnabled": {{ eq .Values.capabilities.malwareDetection "enable" }},
         "hostMalwareSensorEnabled": {{ eq .Values.nodeAgent.config.hostMalwareSensor "enable" }},

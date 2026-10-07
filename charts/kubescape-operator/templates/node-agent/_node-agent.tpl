@@ -138,6 +138,11 @@ Parameters:
 {{- if .Values.volumeMounts }}
 {{ toYaml .Values.volumeMounts | trim }}
 {{- end }}
+{{- if .Values.nodeAgent.directAlerts.enabled }}
+- name: direct-jwt
+  mountPath: /etc/node-agent-direct
+  readOnly: true
+{{- end }}
 {{- if .Values.nodeAgent.volumeMounts }}
 {{ toYaml .Values.nodeAgent.volumeMounts | trim }}
 {{- end }}
@@ -198,6 +203,13 @@ Parameters:
 - name: {{ .Values.nodeAgent.name }}
   image: "{{ .Values.nodeAgent.image.repository }}:{{ .Values.nodeAgent.image.tag }}"
   imagePullPolicy: {{ .Values.nodeAgent.image.pullPolicy }}
+{{- if .Values.nodeAgent.directAlerts.enabled }}
+  ports:
+    - name: direct-alerts
+      containerPort: {{ .Values.nodeAgent.directAlerts.port }}
+      hostPort: {{ .Values.nodeAgent.directAlerts.port }}
+      protocol: TCP
+{{- end }}
   livenessProbe:
     httpGet:
       path: /livez
@@ -376,6 +388,11 @@ Parameters:
 {{- define "node-agent.volumes" -}}
 {{- if .Values.nodeAgent.volumes }}
 {{ toYaml .Values.nodeAgent.volumes | trim }}
+{{- end }}
+{{- if .Values.nodeAgent.directAlerts.enabled }}
+- name: direct-jwt
+  secret:
+    secretName: {{ .Values.nodeAgent.directAlerts.jwtPublicKeySecret }}
 {{- end }}
 {{- if .Values.volumes }}
 {{ toYaml .Values.volumes | trim }}
