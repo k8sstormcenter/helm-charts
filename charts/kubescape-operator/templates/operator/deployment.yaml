@@ -40,7 +40,7 @@ spec:
         checksum/admission-certgen-scripts: {{ $checksums.admissionCertgenScripts }}
       {{- end }}
       labels:
-        {{- include "kubescape-operator.labels" (dict "Chart" .Chart "Release" .Release "Values" .Values "app" .Values.operator.name "tier" .Values.global.namespaceTier) | nindent 8 }}
+        {{- include "kubescape-operator.podLabels" (dict "Chart" .Chart "Release" .Release "Values" .Values "app" .Values.operator.name "tier" .Values.global.namespaceTier) | nindent 8 }}
         {{- with .Values.operator.podLabels }}{{- toYaml . | nindent 8 }}{{- end }}
         kubescape.io/tier: "core"
     spec:

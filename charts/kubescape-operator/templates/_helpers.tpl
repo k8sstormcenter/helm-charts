@@ -59,6 +59,21 @@ kubescape.io/ignore: "true"
 {{- end }}
 
 {{/*
+Pod labels: the common labels without chart and app version, so a version-only bump does not restart the pod
+*/}}
+{{- define "kubescape-operator.podLabels" -}}
+{{ include "kubescape-operator.selectorLabels" . }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+app.kubernetes.io/part-of: kubescape
+app: {{ .app }}
+tier: {{ .tier }}
+kubescape.io/ignore: "true"
+{{- if .Values.additionalLabels }}
+{{ toYaml .Values.additionalLabels }}
+{{- end }}
+{{- end }}
+
+{{/*
 Selector labels
 */}}
 {{- define "kubescape-operator.selectorLabels" -}}

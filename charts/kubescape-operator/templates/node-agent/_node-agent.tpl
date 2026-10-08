@@ -483,7 +483,7 @@ Parameters:
   - nodeGroupLabel: string (for autoscaler mode)
 */}}
 {{- define "node-agent.podLabels" -}}
-{{- include "kubescape-operator.labels" (dict "Chart" .Chart "Release" .Release "Values" .Values "app" .Values.nodeAgent.name "tier" .Values.global.namespaceTier) }}
+{{- include "kubescape-operator.podLabels" (dict "Chart" .Chart "Release" .Release "Values" .Values "app" .Values.nodeAgent.name "tier" .Values.global.namespaceTier) }}
 {{- with .Values.nodeAgent.podLabels }}
 {{ toYaml . }}
 {{- end }}
