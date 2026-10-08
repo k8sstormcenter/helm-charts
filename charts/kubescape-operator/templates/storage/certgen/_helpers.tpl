@@ -40,10 +40,17 @@ v1beta1.spdx.softwarecomposition.kubescape.io
       {{- $_ := set $ca "Key" (index $existingCASecret.data "tls.key" | b64dec) -}}
       {{- $_ := set $ca "Cert" (index $existingCASecret.data "tls.crt" | b64dec) -}}
       {{- $existingCA := buildCustomCert ($ca.Cert | b64enc) ($ca.Key | b64enc) -}}
-      {{/* Leaf cert validity governed by storage.mtls.certificateValidityInDays. After expiry, delete the storage-tls-ca Secret and run helm upgrade to regenerate. */}}
-      {{- $generatedCert := genSignedCert $svcDomainName nil (list $svcDomainName $svcDomainNameLocal) $validityDays $existingCA -}}
-      {{- $_ := set $cert "Key" $generatedCert.Key -}}
-      {{- $_ := set $cert "Cert" $generatedCert.Cert -}}
+      {{- $existingLeaf := (lookup "v1" "Secret" .Values.ksNamespace (include "storage.certgen.secretName" .)) -}}
+      {{- if and $existingLeaf $existingLeaf.data (index $existingLeaf.data "tls.crt") (index $existingLeaf.data "tls.key") (eq (index $existingLeaf.data "ca.crt" | default "") ($ca.Cert | b64enc)) -}}
+        {{/* Reuse the leaf issued by this CA; delete the storage-tls Secret and run helm upgrade to re-issue. */}}
+        {{- $_ := set $cert "Key" (index $existingLeaf.data "tls.key" | b64dec) -}}
+        {{- $_ := set $cert "Cert" (index $existingLeaf.data "tls.crt" | b64dec) -}}
+      {{- else -}}
+        {{/* Leaf cert validity governed by storage.mtls.certificateValidityInDays. After expiry, delete the storage-tls-ca Secret and run helm upgrade to regenerate. */}}
+        {{- $generatedCert := genSignedCert $svcDomainName nil (list $svcDomainName $svcDomainNameLocal) $validityDays $existingCA -}}
+        {{- $_ := set $cert "Key" $generatedCert.Key -}}
+        {{- $_ := set $cert "Cert" $generatedCert.Cert -}}
+      {{- end -}}
     {{- else -}}
       {{/* CA and leaf cert validity governed by storage.mtls.certificateValidityInDays. After expiry, delete the storage-tls-ca Secret and run helm upgrade to regenerate. */}}
       {{- $generatedCA := genCA (printf "%s-ca" .Values.storage.name) $validityDays -}}
