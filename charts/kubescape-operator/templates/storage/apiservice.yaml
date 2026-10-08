@@ -12,8 +12,8 @@ metadata:
   name: {{ include "storage.apiServiceName" . }}
   annotations:
     {{- include "kubescape-operator.annotations" (dict "Values" .Values) | nindent 4 }}
-    {{- with .Values.storage.apiService }}{{- with .annotations }}
-    {{- toYaml . | nindent 4 }}
+    {{- with .Values.storage.apiService }}{{- range $k, $v := .annotations }}
+    {{ $k }}: {{ $v | toString | quote }}
     {{- end }}{{- end }}
   labels:
     {{- include "kubescape-operator.labels" (dict "Chart" .Chart "Release" .Release "Values" .Values "app" .Values.storage.name "tier" .Values.global.namespaceTier) | nindent 4 }}

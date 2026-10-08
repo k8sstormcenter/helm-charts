@@ -34,8 +34,8 @@ Create chart name and version as used by the chart label.
 Common annotations
 */}}
 {{- define "kubescape-operator.annotations" -}}
-{{- if .Values.additionalAnnotations }}
-{{ toYaml .Values.additionalAnnotations }}
+{{- range $k, $v := .Values.additionalAnnotations }}
+{{ $k }}: {{ $v | toString | quote }}
 {{- end }}
 {{- end }}
 
