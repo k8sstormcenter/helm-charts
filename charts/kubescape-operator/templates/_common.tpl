@@ -4,17 +4,17 @@
 {{- end }}
 
 {{- define "checksums" -}}
-capabilitiesConfig: {{ include (printf "%s/%s/%s" $.Template.BasePath $.Values.global.configMapsDirectory "components-configmap.yaml") . | replace .Chart.AppVersion "" | sha256sum }}
-cloudConfig: {{ include (printf "%s/%s/%s" $.Template.BasePath $.Values.global.configMapsDirectory "cloudapi-configmap.yaml") . | replace .Chart.AppVersion "" | sha256sum }}
-cloudSecret: {{ include (printf "%s/%s/%s" $.Template.BasePath $.Values.global.configMapsDirectory "cloud-secret.yaml" ) . | replace .Chart.AppVersion "" | sha256sum }}
-matchingRulesConfig: {{ include (printf "%s/%s/%s" $.Template.BasePath $.Values.global.configMapsDirectory "matchingRules-configmap.yaml") . | replace .Chart.AppVersion "" | sha256sum }}
-nodeAgentConfig: {{ include (printf "%s/node-agent/configmap.yaml" $.Template.BasePath) . | replace .Chart.AppVersion "" | sha256sum }}
-operatorConfig: {{ include (printf "%s/operator/configmap.yaml" $.Template.BasePath) . | replace .Chart.AppVersion "" | sha256sum }}
-proxySecret: {{ include (printf "%s/%s/%s" $.Template.BasePath $.Values.global.proxySecretDirectory "proxy-secret.yaml") . | replace .Chart.AppVersion "" | sha256sum }}
-storageConfig: {{ include (printf "%s/storage/configmap.yaml" $.Template.BasePath) . | replace .Chart.AppVersion "" | sha256sum }}
-synchronizerConfig: {{ include (printf "%s/synchronizer/configmap.yaml" $.Template.BasePath) . | replace .Chart.AppVersion "" | sha256sum }}
-admissionCertgenScripts: {{ include (printf "%s/operator/admission-webhook/configmap.yaml" $.Template.BasePath) . | replace .Chart.AppVersion "" | sha256sum }}
-storageCertgenScripts: {{ include (printf "%s/storage/certgen/configmap.yaml" $.Template.BasePath) . | replace .Chart.AppVersion "" | sha256sum }}
+capabilitiesConfig: {{ include (printf "%s/%s/%s" $.Template.BasePath $.Values.global.configMapsDirectory "components-configmap.yaml") . | replace .Chart.AppVersion "" | replace .Chart.Version "" | sha256sum }}
+cloudConfig: {{ include (printf "%s/%s/%s" $.Template.BasePath $.Values.global.configMapsDirectory "cloudapi-configmap.yaml") . | replace .Chart.AppVersion "" | replace .Chart.Version "" | sha256sum }}
+cloudSecret: {{ include (printf "%s/%s/%s" $.Template.BasePath $.Values.global.configMapsDirectory "cloud-secret.yaml" ) . | replace .Chart.AppVersion "" | replace .Chart.Version "" | sha256sum }}
+matchingRulesConfig: {{ include (printf "%s/%s/%s" $.Template.BasePath $.Values.global.configMapsDirectory "matchingRules-configmap.yaml") . | replace .Chart.AppVersion "" | replace .Chart.Version "" | sha256sum }}
+nodeAgentConfig: {{ include (printf "%s/node-agent/configmap.yaml" $.Template.BasePath) . | replace .Chart.AppVersion "" | replace .Chart.Version "" | sha256sum }}
+operatorConfig: {{ include (printf "%s/operator/configmap.yaml" $.Template.BasePath) . | replace .Chart.AppVersion "" | replace .Chart.Version "" | sha256sum }}
+proxySecret: {{ include (printf "%s/%s/%s" $.Template.BasePath $.Values.global.proxySecretDirectory "proxy-secret.yaml") . | replace .Chart.AppVersion "" | replace .Chart.Version "" | sha256sum }}
+storageConfig: {{ include (printf "%s/storage/configmap.yaml" $.Template.BasePath) . | replace .Chart.AppVersion "" | replace .Chart.Version "" | sha256sum }}
+synchronizerConfig: {{ include (printf "%s/synchronizer/configmap.yaml" $.Template.BasePath) . | replace .Chart.AppVersion "" | replace .Chart.Version "" | sha256sum }}
+admissionCertgenScripts: {{ include (printf "%s/operator/admission-webhook/configmap.yaml" $.Template.BasePath) . | replace .Chart.AppVersion "" | replace .Chart.Version "" | sha256sum }}
+storageCertgenScripts: {{ include (printf "%s/storage/certgen/configmap.yaml" $.Template.BasePath) . | replace .Chart.AppVersion "" | replace .Chart.Version "" | sha256sum }}
 {{- end -}}
 
 
