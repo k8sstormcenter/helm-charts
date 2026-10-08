@@ -25,7 +25,7 @@ spec:
             {{- include "kubescape-operator.annotations" (dict "Values" .Values) | nindent 12 }}
             {{- with .Values.grypeOfflineDB.rollout.podAnnotations }}{{- toYaml . | nindent 12 }}{{- end }}
           labels:
-            {{- include "kubescape-operator.labels" (dict "Chart" .Chart "Release" .Release "Values" .Values "app" .Values.grypeOfflineDB.name "tier" .Values.global.namespaceTier) | nindent 12 }}
+            {{- include "kubescape-operator.podLabels" (dict "Chart" .Chart "Release" .Release "Values" .Values "app" .Values.grypeOfflineDB.name "tier" .Values.global.namespaceTier) | nindent 12 }}
             {{- with .Values.grypeOfflineDB.rollout.podLabels }}{{- toYaml . | nindent 12 }}{{- end }}
             armo.tier: "vuln-scan"
             kubescape.io/tier: "core"
