@@ -171,7 +171,7 @@ spec:
                 fieldRef:
                   fieldPath: spec.nodeName
             - name: HELM_RELEASE
-              value: kubescape-operator-{{ .Chart.Version | replace "+" "_" }}
+              value: kubescape-operator
             - name: GOMEMLIMIT
               valueFrom:
                 resourceFieldRef:

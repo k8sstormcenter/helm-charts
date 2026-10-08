@@ -73,7 +73,7 @@ spec:
 {{ toYaml .Values.synchronizer.resources | indent 12 }}
           env:
             - name: HELM_RELEASE
-              value: kubescape-operator-{{ .Chart.Version | replace "+" "_" }}
+              value: kubescape-operator
             - name: GOMEMLIMIT
               valueFrom:
                 resourceFieldRef:
