@@ -44,6 +44,7 @@ data:
         "seccompProfileBackend": "{{ .Values.capabilities.seccompProfileBackend }}",
         "initialDelay": "{{ .Values.nodeAgent.config.learningPeriod }}",
         "updateDataPeriod": "{{ .Values.nodeAgent.config.updatePeriod }}",
+        "hostProfileUpdateDataPeriod": "{{ .Values.nodeAgent.config.hostProfileUpdatePeriod }}",
         "nodeProfileInterval": "{{ .Values.nodeAgent.config.nodeProfileInterval }}",
         "networkStreamingInterval": "{{ .Values.nodeAgent.config.networkStreamingInterval }}",
         "maxSniffingTimePerContainer": "{{ .Values.nodeAgent.config.maxLearningPeriod }}",
