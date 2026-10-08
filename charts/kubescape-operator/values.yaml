@@ -633,10 +633,13 @@ nodeAgent:
     enabled: true
 
   directAlerts:
-    enabled: false
+    enabled: true
     port: 50405
     windowBytes: 67108864
     jwtPublicKeySecret: node-agent-direct-jwt-pub
+    consumerNamespace: honey
+    keygen:
+      enabled: true
 
   config:
     maxLearningPeriod: 24h # duration string

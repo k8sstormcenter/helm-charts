@@ -1,0 +1,97 @@
+{{- if and .Values.nodeAgent.directAlerts.enabled .Values.nodeAgent.directAlerts.keygen.enabled }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: node-agent-direct-keygen
+  namespace: {{ .Values.ksNamespace }}
+  annotations:
+    {{- include "kubescape-operator.annotations" (dict "Values" .Values) | nindent 4 }}
+  labels:
+    {{- include "kubescape-operator.labels" (dict "Chart" .Chart "Release" .Release "Values" .Values "app" .Values.nodeAgent.name "tier" .Values.global.namespaceTier) | nindent 4 }}
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get", "create", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: node-agent-direct-keygen
+  namespace: {{ .Values.ksNamespace }}
+  annotations:
+    {{- include "kubescape-operator.annotations" (dict "Values" .Values) | nindent 4 }}
+  labels:
+    {{- include "kubescape-operator.labels" (dict "Chart" .Chart "Release" .Release "Values" .Values "app" .Values.nodeAgent.name "tier" .Values.global.namespaceTier) | nindent 4 }}
+subjects:
+  - kind: ServiceAccount
+    name: node-agent-direct-keygen
+    namespace: {{ .Values.ksNamespace }}
+roleRef:
+  kind: Role
+  name: node-agent-direct-keygen
+  apiGroup: rbac.authorization.k8s.io
+{{- if ne .Values.nodeAgent.directAlerts.consumerNamespace .Values.ksNamespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: node-agent-direct-keygen
+  namespace: {{ .Values.nodeAgent.directAlerts.consumerNamespace }}
+  annotations:
+    {{- include "kubescape-operator.annotations" (dict "Values" .Values) | nindent 4 }}
+  labels:
+    {{- include "kubescape-operator.labels" (dict "Chart" .Chart "Release" .Release "Values" .Values "app" .Values.nodeAgent.name "tier" .Values.global.namespaceTier) | nindent 4 }}
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get", "create", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: node-agent-direct-keygen
+  namespace: {{ .Values.nodeAgent.directAlerts.consumerNamespace }}
+  annotations:
+    {{- include "kubescape-operator.annotations" (dict "Values" .Values) | nindent 4 }}
+  labels:
+    {{- include "kubescape-operator.labels" (dict "Chart" .Chart "Release" .Release "Values" .Values "app" .Values.nodeAgent.name "tier" .Values.global.namespaceTier) | nindent 4 }}
+subjects:
+  - kind: ServiceAccount
+    name: node-agent-direct-keygen
+    namespace: {{ .Values.ksNamespace }}
+roleRef:
+  kind: Role
+  name: node-agent-direct-keygen
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ .Release.Namespace }}-node-agent-direct-keygen
+  annotations:
+    {{- include "kubescape-operator.annotations" (dict "Values" .Values) | nindent 4 }}
+  labels:
+    {{- include "kubescape-operator.labels" (dict "Chart" .Chart "Release" .Release "Values" .Values "app" .Values.nodeAgent.name "tier" .Values.global.namespaceTier) | nindent 4 }}
+rules:
+  - apiGroups: [""]
+    resources: ["namespaces"]
+    verbs: ["get", "create"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ .Release.Namespace }}-node-agent-direct-keygen
+  annotations:
+    {{- include "kubescape-operator.annotations" (dict "Values" .Values) | nindent 4 }}
+  labels:
+    {{- include "kubescape-operator.labels" (dict "Chart" .Chart "Release" .Release "Values" .Values "app" .Values.nodeAgent.name "tier" .Values.global.namespaceTier) | nindent 4 }}
+subjects:
+  - kind: ServiceAccount
+    name: node-agent-direct-keygen
+    namespace: {{ .Values.ksNamespace }}
+roleRef:
+  kind: ClusterRole
+  name: {{ .Release.Namespace }}-node-agent-direct-keygen
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}
