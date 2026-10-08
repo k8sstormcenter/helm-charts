@@ -92,6 +92,12 @@ Parameters:
   valueFrom:
     fieldRef:
       fieldPath: spec.nodeName
+{{- if .Values.nodeAgent.directAlerts.enabled }}
+- name: NODE_IP
+  valueFrom:
+    fieldRef:
+      fieldPath: status.hostIP
+{{- end }}
 - name: POD_NAME
   valueFrom:
     fieldRef:
