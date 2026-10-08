@@ -637,7 +637,7 @@ nodeAgent:
     port: 50405
     windowBytes: 67108864
     jwtPublicKeySecret: node-agent-direct-jwt-pub
-    consumerNamespace: honey
+    consumerNamespace: ""
     keygen:
       enabled: true
 

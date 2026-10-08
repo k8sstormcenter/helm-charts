@@ -1,4 +1,5 @@
 {{- if and .Values.nodeAgent.directAlerts.enabled .Values.nodeAgent.directAlerts.keygen.enabled }}
+{{- $consumerNs := default .Values.ksNamespace .Values.nodeAgent.directAlerts.consumerNamespace }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -30,13 +31,13 @@ roleRef:
   kind: Role
   name: node-agent-direct-keygen
   apiGroup: rbac.authorization.k8s.io
-{{- if ne .Values.nodeAgent.directAlerts.consumerNamespace .Values.ksNamespace }}
+{{- if ne $consumerNs .Values.ksNamespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: node-agent-direct-keygen
-  namespace: {{ .Values.nodeAgent.directAlerts.consumerNamespace }}
+  namespace: {{ $consumerNs }}
   annotations:
     {{- include "kubescape-operator.annotations" (dict "Values" .Values) | nindent 4 }}
   labels:
@@ -50,7 +51,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: node-agent-direct-keygen
-  namespace: {{ .Values.nodeAgent.directAlerts.consumerNamespace }}
+  namespace: {{ $consumerNs }}
   annotations:
     {{- include "kubescape-operator.annotations" (dict "Values" .Values) | nindent 4 }}
   labels:

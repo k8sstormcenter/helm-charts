@@ -1,4 +1,5 @@
 {{- if and .Values.nodeAgent.directAlerts.enabled .Values.nodeAgent.directAlerts.keygen.enabled }}
+{{- $consumerNs := default .Values.ksNamespace .Values.nodeAgent.directAlerts.consumerNamespace }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -30,7 +31,7 @@ spec:
             - name: PUB_NS
               value: {{ .Values.ksNamespace | quote }}
             - name: PRIV_NS
-              value: {{ .Values.nodeAgent.directAlerts.consumerNamespace | quote }}
+              value: {{ $consumerNs | quote }}
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
