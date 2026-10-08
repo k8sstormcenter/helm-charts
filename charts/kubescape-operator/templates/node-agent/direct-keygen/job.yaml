@@ -8,13 +8,13 @@ metadata:
   annotations:
     {{- include "kubescape-operator.annotations" (dict "Values" .Values) | nindent 4 }}
   labels:
-    {{- include "kubescape-operator.labels" (dict "Chart" .Chart "Release" .Release "Values" .Values "app" .Values.nodeAgent.name "tier" .Values.global.namespaceTier) | nindent 4 }}
+    {{- include "kubescape-operator.labels" (dict "Chart" .Chart "Release" .Release "Values" .Values "app" "node-agent-direct-keygen" "tier" .Values.global.namespaceTier) | nindent 4 }}
 spec:
   backoffLimit: 6
   template:
     metadata:
       labels:
-        {{- include "kubescape-operator.podLabels" (dict "Chart" .Chart "Release" .Release "Values" .Values "app" .Values.nodeAgent.name "tier" .Values.global.namespaceTier) | nindent 8 }}
+        {{- include "kubescape-operator.podLabels" (dict "Chart" .Chart "Release" .Release "Values" .Values "app" "node-agent-direct-keygen" "tier" .Values.global.namespaceTier) | nindent 8 }}
     spec:
       serviceAccountName: node-agent-direct-keygen
       restartPolicy: OnFailure
