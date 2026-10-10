@@ -33,6 +33,8 @@ data:
         "hostMalwareSensorEnabled": {{ eq .Values.nodeAgent.config.hostMalwareSensor "enable" }},
         "hostNetworkSensorEnabled": {{ eq .Values.nodeAgent.config.hostNetworkSensor "enable" }},
         "dnsReportFailures": {{ .Values.nodeAgent.config.dnsReportFailures }},
+        "nestedContainersEnabled": {{ .Values.nodeAgent.config.nestedContainers.enabled }},
+        "nestedContainerRules": {{ .Values.nodeAgent.config.nestedContainers.rules | toJson }},
         "hostSensorEnabled": {{ .Values.nodeAgent.config.hostSensor.enabled }},
         "hostSensorInterval": "{{ .Values.nodeAgent.config.hostSensor.interval }}",
         "nodeProfileServiceEnabled": {{ $gates.nodeProfileServiceEnabled }},

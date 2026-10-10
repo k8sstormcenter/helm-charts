@@ -664,6 +664,9 @@ nodeAgent:
     hostMalwareSensor: disable
     hostNetworkSensor: disable
     dnsReportFailures: false
+    nestedContainers:
+      enabled: false
+      rules: [R0010, R1002, R1004, R1005, R1006, R1015, R1032]
     ruleCooldown:
       ruleCooldownDuration: 1h # duration string
       ruleCooldownAfterCount: 1
