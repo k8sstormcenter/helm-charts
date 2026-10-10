@@ -32,6 +32,7 @@ data:
         "malwareDetectionEnabled": {{ eq .Values.capabilities.malwareDetection "enable" }},
         "hostMalwareSensorEnabled": {{ eq .Values.nodeAgent.config.hostMalwareSensor "enable" }},
         "hostNetworkSensorEnabled": {{ eq .Values.nodeAgent.config.hostNetworkSensor "enable" }},
+        "dnsReportFailures": {{ .Values.nodeAgent.config.dnsReportFailures }},
         "hostSensorEnabled": {{ .Values.nodeAgent.config.hostSensor.enabled }},
         "hostSensorInterval": "{{ .Values.nodeAgent.config.hostSensor.interval }}",
         "nodeProfileServiceEnabled": {{ $gates.nodeProfileServiceEnabled }},
