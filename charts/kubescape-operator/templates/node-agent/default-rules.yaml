@@ -62,7 +62,7 @@ spec:
         message: "'Unexpected file access detected: ' + event.comm + ' with PID ' + string(event.pid) + ' to ' + event.path"
         ruleExpression:
           - eventType: open
-            expression: "!cp.was_path_opened(event.containerId, event.path)"
+            expression: "!cp.was_path_opened(event.containerId, event.path) || (event.flags.exists(f, f in ['O_WRONLY', 'O_RDWR', 'O_CREAT', 'O_TRUNC']) && !cp.was_path_opened_with_flags(event.containerId, event.path, event.flags.filter(f, f in ['O_WRONLY', 'O_RDWR', 'O_CREAT', 'O_TRUNC'])))"
         uniqueId: "event.comm + '_' + event.path"
       id: R0002
       isTriggerAlert: true
