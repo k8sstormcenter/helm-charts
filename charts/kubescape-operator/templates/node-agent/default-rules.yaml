@@ -129,7 +129,7 @@ spec:
         message: "'Unexpected domain communication: ' + event.name + ' from: ' + event.containerName"
         ruleExpression:
           - eventType: dns
-            expression: "!event.name.endsWith('.svc.cluster.local.') && !cp.is_domain_in_egress(event.containerId, event.name)"
+            expression: "event.rcode == 0 && !event.name.endsWith('.svc.cluster.local.') && !cp.is_domain_in_egress(event.containerId, event.name)"
         uniqueId: "event.comm + '_' + event.name"
       id: R0005
       isTriggerAlert: true
