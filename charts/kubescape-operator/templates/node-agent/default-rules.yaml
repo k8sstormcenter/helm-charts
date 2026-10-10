@@ -255,7 +255,7 @@ spec:
         message: "'Unexpected egress network communication to: ' + event.dstAddr + ':' + string(event.dstPort) + ' using ' + event.proto + ' from: ' + event.containerName"
         ruleExpression:
           - eventType: network
-            expression: "event.pktType == 'OUTGOING' && !event.dstAddr.startsWith('127.') && event.dstAddr != '::1' && !cp.was_address_port_protocol_in_egress(event.containerId, event.dstAddr, event.dstPort, event.proto) && !cp.was_selector_in_egress(event.containerId, event.dstNamespace, event.dstPodLabels, event.dstPort, event.proto) && !cp.is_host_peer_egress(event.containerId, event.dstAddr, event.dstPort, event.proto)"
+            expression: "event.pktType == 'OUTGOING' && !event.dstAddr.startsWith('127.') && event.dstAddr != '::1' && !cp.was_address_port_protocol_in_egress(event.containerId, event.dstAddr, event.dstPort, event.proto) && !cp.was_selector_in_egress(event.containerId, event.dstNamespace, event.dstPodLabels, event.dstPort, event.proto) && !cp.is_host_peer_egress(event.containerId, event.dstAddr, event.dstPort, event.proto) && !cp.was_address_resolved_from_egress_domain(event.containerId, event.dstAddr)"
         uniqueId: "event.dstAddr + '_' + string(event.dstPort) + '_' + event.proto"
       id: R0011
       isTriggerAlert: true
@@ -591,7 +591,7 @@ spec:
         message: "'Unexpected io_uring operation detected: (opcode=' + string(event.opcode) + ') flags=0x' + (has(event.flagsRaw) ? string(event.flagsRaw) : '0') + ' in ' + event.comm + '.'"
         ruleExpression:
           - eventType: iouring
-            expression: 'true'
+            expression: "!(string(event.opcode) in ['0', '6', '7', '11', '12', '14', '15', '29'])"
         uniqueId: "string(event.opcode) + '_' + event.comm"
       id: R1030
       isTriggerAlert: true
