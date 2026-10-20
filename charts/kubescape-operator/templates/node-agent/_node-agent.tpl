@@ -201,7 +201,7 @@ Parameters:
 */}}
 {{- define "node-agent.container" -}}
 - name: {{ .Values.nodeAgent.name }}
-  image: "{{ .Values.nodeAgent.image.repository }}:{{ .Values.nodeAgent.image.tag }}"
+  image: "{{ .Values.nodeAgent.image.repository }}:{{ .Values.nodeAgent.image.tag }}{{ if .Values.nodeAgent.image.digest }}@{{ .Values.nodeAgent.image.digest }}{{ end }}"
   imagePullPolicy: {{ .Values.nodeAgent.image.pullPolicy }}
 {{- if .Values.nodeAgent.directAlerts.enabled }}
   ports:

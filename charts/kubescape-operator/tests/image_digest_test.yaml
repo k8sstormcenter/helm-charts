@@ -1,0 +1,68 @@
+suite: Image digest pins
+templates:
+  - node-agent/daemonset.yaml
+  - storage/deployment.yaml
+  - configs/components-configmap.yaml
+  - configs/cloudapi-configmap.yaml
+  - configs/cloud-secret.yaml
+  - configs/matchingRules-configmap.yaml
+  - proxy-support/proxy-secret.yaml
+  - node-agent/configmap.yaml
+  - operator/configmap.yaml
+  - operator/admission-webhook/configmap.yaml
+  - storage/configmap.yaml
+  - storage/certgen/configmap.yaml
+  - synchronizer/configmap.yaml
+capabilities:
+  apiVersions:
+    - batch/v1
+set:
+  unittest: true
+  clusterName: kind-kind
+  capabilities:
+    runtimeObservability: enable
+    runtimeDetection: enable
+    nodeSbomGeneration: enable
+  nodeAgent:
+    image:
+      repository: docker.io/entlein/duckling
+      tag: v0.1.0-rogue89
+      digest: sha256:1e0d0e214035758572f366251ae983a968b1c29811d04f2cecf1eef52b256774
+    sbomScanner:
+      enabled: true
+  storage:
+    image:
+      repository: ghcr.io/k8sstormcenter/storage
+      tag: rc-rogue-presave-3-c97d944b
+      digest: sha256:e9cabbf439ca05b3c2cddf921fef31aa360a79216c6be499938fd90191e201b8
+tests:
+  - it: node-agent image carries tag and digest, the version env carries only the tag, the sidecar never inherits the digest
+    template: node-agent/daemonset.yaml
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[?(@.name == "node-agent")].image
+          value: docker.io/entlein/duckling:v0.1.0-rogue89@sha256:1e0d0e214035758572f366251ae983a968b1c29811d04f2cecf1eef52b256774
+      - contains:
+          path: spec.template.spec.containers[?(@.name == "node-agent")].env
+          content:
+            name: AGENT_VERSION
+            value: v0.1.0-rogue89
+      - notMatchRegex:
+          path: spec.template.spec.containers[?(@.name == "sbom-scanner")].image
+          pattern: "@sha256:"
+  - it: storage image carries tag and digest
+    template: storage/deployment.yaml
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[?(@.name == "apiserver")].image
+          value: ghcr.io/k8sstormcenter/storage:rc-rogue-presave-3-c97d944b@sha256:e9cabbf439ca05b3c2cddf921fef31aa360a79216c6be499938fd90191e201b8
+  - it: without a digest the image is repository and tag only
+    template: storage/deployment.yaml
+    set:
+      storage:
+        image:
+          digest: ""
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[?(@.name == "apiserver")].image
+          value: ghcr.io/k8sstormcenter/storage:rc-rogue-presave-3-c97d944b

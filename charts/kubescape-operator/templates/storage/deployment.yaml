@@ -127,7 +127,7 @@ spec:
       {{- end }}
       containers:
       - name: apiserver
-        image: "{{ .Values.storage.image.repository }}:{{ .Values.storage.image.tag }}"
+        image: "{{ .Values.storage.image.repository }}:{{ .Values.storage.image.tag }}{{ if .Values.storage.image.digest }}@{{ .Values.storage.image.digest }}{{ end }}"
         imagePullPolicy: {{ .Values.storage.image.pullPolicy }}
         securityContext:
           allowPrivilegeEscalation: false
