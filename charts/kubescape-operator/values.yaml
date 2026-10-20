@@ -559,7 +559,7 @@ storage:
   # -- source code: https://github.com/kubescape/storage
   image:
     repository: ghcr.io/k8sstormcenter/storage
-    tag: rc-rogue-presave-3-c97d944b
+    tag: rc-rogue-presave-3-c97d944b@sha256:e9cabbf439ca05b3c2cddf921fef31aa360a79216c6be499938fd90191e201b8
     pullPolicy: IfNotPresent
 
   nodeSelector:
@@ -622,7 +622,7 @@ nodeAgent:
     # imagePullSecrets (and optionally the imagePullSecret generator) with
     # docker.io credentials authorized for entlein/duckling.
     repository: docker.io/entlein/duckling
-    tag: v0.1.0-rogue90
+    tag: v0.1.0-rogue89@sha256:1e0d0e214035758572f366251ae983a968b1c29811d04f2cecf1eef52b256774
     pullPolicy: IfNotPresent
 
   # Root-signed trust policy for signed-bundle (SBoB) overlays: mounts the
