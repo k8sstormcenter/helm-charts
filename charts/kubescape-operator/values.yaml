@@ -675,7 +675,7 @@ nodeAgent:
       ruleCooldownOnProfileFailure: true
       ruleCooldownMaxSize: 20000
     alertDeduplication:
-      bypass: false # DAST / security-testing only: disables ALL sensor-side dedup/cooldown
+      bypass: true # sensor-side dedup and cooldown stay off: suppression belongs at display time, never at the sensor
     scanFailureReporting: false
     suggester:
       enabled: false
