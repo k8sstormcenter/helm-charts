@@ -1,0 +1,102 @@
+suite: Pod template labels
+templates:
+  - kubescape/deployment.yaml
+  - kubevuln/deployment.yaml
+  - synchronizer/deployment.yaml
+  - prometheus-exporter/deployment.yaml
+  - grype-offline-db/deployment.yaml
+  - storage/deployment.yaml
+  - operator/deployment.yaml
+  - node-agent/daemonset.yaml
+  - configs/components-configmap.yaml
+  - configs/cloudapi-configmap.yaml
+  - configs/cloud-secret.yaml
+  - configs/matchingRules-configmap.yaml
+  - proxy-support/proxy-secret.yaml
+  - node-agent/configmap.yaml
+  - operator/configmap.yaml
+  - operator/admission-webhook/configmap.yaml
+  - storage/configmap.yaml
+  - storage/certgen/configmap.yaml
+  - synchronizer/configmap.yaml
+set:
+  unittest: true
+  clusterName: kind-kind
+  server: api.example.test
+  account: 9e6c0c2c-6bd0-4919-815b-55030de7c9a0
+  accessKey: f304d73b-d43c-412b-82ea-e4c859493ce6
+  capabilities:
+    prometheusExporter: enable
+    runtimeObservability: enable
+    runtimeDetection: enable
+    vulnerabilityScan: enable
+    continuousScan: enable
+    configurationScan: enable
+  grypeOfflineDB:
+    enabled: true
+capabilities:
+  apiVersions:
+    - batch/v1
+tests:
+  - it: kubescape pod template carries no chart or app version label
+    template: kubescape/deployment.yaml
+    asserts:
+      - notExists:
+          path: spec.template.metadata.labels["helm.sh/chart"]
+      - notExists:
+          path: spec.template.metadata.labels["app.kubernetes.io/version"]
+      - exists:
+          path: metadata.labels["helm.sh/chart"]
+  - it: kubevuln pod template carries no chart or app version label
+    template: kubevuln/deployment.yaml
+    asserts:
+      - notExists:
+          path: spec.template.metadata.labels["helm.sh/chart"]
+      - notExists:
+          path: spec.template.metadata.labels["app.kubernetes.io/version"]
+  - it: synchronizer pod template carries no chart or app version label
+    template: synchronizer/deployment.yaml
+    asserts:
+      - exists:
+          path: spec.template.metadata.labels["app.kubernetes.io/instance"]
+      - notExists:
+          path: spec.template.metadata.labels["helm.sh/chart"]
+      - notExists:
+          path: spec.template.metadata.labels["app.kubernetes.io/version"]
+  - it: prometheus exporter pod template carries no chart or app version label
+    template: prometheus-exporter/deployment.yaml
+    asserts:
+      - notExists:
+          path: spec.template.metadata.labels["helm.sh/chart"]
+      - notExists:
+          path: spec.template.metadata.labels["app.kubernetes.io/version"]
+  - it: grype offline db pod template carries no chart or app version label
+    template: grype-offline-db/deployment.yaml
+    asserts:
+      - notExists:
+          path: spec.template.metadata.labels["helm.sh/chart"]
+      - notExists:
+          path: spec.template.metadata.labels["app.kubernetes.io/version"]
+  - it: storage pod template carries no chart or app version label
+    template: storage/deployment.yaml
+    asserts:
+      - notExists:
+          path: spec.template.metadata.labels["helm.sh/chart"]
+      - notExists:
+          path: spec.template.metadata.labels["app.kubernetes.io/version"]
+  - it: operator pod template carries no chart or app version label
+    template: operator/deployment.yaml
+    asserts:
+      - notExists:
+          path: spec.template.metadata.labels["helm.sh/chart"]
+      - notExists:
+          path: spec.template.metadata.labels["app.kubernetes.io/version"]
+  - it: node-agent pod template carries no chart or app version label
+    template: node-agent/daemonset.yaml
+    asserts:
+      - notExists:
+          path: spec.template.metadata.labels["helm.sh/chart"]
+      - notExists:
+          path: spec.template.metadata.labels["app.kubernetes.io/version"]
+      - exists:
+          path: spec.template.metadata.labels["app.kubernetes.io/instance"]
