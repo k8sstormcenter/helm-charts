@@ -642,6 +642,7 @@ nodeAgent:
     consumerNamespace: ""
     keygen:
       enabled: true
+      ttlSecondsAfterFinished: 300
 
   config:
     maxLearningPeriod: 24h # duration string

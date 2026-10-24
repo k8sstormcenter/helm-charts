@@ -11,6 +11,7 @@ metadata:
     {{- include "kubescape-operator.labels" (dict "Chart" .Chart "Release" .Release "Values" .Values "app" "node-agent-direct-keygen" "tier" .Values.global.namespaceTier) | nindent 4 }}
 spec:
   backoffLimit: 6
+  ttlSecondsAfterFinished: {{ .Values.nodeAgent.directAlerts.keygen.ttlSecondsAfterFinished }}
   template:
     metadata:
       labels:
