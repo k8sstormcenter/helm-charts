@@ -75,6 +75,8 @@ tests:
       account: acc
       accessKey: key
       capabilities.kubescapeOffline: enable
+      capabilities.vulnerabilityScan: enable
+      capabilities.relevancy: enable
     asserts:
       - equal:
           path: data.clusterData

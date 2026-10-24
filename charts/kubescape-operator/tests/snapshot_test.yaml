@@ -342,6 +342,7 @@ tests:
     set:
       unittest: true
       clusterName: kind-kind
+      capabilities.vulnerabilityScan: enable
       kubevuln.sbomScanner.enabled: true
       global:
         proxySecretFile: foo
