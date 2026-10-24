@@ -4144,6 +4144,7 @@ all capabilities:
               name: scripts
             - emptyDir: {}
               name: tmp
+      ttlSecondsAfterFinished: 300
   66: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: Role
@@ -9541,6 +9542,7 @@ autoscaler mode with sbom sidecar:
               name: scripts
             - emptyDir: {}
               name: tmp
+      ttlSecondsAfterFinished: 300
   40: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: Role
@@ -14156,6 +14158,7 @@ autoscaler mode without sbom sidecar:
               name: scripts
             - emptyDir: {}
               name: tmp
+      ttlSecondsAfterFinished: 300
   40: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: Role
@@ -19786,6 +19789,7 @@ backend-storage enabled allows scanning capabilities:
               name: scripts
             - emptyDir: {}
               name: tmp
+      ttlSecondsAfterFinished: 300
   43: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: Role
@@ -29599,6 +29603,7 @@ default capabilities:
               name: scripts
             - emptyDir: {}
               name: tmp
+      ttlSecondsAfterFinished: 300
   52: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: Role
@@ -34223,6 +34228,7 @@ disable otel:
               name: scripts
             - emptyDir: {}
               name: tmp
+      ttlSecondsAfterFinished: 300
   34: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: Role
@@ -38696,6 +38702,7 @@ minimal capabilities:
               name: scripts
             - emptyDir: {}
               name: tmp
+      ttlSecondsAfterFinished: 300
   34: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: Role
@@ -44972,6 +44979,7 @@ multiple node agents:
               name: scripts
             - emptyDir: {}
               name: tmp
+      ttlSecondsAfterFinished: 300
   67: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: Role
@@ -50632,6 +50640,7 @@ priority class scheduling:
               name: scripts
             - emptyDir: {}
               name: tmp
+      ttlSecondsAfterFinished: 300
   41: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: Role
@@ -55461,6 +55470,7 @@ relevancy only:
               name: scripts
             - emptyDir: {}
               name: tmp
+      ttlSecondsAfterFinished: 300
   41: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: Role
@@ -61287,6 +61297,7 @@ skipPersistence enabled:
               name: scripts
             - emptyDir: {}
               name: tmp
+      ttlSecondsAfterFinished: 300
   66: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: Role
