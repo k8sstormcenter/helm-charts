@@ -665,7 +665,7 @@ nodeAgent:
     malwareScanAllFiles: false
     hostMalwareSensor: disable
     hostNetworkSensor: disable
-    dnsReportFailures: false
+    dnsReportFailures: true
     nestedContainers:
       enabled: false
       rules: [R0010, R1002, R1004, R1005, R1006, R1015, R1032]

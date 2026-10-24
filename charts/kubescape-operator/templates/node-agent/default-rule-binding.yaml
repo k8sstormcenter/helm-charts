@@ -34,6 +34,7 @@ spec:
     - ruleName: "Syscalls Anomalies in container"
     - ruleName: "Linux Capabilities Anomalies in container"
     - ruleName: "DNS Anomalies in container"
+    - ruleName: "DNS exfiltration attempt"
     - ruleName: "Unexpected service account token access"
     - ruleName: "Workload uses Kubernetes API unexpectedly"
     - ruleName: "Process executed from malicious source"

@@ -1,0 +1,62 @@
+suite: node-agent DNS detection defaults
+tests:
+  - it: forwards failed DNS lookups to rule evaluation by default
+    template: node-agent/configmap.yaml
+    capabilities:
+      apiVersions:
+        - batch/v1
+    set:
+      unittest: true
+      clusterName: kind-kind
+      capabilities.runtimeDetection: enable
+    asserts:
+      - matchRegex:
+          path: data["config.json"]
+          pattern: '"dnsReportFailures": true'
+
+  - it: keeps failed DNS lookups out of rule evaluation when disabled
+    template: node-agent/configmap.yaml
+    capabilities:
+      apiVersions:
+        - batch/v1
+    set:
+      unittest: true
+      clusterName: kind-kind
+      capabilities.runtimeDetection: enable
+      nodeAgent.config.dnsReportFailures: false
+    asserts:
+      - matchRegex:
+          path: data["config.json"]
+          pattern: '"dnsReportFailures": false'
+
+  - it: binds the DNS exfiltration rule in the cluster-scoped default binding
+    template: node-agent/default-rule-binding.yaml
+    capabilities:
+      apiVersions:
+        - batch/v1
+    set:
+      unittest: true
+      clusterName: kind-kind
+      alertCRD.installDefault: true
+    asserts:
+      - contains:
+          path: spec.rules
+          content:
+            ruleName: "DNS exfiltration attempt"
+
+  - it: binds the DNS exfiltration rule in the namespaced default binding
+    template: node-agent/default-rule-binding-namespaced.yaml
+    capabilities:
+      apiVersions:
+        - batch/v1
+    set:
+      unittest: true
+      clusterName: kind-kind
+      alertCRD.installDefault: true
+      alertCRD.scopeClustered: false
+      alertCRD.scopeNamespaced: true
+    asserts:
+      - contains:
+          path: spec.rules
+          content:
+            ruleName: "DNS exfiltration attempt"
