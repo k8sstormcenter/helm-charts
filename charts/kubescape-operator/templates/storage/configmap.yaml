@@ -13,6 +13,7 @@ data:
   config.json: |
     {
       "cleanupInterval": "{{ .Values.storage.cleanupInterval }}",
+      "maxSniffingTimePerContainer": "{{ .Values.nodeAgent.config.maxLearningPeriod }}",
       {{- if .Values.storage.disableVirtualCRDs }}
       "disableVirtualCRDs": true,
       {{- else }}
