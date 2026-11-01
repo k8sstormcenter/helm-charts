@@ -4783,6 +4783,40 @@ entries:
     - https://github.com/k8sstormcenter/helm-charts/releases/download/kubescape-operator-1.41.0-duckling12/kubescape-operator-1.41.0-duckling12.tgz
     version: 1.41.0-duckling12
   - apiVersion: v2
+    appVersion: v0.1.0-rogue91-kindleaf-6a8471ff
+    created: "2026-11-01T21:27:28.748121016Z"
+    dependencies:
+    - condition: alertCRD.scopeClustered
+      name: kubescape-alert-crd
+      repository: file://../dependency_chart/clustered-crds
+      version: 0.0.2
+    - condition: alertCRD.scopeNamespaced
+      name: kubescape-alert-crd-ns
+      repository: file://../dependency_chart/namespaced-crds
+      version: 0.0.2
+    description: Kubescape is an E2E Kubernetes cluster security platform
+    digest: e23f9575cc4935c99dcc9d25a72db1058c9d108e3c55a0238ce255175a3dd9fb
+    home: https://kubescape.io/
+    kubeVersion: '>=1.28.0-0'
+    maintainers:
+    - email: ben@armosec.io
+      name: Ben Hirschberg
+      url: https://www.linkedin.com/in/benyamin-ben-hirschberg-66141890
+    - email: bez@armosec.io
+      name: Bezalel Brandwine
+      url: https://www.linkedin.com/in/bezalel-brandwine
+    - email: matthiasb@armosec.io
+      name: Matthias Bertschy
+      url: https://www.linkedin.com/in/matthias-bertschy-b427b815/
+    - email: amirm@armosec.io
+      name: Amir Malka
+      url: https://www.linkedin.com/in/amirmalka
+    name: kubescape-operator
+    type: application
+    urls:
+    - https://github.com/k8sstormcenter/helm-charts/releases/download/kubescape-operator-1.41.0-duckling111/kubescape-operator-1.41.0-duckling111.tgz
+    version: 1.41.0-duckling111
+  - apiVersion: v2
     appVersion: v0.1.0-dnsattr-387c16db
     created: "2026-11-01T05:23:30.634965308Z"
     dependencies:
@@ -10851,4 +10885,4 @@ entries:
     urls:
     - https://github.com/kubescape/helm-charts/releases/download/kubescape-relevancy-1.12.0/kubescape-relevancy-1.12.0.tgz
     version: 1.12.0
-generated: "2026-11-01T05:23:30.635808926Z"
+generated: "2026-11-01T21:27:28.748951232Z"
