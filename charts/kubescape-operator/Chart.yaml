@@ -22,7 +22,7 @@ version: 1.41.0-duckling119
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 
-appVersion: "v0.1.0-dnsattr-capmetrics-04d75b1f"
+appVersion: "v0.1.0-kindleaf-2ac77893"
 
 maintainers:
 - name: Ben Hirschberg
