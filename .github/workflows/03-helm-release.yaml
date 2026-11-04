@@ -6,6 +6,7 @@ on:
       CHARTS_NAME:
         type: choice
         description: What chart do you want to release?
+        default: kubescape-operator
         options:
           - kubescape-operator
       HELM_E2E_TEST:
