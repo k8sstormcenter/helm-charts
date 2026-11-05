@@ -622,7 +622,7 @@ nodeAgent:
     # PRIVATE image: installs require an image pull secret — set
     # imagePullSecrets (and optionally the imagePullSecret generator) with
     # docker.io credentials authorized for entlein/duckling.
-    repository: docker.io/entlein/duckling
+    repository: ghcr.io/k8sstormcenter/node-agent
     tag: v0.1.0-subtract-ecde94cd
     digest: sha256:e7f21b828aa758ed89773f08e6c4fd105b140aab0100411da8dedfe065290a29
     pullPolicy: IfNotPresent
