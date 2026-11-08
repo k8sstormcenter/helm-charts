@@ -95,6 +95,10 @@ Regarding CPU, the more you allocate, the faster Kubescape will scan your cluste
 This is especially true for clusters that have a large amount of resources.
 However, we recommend that you give Kubescape no less than 500m CPU no matter the size of your cluster so it can scan a relatively large amount of resources fast ;)
 
+## Profile binding and alert volume
+
+Only an authored profile bound through the `kubescape.io/user-defined-profile` label governs a container; a learned profile never does. Unbound containers alert on everything they do and raise R1017 until bound. To silence a workload without profiling it, bind an allow-all profile. Details and an example in [docs/profile-binding.md](../../docs/profile-binding.md).
+
 ## Chart support
 
 ### Values
