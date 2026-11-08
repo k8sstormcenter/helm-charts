@@ -42,7 +42,7 @@ Wildcards per surface:
 | capabilities | `"*"` |
 | syscalls | `"*"` |
 | egress, ingress addresses | `ipAddresses: ["*"]` with no `ports` |
-| egress domains | `dnsNames: ["*", "*.*"]` |
+| egress domains | `dnsNames: ["*.*"]`, every name of two or more labels; a lone `*` is refused by admission, add single-label names such as `localhost` literally if needed |
 | egress, ingress pod peers | a `podSelector` with a `matchExpressions` entry that every pod satisfies, a `namespaceSelector` that every namespace satisfies, no `ports` |
 | host peer | `entity: host` |
 
@@ -69,7 +69,7 @@ spec:
   - identifier: any-address
     type: external
     ipAddresses: ["*"]
-    dnsNames: ["*", "*.*"]
+    dnsNames: ["*.*"]
   - identifier: any-pod
     type: internal
     podSelector:
