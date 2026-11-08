@@ -17,8 +17,9 @@ profile.
 ## Consequences
 
 - An unbound container alerts on its first exec, open, syscall, capability,
-  DNS query and network peer, once per rule and distinct subject, and raises
-  the rogue-artefact alert R1017 until it is bound.
+  DNS query and network peer, exactly once per rule and distinct subject;
+  cooldown and deduplication settings do not apply to it. It raises the
+  rogue-artefact alert R1017 until it is bound.
 - Binding an SBoB is therefore not optional for a quiet cluster. It is the
   mechanism that turns a rogue workload into a governed one.
 - Learned profiles are never deleted by the agent and never become the
@@ -117,5 +118,5 @@ logs that an unsigned profile is in force.
 |---|---|
 | `capabilities.runtimeDetection` | must be `enable`; `disable` turns rule evaluation off entirely |
 | `alertCRD.installDefault` | must be `true` for the default rules to be installed |
-| `nodeAgent.config.denyAllAlertsOnOpens` | file-open rules stay silent for unbound containers unless this is true |
+| `nodeAgent.config.denyAllAlertsOnOpens` | defaults to true since the never-govern agent: file-open rules alert for unbound containers; set false for the old quiet |
 | `nodeAgent.config.maxLearningPeriod` | no longer gates judgement; it decides when the learned profile is first offered to the suggester and how long storage waits before it treats a silent series as gone |
