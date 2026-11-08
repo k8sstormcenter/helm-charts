@@ -25,7 +25,7 @@ set:
     nodeSbomGeneration: enable
   nodeAgent:
     image:
-      repository: ghcr.io/k8sstormcenter/node-agent
+      repository: docker.io/entlein/duckling
       tag: v0.1.0-rogue89
       digest: sha256:1e0d0e214035758572f366251ae983a968b1c29811d04f2cecf1eef52b256774
     sbomScanner:
@@ -41,7 +41,7 @@ tests:
     asserts:
       - equal:
           path: spec.template.spec.containers[?(@.name == "node-agent")].image
-          value: ghcr.io/k8sstormcenter/node-agent:v0.1.0-rogue89@sha256:1e0d0e214035758572f366251ae983a968b1c29811d04f2cecf1eef52b256774
+          value: docker.io/entlein/duckling:v0.1.0-rogue89@sha256:1e0d0e214035758572f366251ae983a968b1c29811d04f2cecf1eef52b256774
       - contains:
           path: spec.template.spec.containers[?(@.name == "node-agent")].env
           content:
