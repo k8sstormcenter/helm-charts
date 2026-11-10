@@ -559,8 +559,8 @@ storage:
   # -- source code: https://github.com/kubescape/storage
   image:
     repository: ghcr.io/k8sstormcenter/storage
-    tag: m1-phase0-86ae8eef
-    digest: sha256:40d4b2a356e8315b91babdf7b1ceaaf4e46017193b1560a4b877019264abaca9
+    tag: m1-phase2-a5bde993
+    digest: sha256:8debd0a27a06d24843ff9110b78cf67d9c0428c6d2dc8874f2a9e8c4c0d0d781
     pullPolicy: IfNotPresent
 
   nodeSelector:
@@ -622,9 +622,9 @@ nodeAgent:
     # PRIVATE image: installs require an image pull secret — set
     # imagePullSecrets (and optionally the imagePullSecret generator) with
     # docker.io credentials authorized for entlein/duckling.
-    repository: ghcr.io/k8sstormcenter/node-agent
-    tag: v0.1.0-noadopt-44143d55
-    digest: sha256:0d5ef5aa4525106bb00ce31e53c488e0e1a3e659283e001dad371e8778dc1777
+    repository: docker.io/entlein/duckling
+    tag: v0.1.0-m1-64f2ada0
+    digest: sha256:83a8a63b0d02cc1168d678325dffa52ade7e905b7d7fc8ad8fee2724756af762
     pullPolicy: IfNotPresent
 
   # Root-signed trust policy for signed-bundle (SBoB) overlays: mounts the
