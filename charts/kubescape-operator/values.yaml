@@ -559,8 +559,8 @@ storage:
   # -- source code: https://github.com/kubescape/storage
   image:
     repository: ghcr.io/k8sstormcenter/storage
-    tag: rc-rogue-profilediff-9decdffe
-    digest: sha256:eda1d5c21aa280500b474b8f700050ed7941ea7929d6bc56eae35acde1a7ea3b
+    tag: m1-phase0-86ae8eef
+    digest: sha256:40d4b2a356e8315b91babdf7b1ceaaf4e46017193b1560a4b877019264abaca9
     pullPolicy: IfNotPresent
 
   nodeSelector:
