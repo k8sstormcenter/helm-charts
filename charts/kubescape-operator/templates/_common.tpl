@@ -26,7 +26,6 @@ nodeAgent:
    (eq .Values.capabilities.runtimeObservability "enable")
    (eq .Values.capabilities.networkPolicyService "enable")
    (eq .Values.capabilities.runtimeDetection "enable")
-   (eq .Values.capabilities.malwareDetection "enable")
    (eq .Values.capabilities.seccompProfileService "enable")
   }}
 operator:
@@ -35,8 +34,6 @@ storage:
   enabled: {{ .Values.storage.enabled }}
 cloudSecret:
   name: cloud-secret
-clamAV:
-  enabled: {{ eq .Values.capabilities.malwareDetection "enable" }}
 sbomScanner:
   enabled: {{ and (eq .Values.capabilities.nodeSbomGeneration "enable") .Values.nodeAgent.sbomScanner.enabled }}
 customCaCertificates:

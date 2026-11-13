@@ -28,8 +28,6 @@ data:
         "hostProfileServiceEnabled": {{ $gates.hostProfileServiceEnabled }},
         "directAlerts": {"enabled": {{ .Values.nodeAgent.directAlerts.enabled }}, "port": {{ .Values.nodeAgent.directAlerts.port }}, "jwtPublicKeyPath": "/etc/node-agent-direct/public.pem", "windowBytes": {{ .Values.nodeAgent.directAlerts.windowBytes | int64 }}},
         "networkServiceEnabled": {{ eq .Values.capabilities.networkPolicyService "enable" }},
-        "malwareDetectionEnabled": {{ eq .Values.capabilities.malwareDetection "enable" }},
-        "hostMalwareSensorEnabled": {{ eq .Values.nodeAgent.config.hostMalwareSensor "enable" }},
         "hostNetworkSensorEnabled": {{ eq .Values.nodeAgent.config.hostNetworkSensor "enable" }},
         "dnsReportFailures": {{ .Values.nodeAgent.config.dnsReportFailures }},
         "nestedContainersEnabled": {{ .Values.nodeAgent.config.nestedContainers.enabled }},
@@ -77,17 +75,4 @@ data:
         {{- end }}
         "suggester": {{ $suggester | toJson }}
     }
----
-{{- if $components.clamAV.enabled }}
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ .Values.clamav.name }}
-  namespace: {{ .Values.ksNamespace }}
-data:
-  clamd.conf: |-
-{{ .Files.Get "clamav/clamd.conf" | indent 4 }}
-  freshclam.conf: |-
-{{ .Files.Get "clamav/freshclam.conf" | indent 4 }}
-{{- end}}
 {{- end }}

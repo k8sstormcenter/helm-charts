@@ -31,7 +31,6 @@ tests:
         networkPolicyService: enable
         runtimeDetection: enable
         httpDetection: enable
-        malwareDetection: enable
         nodeSbomGeneration: enable
         scanEmbeddedSBOMs: enable
         seccompProfileService: enable
@@ -105,7 +104,6 @@ tests:
         networkPolicyService: enable
         runtimeDetection: disable
         httpDetection: disable
-        malwareDetection: disable
         autoUpgrading: disable
         admissionController: disable
       clusterName: kind-kind
@@ -316,7 +314,6 @@ tests:
         networkPolicyService: enable
         runtimeDetection: enable
         httpDetection: enable
-        malwareDetection: enable
         nodeSbomGeneration: enable
         scanEmbeddedSBOMs: enable
         seccompProfileService: enable

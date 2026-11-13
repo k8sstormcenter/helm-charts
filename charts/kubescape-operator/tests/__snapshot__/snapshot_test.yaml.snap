@@ -274,10 +274,10 @@ all capabilities:
     data:
       capabilities: |
         {
-          "capabilities":{"admissionController":"enable","autoUpgrading":"enable","hostProfileService":"disable","httpDetection":"enable","malwareDetection":"enable","networkPolicyService":"enable","nodeSbomGeneration":"enable","operator":"enable","runtimeDetection":"enable","runtimeObservability":"enable","scanEmbeddedSBOMs":"enable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"enable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
+          "capabilities":{"admissionController":"enable","autoUpgrading":"enable","hostProfileService":"disable","httpDetection":"enable","networkPolicyService":"enable","nodeSbomGeneration":"enable","operator":"enable","runtimeDetection":"enable","runtimeObservability":"enable","scanEmbeddedSBOMs":"enable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"enable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
           "effectiveCapabilities":{"httpDetection":"enable"},
           "capabilityWarnings":[],
-          "components":{"autoUpdater":{"enabled":true},"clamAV":{"enabled":true},"cloudSecret":{"name":"cloud-secret"},"customCaCertificates":{"name":"custom-ca-certificates"},"nodeAgent":{"enabled":true},"operator":{"enabled":true},"sbomScanner":{"enabled":false},"storage":{"enabled":true}},
+          "components":{"autoUpdater":{"enabled":true},"cloudSecret":{"name":"cloud-secret"},"customCaCertificates":{"name":"custom-ca-certificates"},"nodeAgent":{"enabled":true},"operator":{"enabled":true},"sbomScanner":{"enabled":false},"storage":{"enabled":true}},
           "configurations":{"excludeJsonPaths":[".containers[*].env[?(@.name==\"KUBECONFIG\")]"],"otelUrl":"otelCollector.svc.monitoring:4317","persistence":"enable","priorityClass":{"daemonset":100000100,"enabled":true},"prometheusAnnotations":"disable"} ,
           "serviceScanConfig" :{"enabled":false,"interval":"1h"}
         }
@@ -1005,8 +1005,6 @@ all capabilities:
             "hostProfileServiceEnabled": false,
             "directAlerts": {"enabled": true, "port": 50405, "jwtPublicKeyPath": "/etc/node-agent-direct/public.pem", "windowBytes": 67108864},
             "networkServiceEnabled": true,
-            "malwareDetectionEnabled": true,
-            "hostMalwareSensorEnabled": false,
             "hostNetworkSensorEnabled": false,
             "dnsReportFailures": true,
             "nestedContainersEnabled": false,
@@ -1062,43 +1060,6 @@ all capabilities:
       name: node-agent
       namespace: kubescape
   27: |
-    apiVersion: v1
-    data:
-      clamd.conf: |-
-        Foreground yes
-        User root
-        Debug no
-        LeaveTemporaryFiles no
-        LogTime no
-        LogClean no
-        LogVerbose no
-        LocalSocket /run/clamav/clamd.sock
-        LocalSocketGroup clamav
-        LocalSocketMode 660
-        MaxDirectoryRecursion 20
-        ExtendedDetectionInfo yes
-      freshclam.conf: |-
-        Foreground yes
-        DatabaseDirectory /var/lib/clamav
-        UpdateLogFile /dev/stdout
-        Debug no
-        LogFileMaxSize 0
-        LogTime yes
-        DatabaseOwner root
-        DNSDatabaseInfo current.cvd.clamav.net
-        DatabaseMirror database.clamav.net
-        MaxAttempts 3
-        ScriptedUpdates no
-        CompressLocalDatabase no
-        TestDatabases yes
-        Checks 0
-        ConnectTimeout 30
-        ReceiveTimeout 60
-    kind: ConfigMap
-    metadata:
-      name: clamav
-      namespace: kubescape
-  28: |
     apiVersion: apps/v1
     kind: DaemonSet
     metadata:
@@ -1128,7 +1089,7 @@ all capabilities:
           annotations:
             checksum/cloud-config: c19778db0eebdd857872a86431ff3d7adcdcc185d3ed15460aa6857ea0465af5
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
-            checksum/node-agent-config: c350cb47a997859be4201ab7b22061b40291ac21f3d3d763bc2c69d74773727d
+            checksum/node-agent-config: 7fa7c4f3c7dddfe5c9681c32a7186cefb7796c443fae5ea4c534c6740540d4c8
             checksum/proxy-config: c03b6781aa61faaacfa84a96809236591dde0cbd43a204e05d5ba3044bb9d5d8
           labels:
             app: node-agent
@@ -1154,29 +1115,6 @@ all capabilities:
                           - linux
           automountServiceAccountToken: true
           containers:
-            - image: quay.io/kubescape/klamav:1.3.1-34_alpha
-              imagePullPolicy: IfNotPresent
-              name: clamav
-              resources:
-                limits:
-                  cpu: 300m
-                  memory: 512Mi
-                requests:
-                  cpu: 100m
-                  memory: 256Mi
-              securityContext:
-                capabilities:
-                  add:
-                    - SYS_PTRACE
-                runAsUser: 0
-              volumeMounts:
-                - mountPath: /var/lib/clamav-tmp
-                  name: clamdb
-                - mountPath: /run/clamav
-                  name: clamrun
-                - mountPath: /etc/clamav
-                  name: etc
-                  readOnly: true
             - env:
                 - name: GOMEMLIMIT
                   value: 1120MiB
@@ -1188,8 +1126,6 @@ all capabilities:
                   value: zap
                 - name: OTEL_COLLECTOR_SVC
                   value: otelCollector.svc.monitoring:4317
-                - name: CLAMAV_SOCKET
-                  value: /clamav/clamd.sock
                 - name: HTTPS_PROXY
                   value: https://foo:bar@baz:1234
                 - name: no_proxy
@@ -1408,7 +1344,7 @@ all capabilities:
             - name: custom-ca-certificates
               secret:
                 secretName: custom-ca-certificates
-  29: |
+  28: |
     apiVersion: kubescape.io/v1
     kind: RuntimeRuleAlertBinding
     metadata:
@@ -1465,7 +1401,7 @@ all capabilities:
         - ruleName: Unexpected io_uring Operation Detected
         - ruleName: Kubelet TLS Exec Request Detected
         - ruleName: Signed profile tampered
-  30: |
+  29: |
     apiVersion: kubescape.io/v1
     kind: Rules
     metadata:
@@ -2182,7 +2118,7 @@ all capabilities:
             - context:kubernetes
             - admission
             - exec
-  31: |
+  30: |
     apiVersion: v1
     data:
       direct-keygen.sh: |
@@ -2230,7 +2166,7 @@ all capabilities:
         tier: ks-control-plane
       name: node-agent-direct-keygen
       namespace: kubescape
-  32: |
+  31: |
     apiVersion: batch/v1
     kind: Job
     metadata:
@@ -2306,7 +2242,7 @@ all capabilities:
             - emptyDir: {}
               name: tmp
       ttlSecondsAfterFinished: 300
-  33: |
+  32: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: Role
     metadata:
@@ -2333,7 +2269,7 @@ all capabilities:
           - get
           - create
           - delete
-  34: |
+  33: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
@@ -2359,7 +2295,7 @@ all capabilities:
       - kind: ServiceAccount
         name: node-agent-direct-keygen
         namespace: kubescape
-  35: |
+  34: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
@@ -2384,7 +2320,7 @@ all capabilities:
         verbs:
           - get
           - create
-  36: |
+  35: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -2409,7 +2345,7 @@ all capabilities:
       - kind: ServiceAccount
         name: node-agent-direct-keygen
         namespace: kubescape
-  37: |
+  36: |
     apiVersion: v1
     kind: ServiceAccount
     metadata:
@@ -2427,7 +2363,7 @@ all capabilities:
         tier: ks-control-plane
       name: node-agent-direct-keygen
       namespace: kubescape
-  38: |
+  37: |
     apiVersion: networking.k8s.io/v1
     kind: NetworkPolicy
     metadata:
@@ -2486,7 +2422,7 @@ all capabilities:
           app.kubernetes.io/name: kubescape-operator
       policyTypes:
         - Egress
-  39: |
+  38: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
@@ -2512,7 +2448,7 @@ all capabilities:
       - kind: ServiceAccount
         name: node-agent
         namespace: kubescape
-  40: |
+  39: |
     apiVersion: v1
     kind: Service
     metadata:
@@ -2540,7 +2476,7 @@ all capabilities:
         app.kubernetes.io/component: node-agent
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/name: kubescape-operator
-  41: |
+  40: |
     apiVersion: v1
     kind: ServiceAccount
     metadata:
@@ -2558,7 +2494,7 @@ all capabilities:
         tier: ks-control-plane
       name: node-agent
       namespace: kubescape
-  42: |
+  41: |
     apiVersion: v1
     data:
       tls.crt: bW9jay1jYS1jZXJ0
@@ -2581,7 +2517,7 @@ all capabilities:
       name: kubescape-admission-webhook-ca
       namespace: kubescape
     type: kubernetes.io/tls
-  43: |
+  42: |
     apiVersion: v1
     data:
       ca.crt: bW9jay1jYS1jZXJ0
@@ -2604,7 +2540,7 @@ all capabilities:
       name: kubescape-admission-webhook-tls
       namespace: kubescape
     type: kubernetes.io/tls
-  44: |
+  43: |
     apiVersion: v1
     kind: Service
     metadata:
@@ -2631,7 +2567,7 @@ all capabilities:
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/name: kubescape-operator
       type: ClusterIP
-  45: |
+  44: |
     apiVersion: admissionregistration.k8s.io/v1
     kind: ValidatingWebhookConfiguration
     metadata:
@@ -2688,7 +2624,7 @@ all capabilities:
               - networkpolicies
             scope: '*'
         sideEffects: None
-  46: |
+  45: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
@@ -2809,7 +2745,7 @@ all capabilities:
           - list
           - update
           - patch
-  47: |
+  46: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -2834,7 +2770,7 @@ all capabilities:
       - kind: ServiceAccount
         name: operator
         namespace: kubescape
-  48: |
+  47: |
     apiVersion: v1
     data:
       config.json: |
@@ -2884,7 +2820,7 @@ all capabilities:
         tier: ks-control-plane
       name: operator
       namespace: kubescape
-  49: |
+  48: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -2919,7 +2855,7 @@ all capabilities:
       template:
         metadata:
           annotations:
-            checksum/capabilities-config: 943b37732be581b39b559ebbe06c281c8444b3b86cc711996cd71ff0d6b9e970
+            checksum/capabilities-config: b1aceea9a3ca23b1cae7e9032a8c8aec637617c0b5ffb3c3e7885dfba9873d20
             checksum/cloud-config: c19778db0eebdd857872a86431ff3d7adcdcc185d3ed15460aa6857ea0465af5
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
             checksum/operator-config: c43a824ccd8dd824e7e77a95c7c197514e1a3a2e4d2b7cf77ff4518f2195d697
@@ -3069,7 +3005,7 @@ all capabilities:
                     path: config.json
                 name: operator
               name: config
-  50: |
+  49: |
     apiVersion: networking.k8s.io/v1
     kind: NetworkPolicy
     metadata:
@@ -3137,7 +3073,7 @@ all capabilities:
       policyTypes:
         - Ingress
         - Egress
-  51: |
+  50: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: Role
     metadata:
@@ -3181,7 +3117,7 @@ all capabilities:
           - list
           - patch
           - delete
-  52: |
+  51: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
@@ -3207,7 +3143,7 @@ all capabilities:
       - kind: ServiceAccount
         name: operator
         namespace: kubescape
-  53: |
+  52: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
@@ -3233,7 +3169,7 @@ all capabilities:
       - kind: ServiceAccount
         name: operator
         namespace: kubescape
-  54: |
+  53: |
     apiVersion: v1
     kind: Service
     metadata:
@@ -3261,7 +3197,7 @@ all capabilities:
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/name: kubescape-operator
       type: ClusterIP
-  55: |
+  54: |
     apiVersion: v1
     automountServiceAccountToken: false
     kind: ServiceAccount
@@ -3280,7 +3216,7 @@ all capabilities:
         tier: ks-control-plane
       name: operator
       namespace: kubescape
-  56: |
+  55: |
     apiVersion: v1
     data:
       proxy.crt: foo
@@ -3304,7 +3240,7 @@ all capabilities:
       name: kubescape-proxy-certificate
       namespace: kubescape
     type: Opaque
-  57: |
+  56: |
     apiVersion: apiregistration.k8s.io/v1
     kind: APIService
     metadata:
@@ -3330,7 +3266,7 @@ all capabilities:
         namespace: kubescape
       version: v1beta1
       versionPriority: 15
-  58: |
+  57: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
@@ -3403,7 +3339,7 @@ all capabilities:
           - get
           - watch
           - list
-  59: |
+  58: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -3428,7 +3364,7 @@ all capabilities:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  60: |
+  59: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -3453,7 +3389,7 @@ all capabilities:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  61: |
+  60: |
     apiVersion: v1
     data:
       config.json: |
@@ -3486,7 +3422,7 @@ all capabilities:
         tier: ks-control-plane
       name: storage
       namespace: kubescape
-  62: |
+  61: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -3608,7 +3544,7 @@ all capabilities:
                     path: config.json
                 name: storage
               name: config
-  63: |
+  62: |
     apiVersion: networking.k8s.io/v1
     kind: NetworkPolicy
     metadata:
@@ -3667,7 +3603,7 @@ all capabilities:
       policyTypes:
         - Ingress
         - Egress
-  64: |
+  63: |
     apiVersion: v1
     kind: PersistentVolumeClaim
     metadata:
@@ -3691,7 +3627,7 @@ all capabilities:
       resources:
         requests:
           storage: 5Gi
-  65: |
+  64: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
@@ -3717,7 +3653,7 @@ all capabilities:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  66: |
+  65: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
@@ -3743,7 +3679,7 @@ all capabilities:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  67: |
+  66: |
     apiVersion: apiextensions.k8s.io/v1
     kind: CustomResourceDefinition
     metadata:
@@ -4067,7 +4003,7 @@ all capabilities:
           storage: true
           subresources:
             status: {}
-  68: |
+  67: |
     apiVersion: v1
     kind: Service
     metadata:
@@ -4096,7 +4032,7 @@ all capabilities:
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/name: kubescape-operator
       type: ClusterIP
-  69: |
+  68: |
     apiVersion: v1
     kind: ServiceAccount
     metadata:
@@ -4196,10 +4132,10 @@ autoscaler mode with sbom sidecar:
     data:
       capabilities: |
         {
-          "capabilities":{"admissionController":"enable","autoUpgrading":"disable","hostProfileService":"disable","httpDetection":"enable","malwareDetection":"disable","networkPolicyService":"enable","nodeSbomGeneration":"enable","operator":"enable","runtimeDetection":"enable","runtimeObservability":"enable","scanEmbeddedSBOMs":"disable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"disable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
+          "capabilities":{"admissionController":"enable","autoUpgrading":"disable","hostProfileService":"disable","httpDetection":"enable","networkPolicyService":"enable","nodeSbomGeneration":"enable","operator":"enable","runtimeDetection":"enable","runtimeObservability":"enable","scanEmbeddedSBOMs":"disable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"disable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
           "effectiveCapabilities":{"httpDetection":"enable"},
           "capabilityWarnings":[],
-          "components":{"autoUpdater":{"enabled":false},"clamAV":{"enabled":false},"cloudSecret":{"name":"cloud-secret"},"customCaCertificates":{"name":"custom-ca-certificates"},"nodeAgent":{"enabled":true},"operator":{"enabled":true},"sbomScanner":{"enabled":true},"storage":{"enabled":true}},
+          "components":{"autoUpdater":{"enabled":false},"cloudSecret":{"name":"cloud-secret"},"customCaCertificates":{"name":"custom-ca-certificates"},"nodeAgent":{"enabled":true},"operator":{"enabled":true},"sbomScanner":{"enabled":true},"storage":{"enabled":true}},
           "configurations":{"persistence":"enable","priorityClass":{"daemonset":100000100,"enabled":true},"prometheusAnnotations":"disable"} ,
           "serviceScanConfig" :{"enabled":false,"interval":"1h"}
         }
@@ -4885,8 +4821,6 @@ autoscaler mode with sbom sidecar:
             "hostProfileServiceEnabled": false,
             "directAlerts": {"enabled": true, "port": 50405, "jwtPublicKeyPath": "/etc/node-agent-direct/public.pem", "windowBytes": 67108864},
             "networkServiceEnabled": true,
-            "malwareDetectionEnabled": false,
-            "hostMalwareSensorEnabled": false,
             "hostNetworkSensorEnabled": false,
             "dnsReportFailures": true,
             "nestedContainersEnabled": false,
@@ -5232,7 +5166,7 @@ autoscaler mode with sbom sidecar:
   29: |
     apiVersion: v1
     data:
-      daemonset-template.yaml: "apiVersion: apps/v1\nkind: DaemonSet\nmetadata:\n  name: \"{{ .Name }}\"\n  namespace: kubescape\n  annotations:\n    \n  labels:\n    helm.sh/chart: kubescape-operator-1.41.0-duckling141\n    app.kubernetes.io/name: kubescape-operator\n    app.kubernetes.io/instance: RELEASE-NAME\n    app.kubernetes.io/component: node-agent\n    app.kubernetes.io/version: \"v0.1.0-subtract-ecde94cd\"\n    app.kubernetes.io/managed-by: Helm\n    app.kubernetes.io/part-of: kubescape\n    app: node-agent\n    tier: ks-control-plane\n    kubescape.io/ignore: \"true\"\n    kubescape.io/tier: \"core\"\n    kubescape.io/managed-by: operator-autoscaler\n    kubescape.io/node-group: \"{{ .NodeGroupLabel }}\"\nspec:\n  selector:\n    matchLabels:\n      app.kubernetes.io/name: kubescape-operator\n      app.kubernetes.io/instance: RELEASE-NAME\n      app.kubernetes.io/component: node-agent\n      kubescape.io/node-group: \"{{ .NodeGroupLabel }}\"\n  template:\n    metadata:\n      annotations:\n        \n        checksum/node-agent-config: 7ec939f4528e7925dbbcb263316ffa88a3a26557e2ca3fc33e0f21c41c345706\n        checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80\n        checksum/cloud-config: f315887bdf96fc815b21575acf09f7d9c293c7b9b834ef4ad71a08061659d3dc\n      labels:\n        app.kubernetes.io/name: kubescape-operator\n        app.kubernetes.io/instance: RELEASE-NAME\n        app.kubernetes.io/component: node-agent\n        app.kubernetes.io/managed-by: Helm\n        app.kubernetes.io/part-of: kubescape\n        app: node-agent\n        tier: ks-control-plane\n        kubescape.io/ignore: \"true\"\n        kubescape.io/tier: \"core\"\n        kubescape.io/node-group: \"{{ .NodeGroupLabel }}\"\n    spec:\n      securityContext:\n        appArmorProfile:\n          type: Unconfined\n      priorityClassName: kubescape-critical\n      serviceAccountName: node-agent\n      automountServiceAccountToken: true\n      hostPID: true\n      volumes:\n      \n      - hostPath:\n          path: /\n        name: host\n      - hostPath:\n          path: /var/lib/kubelet\n        name: kubeletdir\n      - hostPath:\n          path: /run\n        name: run\n      - hostPath:\n          path: /var\n        name: var\n      - hostPath:\n          path: /sys/fs/cgroup\n        name: cgroup\n      - hostPath:\n          path: /lib/modules\n        name: modules\n      - hostPath:\n          path: /sys/fs/bpf\n        name: bpffs\n      - hostPath:\n          path: /sys/kernel/debug\n        name: debugfs\n      - hostPath:\n          path: /boot\n        name: boot\n      - emptyDir: null\n        name: data\n      - emptyDir: null\n        name: profiles\n      - hostPath:\n          path: /\n          type: Directory\n        name: host-filesystem\n      - name: direct-jwt\n        secret:\n          secretName: node-agent-direct-jwt-pub\n      - emptyDir: {}\n        name: clamdb\n      - emptyDir: {}\n        name: clamrun\n      - configMap:\n          items:\n          - key: clamd.conf\n            path: clamd.conf\n          - key: freshclam.conf\n            path: freshclam.conf\n          name: clamav\n        name: etc\n      - emptyDir:\n          medium: Memory\n          sizeLimit: 10Mi\n        name: sbom-comm\n      - emptyDir: {}\n        name: sbom-scanner-tmp\n      - name: cloud-secret\n        secret:\n          secretName: cloud-secret\n      - name: ks-cloud-config\n        configMap:\n          name: ks-cloud-config\n          items:\n            - key: \"clusterData\"\n              path: \"clusterData.json\"\n      - name: config\n        configMap:\n          name: node-agent\n          items:\n            - key: \"config.json\"\n              path: \"config.json\"\n      - name: bundle-policy\n        configMap:\n          name: node-agent-bundle-policy\n      containers:\n      \n      - name: sbom-scanner\n        image: \"quay.io/kubescape/node-agent:v0.1.0-m3-0f2f7afe\"\n        imagePullPolicy: IfNotPresent\n        command: \n          - /usr/bin/sbom-scanner\n        securityContext:\n          runAsUser: 0\n          readOnlyRootFilesystem: true\n          capabilities:\n            drop: [\"ALL\"]\n        resources:\n          limits:\n            cpu: 1000m\n            memory: 4Gi\n          requests:\n            cpu: 50m\n            memory: 256Mi\n        env:\n          - name: GOMEMLIMIT\n            value: \"3276MiB\"\n          - name: SOCKET_PATH\n            value: \"/sbom-comm/scanner.sock\"\n          - name: HOST_ROOT\n            value: \"/host\"\n          - name: NODE_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: spec.nodeName\n          - name: POD_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: metadata.name\n          - name: NAMESPACE\n            valueFrom:\n              fieldRef:\n                fieldPath: metadata.namespace\n          - name: CLUSTER_NAME\n            value: \"kind-kind\"\n        volumeMounts:\n          - mountPath: /sbom-comm\n            name: sbom-comm\n          - mountPath: /host\n            name: host\n            readOnly: true\n          - mountPath: /tmp\n            name: sbom-scanner-tmp\n      \n      - name: node-agent\n        image: \"docker.io/entlein/duckling:v0.1.0-m3-0f2f7afe@sha256:125e2882f0322051a53a0f201c640db00f370563c99b8ac9456624f98710670e\"\n        imagePullPolicy: IfNotPresent\n        ports:\n          - name: direct-alerts\n            containerPort: 50405\n            hostPort: 50405\n            protocol: TCP\n        livenessProbe:\n          httpGet:\n            path: /livez\n            port: 7888\n          periodSeconds: 10\n          timeoutSeconds: 5\n          failureThreshold: 3\n        readinessProbe:\n          httpGet:\n            path: /readyz\n            port: 7888\n          periodSeconds: 10\n          timeoutSeconds: 5\n          failureThreshold: 3\n        startupProbe:\n          httpGet:\n            path: /readyz\n            port: 7888\n          periodSeconds: 10\n          failureThreshold: 30\n          timeoutSeconds: 5\n        resources:\n          \n          requests:\n            cpu: \"{{ .Resources.Requests.CPU }}\"\n            memory: \"{{ .Resources.Requests.Memory }}\"\n          limits:\n            cpu: \"{{ .Resources.Limits.CPU }}\"\n            memory: \"{{ .Resources.Limits.Memory }}\"\n        env:\n          \n          - name: GOMEMLIMIT\n            value: \"{{ .GoMemLimit }}\"\n          - name: HOST_ROOT\n            value: \"/host\"\n          - name: KS_LOGGER_LEVEL\n            value: \"info\"\n          - name: KS_LOGGER_NAME\n            value: \"zap\"\n          - name: SBOM_SCANNER_SOCKET\n            value: \"/sbom-comm/scanner.sock\"\n          - name: SCANNER_MEMORY_LIMIT\n            value: \"4Gi\"\n          - name: NODE_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: spec.nodeName\n          - name: POD_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: metadata.name\n          - name: NAMESPACE_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: metadata.namespace\n          - name: KUBELET_ROOT\n            value: \"/var/lib/kubelet\"\n          - name: AGENT_VERSION\n            value: \"v0.1.0-m3-0f2f7afe\"\n          - name: NodeName\n            valueFrom:\n              fieldRef:\n                fieldPath: spec.nodeName\n        securityContext:\n          runAsUser: 0\n          privileged: false\n          capabilities:\n            add:\n              - SYS_ADMIN\n              - SYS_PTRACE\n              - NET_ADMIN\n              - SYSLOG\n              - SYS_RESOURCE\n              - IPC_LOCK\n              - NET_RAW\n          seLinuxOptions:\n            type: \"{{ .SELinuxType }}\"\n        volumeMounts:\n          \n          - name: direct-jwt\n            mountPath: /etc/node-agent-direct\n            readOnly: true\n          - mountPath: /host\n            name: host\n            readOnly: true\n          - mountPath: /var/lib/kubelet\n            name: kubeletdir\n          - mountPath: /run\n            name: run\n          - mountPath: /var\n            name: var\n            readOnly: true\n          - mountPath: /lib/modules\n            name: modules\n            readOnly: true\n          - mountPath: /sys/kernel/debug\n            name: debugfs\n          - mountPath: /sys/fs/cgroup\n            name: cgroup\n            readOnly: true\n          - mountPath: /sys/fs/bpf\n            name: bpffs\n          - mountPath: /data\n            name: data\n          - mountPath: /profiles\n            name: profiles\n          - mountPath: /boot\n            name: boot\n            readOnly: true\n          - mountPath: /clamav\n            name: clamrun\n          - name: sbom-comm\n            mountPath: /sbom-comm\n          - name: cloud-secret\n            mountPath: /etc/credentials\n            readOnly: true\n          - name: ks-cloud-config\n            mountPath: /etc/config/clusterData.json\n            readOnly: true\n            subPath: \"clusterData.json\"\n          - name: config\n            mountPath: /etc/config/config.json\n            readOnly: true\n            subPath: \"config.json\"\n          - name: bundle-policy\n            mountPath: /etc/bundle\n            readOnly: true\n      nodeSelector:\n        kubernetes.io/os: linux\n      {{- if not .IsDefaultGroup }}\n        {{ .NodeGroupLabelKey }}: \"{{ .NodeGroupLabel }}\"\n      {{- end }}\n      affinity:\n      {{- if .IsDefaultGroup }}\n        nodeAffinity:\n          requiredDuringSchedulingIgnoredDuringExecution:\n            nodeSelectorTerms:\n            - matchExpressions:\n              - key: {{ .NodeGroupLabelKey }}\n                operator: DoesNotExist\n      {{- else }}\n      \n        nodeAffinity:\n          requiredDuringSchedulingIgnoredDuringExecution:\n            nodeSelectorTerms:\n            - matchExpressions:\n              - key: kubernetes.io/os\n                operator: In\n                values:\n                - linux\n      {{- end }}\n      tolerations:\n"
+      daemonset-template.yaml: "apiVersion: apps/v1\nkind: DaemonSet\nmetadata:\n  name: \"{{ .Name }}\"\n  namespace: kubescape\n  annotations:\n    \n  labels:\n    helm.sh/chart: kubescape-operator-1.41.0-duckling141\n    app.kubernetes.io/name: kubescape-operator\n    app.kubernetes.io/instance: RELEASE-NAME\n    app.kubernetes.io/component: node-agent\n    app.kubernetes.io/version: \"v0.1.0-subtract-ecde94cd\"\n    app.kubernetes.io/managed-by: Helm\n    app.kubernetes.io/part-of: kubescape\n    app: node-agent\n    tier: ks-control-plane\n    kubescape.io/ignore: \"true\"\n    kubescape.io/tier: \"core\"\n    kubescape.io/managed-by: operator-autoscaler\n    kubescape.io/node-group: \"{{ .NodeGroupLabel }}\"\nspec:\n  selector:\n    matchLabels:\n      app.kubernetes.io/name: kubescape-operator\n      app.kubernetes.io/instance: RELEASE-NAME\n      app.kubernetes.io/component: node-agent\n      kubescape.io/node-group: \"{{ .NodeGroupLabel }}\"\n  template:\n    metadata:\n      annotations:\n        \n        checksum/node-agent-config: 03241e50d655b4e7ebee286a3fbb872c1993ae874e1892dd97843d8972ca646a\n        checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80\n        checksum/cloud-config: f315887bdf96fc815b21575acf09f7d9c293c7b9b834ef4ad71a08061659d3dc\n      labels:\n        app.kubernetes.io/name: kubescape-operator\n        app.kubernetes.io/instance: RELEASE-NAME\n        app.kubernetes.io/component: node-agent\n        app.kubernetes.io/managed-by: Helm\n        app.kubernetes.io/part-of: kubescape\n        app: node-agent\n        tier: ks-control-plane\n        kubescape.io/ignore: \"true\"\n        kubescape.io/tier: \"core\"\n        kubescape.io/node-group: \"{{ .NodeGroupLabel }}\"\n    spec:\n      securityContext:\n        appArmorProfile:\n          type: Unconfined\n      priorityClassName: kubescape-critical\n      serviceAccountName: node-agent\n      automountServiceAccountToken: true\n      hostPID: true\n      volumes:\n      \n      - hostPath:\n          path: /\n        name: host\n      - hostPath:\n          path: /var/lib/kubelet\n        name: kubeletdir\n      - hostPath:\n          path: /run\n        name: run\n      - hostPath:\n          path: /var\n        name: var\n      - hostPath:\n          path: /sys/fs/cgroup\n        name: cgroup\n      - hostPath:\n          path: /lib/modules\n        name: modules\n      - hostPath:\n          path: /sys/fs/bpf\n        name: bpffs\n      - hostPath:\n          path: /sys/kernel/debug\n        name: debugfs\n      - hostPath:\n          path: /boot\n        name: boot\n      - emptyDir: null\n        name: data\n      - emptyDir: null\n        name: profiles\n      - hostPath:\n          path: /\n          type: Directory\n        name: host-filesystem\n      - name: direct-jwt\n        secret:\n          secretName: node-agent-direct-jwt-pub\n      - emptyDir: {}\n        name: clamdb\n      - emptyDir: {}\n        name: clamrun\n      - configMap:\n          items:\n          - key: clamd.conf\n            path: clamd.conf\n          - key: freshclam.conf\n            path: freshclam.conf\n          name: clamav\n        name: etc\n      - emptyDir:\n          medium: Memory\n          sizeLimit: 10Mi\n        name: sbom-comm\n      - emptyDir: {}\n        name: sbom-scanner-tmp\n      - name: cloud-secret\n        secret:\n          secretName: cloud-secret\n      - name: ks-cloud-config\n        configMap:\n          name: ks-cloud-config\n          items:\n            - key: \"clusterData\"\n              path: \"clusterData.json\"\n      - name: config\n        configMap:\n          name: node-agent\n          items:\n            - key: \"config.json\"\n              path: \"config.json\"\n      - name: bundle-policy\n        configMap:\n          name: node-agent-bundle-policy\n      containers:\n      \n      - name: sbom-scanner\n        image: \"quay.io/kubescape/node-agent:v0.1.0-m3-0f2f7afe\"\n        imagePullPolicy: IfNotPresent\n        command: \n          - /usr/bin/sbom-scanner\n        securityContext:\n          runAsUser: 0\n          readOnlyRootFilesystem: true\n          capabilities:\n            drop: [\"ALL\"]\n        resources:\n          limits:\n            cpu: 1000m\n            memory: 4Gi\n          requests:\n            cpu: 50m\n            memory: 256Mi\n        env:\n          - name: GOMEMLIMIT\n            value: \"3276MiB\"\n          - name: SOCKET_PATH\n            value: \"/sbom-comm/scanner.sock\"\n          - name: HOST_ROOT\n            value: \"/host\"\n          - name: NODE_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: spec.nodeName\n          - name: POD_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: metadata.name\n          - name: NAMESPACE\n            valueFrom:\n              fieldRef:\n                fieldPath: metadata.namespace\n          - name: CLUSTER_NAME\n            value: \"kind-kind\"\n        volumeMounts:\n          - mountPath: /sbom-comm\n            name: sbom-comm\n          - mountPath: /host\n            name: host\n            readOnly: true\n          - mountPath: /tmp\n            name: sbom-scanner-tmp\n      \n      - name: node-agent\n        image: \"docker.io/entlein/duckling:v0.1.0-m3-0f2f7afe@sha256:125e2882f0322051a53a0f201c640db00f370563c99b8ac9456624f98710670e\"\n        imagePullPolicy: IfNotPresent\n        ports:\n          - name: direct-alerts\n            containerPort: 50405\n            hostPort: 50405\n            protocol: TCP\n        livenessProbe:\n          httpGet:\n            path: /livez\n            port: 7888\n          periodSeconds: 10\n          timeoutSeconds: 5\n          failureThreshold: 3\n        readinessProbe:\n          httpGet:\n            path: /readyz\n            port: 7888\n          periodSeconds: 10\n          timeoutSeconds: 5\n          failureThreshold: 3\n        startupProbe:\n          httpGet:\n            path: /readyz\n            port: 7888\n          periodSeconds: 10\n          failureThreshold: 30\n          timeoutSeconds: 5\n        resources:\n          \n          requests:\n            cpu: \"{{ .Resources.Requests.CPU }}\"\n            memory: \"{{ .Resources.Requests.Memory }}\"\n          limits:\n            cpu: \"{{ .Resources.Limits.CPU }}\"\n            memory: \"{{ .Resources.Limits.Memory }}\"\n        env:\n          \n          - name: GOMEMLIMIT\n            value: \"{{ .GoMemLimit }}\"\n          - name: HOST_ROOT\n            value: \"/host\"\n          - name: KS_LOGGER_LEVEL\n            value: \"info\"\n          - name: KS_LOGGER_NAME\n            value: \"zap\"\n          - name: SBOM_SCANNER_SOCKET\n            value: \"/sbom-comm/scanner.sock\"\n          - name: SCANNER_MEMORY_LIMIT\n            value: \"4Gi\"\n          - name: NODE_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: spec.nodeName\n          - name: POD_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: metadata.name\n          - name: NAMESPACE_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: metadata.namespace\n          - name: KUBELET_ROOT\n            value: \"/var/lib/kubelet\"\n          - name: AGENT_VERSION\n            value: \"v0.1.0-m3-0f2f7afe\"\n          - name: NodeName\n            valueFrom:\n              fieldRef:\n                fieldPath: spec.nodeName\n        securityContext:\n          runAsUser: 0\n          privileged: false\n          capabilities:\n            add:\n              - SYS_ADMIN\n              - SYS_PTRACE\n              - NET_ADMIN\n              - SYSLOG\n              - SYS_RESOURCE\n              - IPC_LOCK\n              - NET_RAW\n          seLinuxOptions:\n            type: \"{{ .SELinuxType }}\"\n        volumeMounts:\n          \n          - name: direct-jwt\n            mountPath: /etc/node-agent-direct\n            readOnly: true\n          - mountPath: /host\n            name: host\n            readOnly: true\n          - mountPath: /var/lib/kubelet\n            name: kubeletdir\n          - mountPath: /run\n            name: run\n          - mountPath: /var\n            name: var\n            readOnly: true\n          - mountPath: /lib/modules\n            name: modules\n            readOnly: true\n          - mountPath: /sys/kernel/debug\n            name: debugfs\n          - mountPath: /sys/fs/cgroup\n            name: cgroup\n            readOnly: true\n          - mountPath: /sys/fs/bpf\n            name: bpffs\n          - mountPath: /data\n            name: data\n          - mountPath: /profiles\n            name: profiles\n          - mountPath: /boot\n            name: boot\n            readOnly: true\n          - mountPath: /clamav\n            name: clamrun\n          - name: sbom-comm\n            mountPath: /sbom-comm\n          - name: cloud-secret\n            mountPath: /etc/credentials\n            readOnly: true\n          - name: ks-cloud-config\n            mountPath: /etc/config/clusterData.json\n            readOnly: true\n            subPath: \"clusterData.json\"\n          - name: config\n            mountPath: /etc/config/config.json\n            readOnly: true\n            subPath: \"config.json\"\n          - name: bundle-policy\n            mountPath: /etc/bundle\n            readOnly: true\n      nodeSelector:\n        kubernetes.io/os: linux\n      {{- if not .IsDefaultGroup }}\n        {{ .NodeGroupLabelKey }}: \"{{ .NodeGroupLabel }}\"\n      {{- end }}\n      affinity:\n      {{- if .IsDefaultGroup }}\n        nodeAffinity:\n          requiredDuringSchedulingIgnoredDuringExecution:\n            nodeSelectorTerms:\n            - matchExpressions:\n              - key: {{ .NodeGroupLabelKey }}\n                operator: DoesNotExist\n      {{- else }}\n      \n        nodeAffinity:\n          requiredDuringSchedulingIgnoredDuringExecution:\n            nodeSelectorTerms:\n            - matchExpressions:\n              - key: kubernetes.io/os\n                operator: In\n                values:\n                - linux\n      {{- end }}\n      tolerations:\n"
     kind: ConfigMap
     metadata:
       annotations: null
@@ -5611,7 +5545,7 @@ autoscaler mode with sbom sidecar:
       template:
         metadata:
           annotations:
-            checksum/capabilities-config: 9987ca40763b76268a49542c129ad9e88be53aaf7246804a0058201aa2a0b0ed
+            checksum/capabilities-config: efd30c1357d4e65e35bf8715c61dd4c36c0026fe14bd01b238b1e61ee94f7cd6
             checksum/cloud-config: f315887bdf96fc815b21575acf09f7d9c293c7b9b834ef4ad71a08061659d3dc
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
             checksum/operator-config: fbb95770bcfa9ba537802af219eac01d5be63de5f952f3ca254472fb9553c4c2
@@ -6735,10 +6669,10 @@ autoscaler mode without sbom sidecar:
     data:
       capabilities: |
         {
-          "capabilities":{"admissionController":"enable","autoUpgrading":"disable","hostProfileService":"disable","httpDetection":"enable","malwareDetection":"disable","networkPolicyService":"enable","nodeSbomGeneration":"enable","operator":"enable","runtimeDetection":"enable","runtimeObservability":"enable","scanEmbeddedSBOMs":"disable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"disable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
+          "capabilities":{"admissionController":"enable","autoUpgrading":"disable","hostProfileService":"disable","httpDetection":"enable","networkPolicyService":"enable","nodeSbomGeneration":"enable","operator":"enable","runtimeDetection":"enable","runtimeObservability":"enable","scanEmbeddedSBOMs":"disable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"disable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
           "effectiveCapabilities":{"httpDetection":"enable"},
           "capabilityWarnings":[],
-          "components":{"autoUpdater":{"enabled":false},"clamAV":{"enabled":false},"cloudSecret":{"name":"cloud-secret"},"customCaCertificates":{"name":"custom-ca-certificates"},"nodeAgent":{"enabled":true},"operator":{"enabled":true},"sbomScanner":{"enabled":false},"storage":{"enabled":true}},
+          "components":{"autoUpdater":{"enabled":false},"cloudSecret":{"name":"cloud-secret"},"customCaCertificates":{"name":"custom-ca-certificates"},"nodeAgent":{"enabled":true},"operator":{"enabled":true},"sbomScanner":{"enabled":false},"storage":{"enabled":true}},
           "configurations":{"persistence":"enable","priorityClass":{"daemonset":100000100,"enabled":true},"prometheusAnnotations":"disable"} ,
           "serviceScanConfig" :{"enabled":false,"interval":"1h"}
         }
@@ -7424,8 +7358,6 @@ autoscaler mode without sbom sidecar:
             "hostProfileServiceEnabled": false,
             "directAlerts": {"enabled": true, "port": 50405, "jwtPublicKeyPath": "/etc/node-agent-direct/public.pem", "windowBytes": 67108864},
             "networkServiceEnabled": true,
-            "malwareDetectionEnabled": false,
-            "hostMalwareSensorEnabled": false,
             "hostNetworkSensorEnabled": false,
             "dnsReportFailures": true,
             "nestedContainersEnabled": false,
@@ -7771,7 +7703,7 @@ autoscaler mode without sbom sidecar:
   29: |
     apiVersion: v1
     data:
-      daemonset-template.yaml: "apiVersion: apps/v1\nkind: DaemonSet\nmetadata:\n  name: \"{{ .Name }}\"\n  namespace: kubescape\n  annotations:\n    \n  labels:\n    helm.sh/chart: kubescape-operator-1.41.0-duckling141\n    app.kubernetes.io/name: kubescape-operator\n    app.kubernetes.io/instance: RELEASE-NAME\n    app.kubernetes.io/component: node-agent\n    app.kubernetes.io/version: \"v0.1.0-subtract-ecde94cd\"\n    app.kubernetes.io/managed-by: Helm\n    app.kubernetes.io/part-of: kubescape\n    app: node-agent\n    tier: ks-control-plane\n    kubescape.io/ignore: \"true\"\n    kubescape.io/tier: \"core\"\n    kubescape.io/managed-by: operator-autoscaler\n    kubescape.io/node-group: \"{{ .NodeGroupLabel }}\"\nspec:\n  selector:\n    matchLabels:\n      app.kubernetes.io/name: kubescape-operator\n      app.kubernetes.io/instance: RELEASE-NAME\n      app.kubernetes.io/component: node-agent\n      kubescape.io/node-group: \"{{ .NodeGroupLabel }}\"\n  template:\n    metadata:\n      annotations:\n        \n        checksum/node-agent-config: 7ec939f4528e7925dbbcb263316ffa88a3a26557e2ca3fc33e0f21c41c345706\n        checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80\n        checksum/cloud-config: f315887bdf96fc815b21575acf09f7d9c293c7b9b834ef4ad71a08061659d3dc\n      labels:\n        app.kubernetes.io/name: kubescape-operator\n        app.kubernetes.io/instance: RELEASE-NAME\n        app.kubernetes.io/component: node-agent\n        app.kubernetes.io/managed-by: Helm\n        app.kubernetes.io/part-of: kubescape\n        app: node-agent\n        tier: ks-control-plane\n        kubescape.io/ignore: \"true\"\n        kubescape.io/tier: \"core\"\n        kubescape.io/node-group: \"{{ .NodeGroupLabel }}\"\n    spec:\n      securityContext:\n        appArmorProfile:\n          type: Unconfined\n      priorityClassName: kubescape-critical\n      serviceAccountName: node-agent\n      automountServiceAccountToken: true\n      hostPID: true\n      volumes:\n      \n      - hostPath:\n          path: /\n        name: host\n      - hostPath:\n          path: /var/lib/kubelet\n        name: kubeletdir\n      - hostPath:\n          path: /run\n        name: run\n      - hostPath:\n          path: /var\n        name: var\n      - hostPath:\n          path: /sys/fs/cgroup\n        name: cgroup\n      - hostPath:\n          path: /lib/modules\n        name: modules\n      - hostPath:\n          path: /sys/fs/bpf\n        name: bpffs\n      - hostPath:\n          path: /sys/kernel/debug\n        name: debugfs\n      - hostPath:\n          path: /boot\n        name: boot\n      - emptyDir: null\n        name: data\n      - emptyDir: null\n        name: profiles\n      - hostPath:\n          path: /\n          type: Directory\n        name: host-filesystem\n      - name: direct-jwt\n        secret:\n          secretName: node-agent-direct-jwt-pub\n      - emptyDir: {}\n        name: clamdb\n      - emptyDir: {}\n        name: clamrun\n      - configMap:\n          items:\n          - key: clamd.conf\n            path: clamd.conf\n          - key: freshclam.conf\n            path: freshclam.conf\n          name: clamav\n        name: etc\n      - name: cloud-secret\n        secret:\n          secretName: cloud-secret\n      - name: ks-cloud-config\n        configMap:\n          name: ks-cloud-config\n          items:\n            - key: \"clusterData\"\n              path: \"clusterData.json\"\n      - name: config\n        configMap:\n          name: node-agent\n          items:\n            - key: \"config.json\"\n              path: \"config.json\"\n      - name: bundle-policy\n        configMap:\n          name: node-agent-bundle-policy\n      containers:\n      \n      - name: node-agent\n        image: \"docker.io/entlein/duckling:v0.1.0-m3-0f2f7afe@sha256:125e2882f0322051a53a0f201c640db00f370563c99b8ac9456624f98710670e\"\n        imagePullPolicy: IfNotPresent\n        ports:\n          - name: direct-alerts\n            containerPort: 50405\n            hostPort: 50405\n            protocol: TCP\n        livenessProbe:\n          httpGet:\n            path: /livez\n            port: 7888\n          periodSeconds: 10\n          timeoutSeconds: 5\n          failureThreshold: 3\n        readinessProbe:\n          httpGet:\n            path: /readyz\n            port: 7888\n          periodSeconds: 10\n          timeoutSeconds: 5\n          failureThreshold: 3\n        startupProbe:\n          httpGet:\n            path: /readyz\n            port: 7888\n          periodSeconds: 10\n          failureThreshold: 30\n          timeoutSeconds: 5\n        resources:\n          \n          requests:\n            cpu: \"{{ .Resources.Requests.CPU }}\"\n            memory: \"{{ .Resources.Requests.Memory }}\"\n          limits:\n            cpu: \"{{ .Resources.Limits.CPU }}\"\n            memory: \"{{ .Resources.Limits.Memory }}\"\n        env:\n          \n          - name: GOMEMLIMIT\n            value: \"{{ .GoMemLimit }}\"\n          - name: HOST_ROOT\n            value: \"/host\"\n          - name: KS_LOGGER_LEVEL\n            value: \"info\"\n          - name: KS_LOGGER_NAME\n            value: \"zap\"\n          - name: NODE_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: spec.nodeName\n          - name: POD_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: metadata.name\n          - name: NAMESPACE_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: metadata.namespace\n          - name: KUBELET_ROOT\n            value: \"/var/lib/kubelet\"\n          - name: AGENT_VERSION\n            value: \"v0.1.0-m3-0f2f7afe\"\n          - name: NodeName\n            valueFrom:\n              fieldRef:\n                fieldPath: spec.nodeName\n        securityContext:\n          runAsUser: 0\n          privileged: false\n          capabilities:\n            add:\n              - SYS_ADMIN\n              - SYS_PTRACE\n              - NET_ADMIN\n              - SYSLOG\n              - SYS_RESOURCE\n              - IPC_LOCK\n              - NET_RAW\n          seLinuxOptions:\n            type: \"{{ .SELinuxType }}\"\n        volumeMounts:\n          \n          - name: direct-jwt\n            mountPath: /etc/node-agent-direct\n            readOnly: true\n          - mountPath: /host\n            name: host\n            readOnly: true\n          - mountPath: /var/lib/kubelet\n            name: kubeletdir\n          - mountPath: /run\n            name: run\n          - mountPath: /var\n            name: var\n            readOnly: true\n          - mountPath: /lib/modules\n            name: modules\n            readOnly: true\n          - mountPath: /sys/kernel/debug\n            name: debugfs\n          - mountPath: /sys/fs/cgroup\n            name: cgroup\n            readOnly: true\n          - mountPath: /sys/fs/bpf\n            name: bpffs\n          - mountPath: /data\n            name: data\n          - mountPath: /profiles\n            name: profiles\n          - mountPath: /boot\n            name: boot\n            readOnly: true\n          - mountPath: /clamav\n            name: clamrun\n          - name: cloud-secret\n            mountPath: /etc/credentials\n            readOnly: true\n          - name: ks-cloud-config\n            mountPath: /etc/config/clusterData.json\n            readOnly: true\n            subPath: \"clusterData.json\"\n          - name: config\n            mountPath: /etc/config/config.json\n            readOnly: true\n            subPath: \"config.json\"\n          - name: bundle-policy\n            mountPath: /etc/bundle\n            readOnly: true\n      nodeSelector:\n        kubernetes.io/os: linux\n      {{- if not .IsDefaultGroup }}\n        {{ .NodeGroupLabelKey }}: \"{{ .NodeGroupLabel }}\"\n      {{- end }}\n      affinity:\n      {{- if .IsDefaultGroup }}\n        nodeAffinity:\n          requiredDuringSchedulingIgnoredDuringExecution:\n            nodeSelectorTerms:\n            - matchExpressions:\n              - key: {{ .NodeGroupLabelKey }}\n                operator: DoesNotExist\n      {{- else }}\n      \n        nodeAffinity:\n          requiredDuringSchedulingIgnoredDuringExecution:\n            nodeSelectorTerms:\n            - matchExpressions:\n              - key: kubernetes.io/os\n                operator: In\n                values:\n                - linux\n      {{- end }}\n      tolerations:\n"
+      daemonset-template.yaml: "apiVersion: apps/v1\nkind: DaemonSet\nmetadata:\n  name: \"{{ .Name }}\"\n  namespace: kubescape\n  annotations:\n    \n  labels:\n    helm.sh/chart: kubescape-operator-1.41.0-duckling141\n    app.kubernetes.io/name: kubescape-operator\n    app.kubernetes.io/instance: RELEASE-NAME\n    app.kubernetes.io/component: node-agent\n    app.kubernetes.io/version: \"v0.1.0-subtract-ecde94cd\"\n    app.kubernetes.io/managed-by: Helm\n    app.kubernetes.io/part-of: kubescape\n    app: node-agent\n    tier: ks-control-plane\n    kubescape.io/ignore: \"true\"\n    kubescape.io/tier: \"core\"\n    kubescape.io/managed-by: operator-autoscaler\n    kubescape.io/node-group: \"{{ .NodeGroupLabel }}\"\nspec:\n  selector:\n    matchLabels:\n      app.kubernetes.io/name: kubescape-operator\n      app.kubernetes.io/instance: RELEASE-NAME\n      app.kubernetes.io/component: node-agent\n      kubescape.io/node-group: \"{{ .NodeGroupLabel }}\"\n  template:\n    metadata:\n      annotations:\n        \n        checksum/node-agent-config: 03241e50d655b4e7ebee286a3fbb872c1993ae874e1892dd97843d8972ca646a\n        checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80\n        checksum/cloud-config: f315887bdf96fc815b21575acf09f7d9c293c7b9b834ef4ad71a08061659d3dc\n      labels:\n        app.kubernetes.io/name: kubescape-operator\n        app.kubernetes.io/instance: RELEASE-NAME\n        app.kubernetes.io/component: node-agent\n        app.kubernetes.io/managed-by: Helm\n        app.kubernetes.io/part-of: kubescape\n        app: node-agent\n        tier: ks-control-plane\n        kubescape.io/ignore: \"true\"\n        kubescape.io/tier: \"core\"\n        kubescape.io/node-group: \"{{ .NodeGroupLabel }}\"\n    spec:\n      securityContext:\n        appArmorProfile:\n          type: Unconfined\n      priorityClassName: kubescape-critical\n      serviceAccountName: node-agent\n      automountServiceAccountToken: true\n      hostPID: true\n      volumes:\n      \n      - hostPath:\n          path: /\n        name: host\n      - hostPath:\n          path: /var/lib/kubelet\n        name: kubeletdir\n      - hostPath:\n          path: /run\n        name: run\n      - hostPath:\n          path: /var\n        name: var\n      - hostPath:\n          path: /sys/fs/cgroup\n        name: cgroup\n      - hostPath:\n          path: /lib/modules\n        name: modules\n      - hostPath:\n          path: /sys/fs/bpf\n        name: bpffs\n      - hostPath:\n          path: /sys/kernel/debug\n        name: debugfs\n      - hostPath:\n          path: /boot\n        name: boot\n      - emptyDir: null\n        name: data\n      - emptyDir: null\n        name: profiles\n      - hostPath:\n          path: /\n          type: Directory\n        name: host-filesystem\n      - name: direct-jwt\n        secret:\n          secretName: node-agent-direct-jwt-pub\n      - emptyDir: {}\n        name: clamdb\n      - emptyDir: {}\n        name: clamrun\n      - configMap:\n          items:\n          - key: clamd.conf\n            path: clamd.conf\n          - key: freshclam.conf\n            path: freshclam.conf\n          name: clamav\n        name: etc\n      - name: cloud-secret\n        secret:\n          secretName: cloud-secret\n      - name: ks-cloud-config\n        configMap:\n          name: ks-cloud-config\n          items:\n            - key: \"clusterData\"\n              path: \"clusterData.json\"\n      - name: config\n        configMap:\n          name: node-agent\n          items:\n            - key: \"config.json\"\n              path: \"config.json\"\n      - name: bundle-policy\n        configMap:\n          name: node-agent-bundle-policy\n      containers:\n      \n      - name: node-agent\n        image: \"docker.io/entlein/duckling:v0.1.0-m3-0f2f7afe@sha256:125e2882f0322051a53a0f201c640db00f370563c99b8ac9456624f98710670e\"\n        imagePullPolicy: IfNotPresent\n        ports:\n          - name: direct-alerts\n            containerPort: 50405\n            hostPort: 50405\n            protocol: TCP\n        livenessProbe:\n          httpGet:\n            path: /livez\n            port: 7888\n          periodSeconds: 10\n          timeoutSeconds: 5\n          failureThreshold: 3\n        readinessProbe:\n          httpGet:\n            path: /readyz\n            port: 7888\n          periodSeconds: 10\n          timeoutSeconds: 5\n          failureThreshold: 3\n        startupProbe:\n          httpGet:\n            path: /readyz\n            port: 7888\n          periodSeconds: 10\n          failureThreshold: 30\n          timeoutSeconds: 5\n        resources:\n          \n          requests:\n            cpu: \"{{ .Resources.Requests.CPU }}\"\n            memory: \"{{ .Resources.Requests.Memory }}\"\n          limits:\n            cpu: \"{{ .Resources.Limits.CPU }}\"\n            memory: \"{{ .Resources.Limits.Memory }}\"\n        env:\n          \n          - name: GOMEMLIMIT\n            value: \"{{ .GoMemLimit }}\"\n          - name: HOST_ROOT\n            value: \"/host\"\n          - name: KS_LOGGER_LEVEL\n            value: \"info\"\n          - name: KS_LOGGER_NAME\n            value: \"zap\"\n          - name: NODE_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: spec.nodeName\n          - name: POD_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: metadata.name\n          - name: NAMESPACE_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: metadata.namespace\n          - name: KUBELET_ROOT\n            value: \"/var/lib/kubelet\"\n          - name: AGENT_VERSION\n            value: \"v0.1.0-m3-0f2f7afe\"\n          - name: NodeName\n            valueFrom:\n              fieldRef:\n                fieldPath: spec.nodeName\n        securityContext:\n          runAsUser: 0\n          privileged: false\n          capabilities:\n            add:\n              - SYS_ADMIN\n              - SYS_PTRACE\n              - NET_ADMIN\n              - SYSLOG\n              - SYS_RESOURCE\n              - IPC_LOCK\n              - NET_RAW\n          seLinuxOptions:\n            type: \"{{ .SELinuxType }}\"\n        volumeMounts:\n          \n          - name: direct-jwt\n            mountPath: /etc/node-agent-direct\n            readOnly: true\n          - mountPath: /host\n            name: host\n            readOnly: true\n          - mountPath: /var/lib/kubelet\n            name: kubeletdir\n          - mountPath: /run\n            name: run\n          - mountPath: /var\n            name: var\n            readOnly: true\n          - mountPath: /lib/modules\n            name: modules\n            readOnly: true\n          - mountPath: /sys/kernel/debug\n            name: debugfs\n          - mountPath: /sys/fs/cgroup\n            name: cgroup\n            readOnly: true\n          - mountPath: /sys/fs/bpf\n            name: bpffs\n          - mountPath: /data\n            name: data\n          - mountPath: /profiles\n            name: profiles\n          - mountPath: /boot\n            name: boot\n            readOnly: true\n          - mountPath: /clamav\n            name: clamrun\n          - name: cloud-secret\n            mountPath: /etc/credentials\n            readOnly: true\n          - name: ks-cloud-config\n            mountPath: /etc/config/clusterData.json\n            readOnly: true\n            subPath: \"clusterData.json\"\n          - name: config\n            mountPath: /etc/config/config.json\n            readOnly: true\n            subPath: \"config.json\"\n          - name: bundle-policy\n            mountPath: /etc/bundle\n            readOnly: true\n      nodeSelector:\n        kubernetes.io/os: linux\n      {{- if not .IsDefaultGroup }}\n        {{ .NodeGroupLabelKey }}: \"{{ .NodeGroupLabel }}\"\n      {{- end }}\n      affinity:\n      {{- if .IsDefaultGroup }}\n        nodeAffinity:\n          requiredDuringSchedulingIgnoredDuringExecution:\n            nodeSelectorTerms:\n            - matchExpressions:\n              - key: {{ .NodeGroupLabelKey }}\n                operator: DoesNotExist\n      {{- else }}\n      \n        nodeAffinity:\n          requiredDuringSchedulingIgnoredDuringExecution:\n            nodeSelectorTerms:\n            - matchExpressions:\n              - key: kubernetes.io/os\n                operator: In\n                values:\n                - linux\n      {{- end }}\n      tolerations:\n"
     kind: ConfigMap
     metadata:
       annotations: null
@@ -8150,7 +8082,7 @@ autoscaler mode without sbom sidecar:
       template:
         metadata:
           annotations:
-            checksum/capabilities-config: 6d324cd81db5f81cd09eb0b684bb7c5324300ed2ec847731d47b1c9cd6150296
+            checksum/capabilities-config: e151f67f36e0605be7502308b65e82422ec5032e2803b640e767fe5518a2e3f3
             checksum/cloud-config: f315887bdf96fc815b21575acf09f7d9c293c7b9b834ef4ad71a08061659d3dc
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
             checksum/operator-config: 756903143c21aed66ef494a530ee4611754a9373729fd9063ba7a5aa9644de49
@@ -9228,7 +9160,7 @@ cert strategy initContainer, admission disabled, mtls disabled:
       template:
         metadata:
           annotations:
-            checksum/capabilities-config: bdfb804a16ead27192ec1d7c000724b4ef8d073d3a18c84c2b0d75c03d0e5653
+            checksum/capabilities-config: 78b69b008d0dced0711888b5b97a3651b7bed638837b134496d149132ac1147c
             checksum/cloud-config: 8162ea8a2f11a08c26f80a3931e2a648021747023fdaf512456749a45e49b9a9
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
             checksum/operator-config: cd23d39043d711d4710b7c31c571b44149b466fe9b587e4bbf5fbcbd88ea453b
@@ -9530,7 +9462,7 @@ cert strategy initContainer, admission disabled, mtls enabled:
       template:
         metadata:
           annotations:
-            checksum/capabilities-config: bdfb804a16ead27192ec1d7c000724b4ef8d073d3a18c84c2b0d75c03d0e5653
+            checksum/capabilities-config: 78b69b008d0dced0711888b5b97a3651b7bed638837b134496d149132ac1147c
             checksum/cloud-config: 8162ea8a2f11a08c26f80a3931e2a648021747023fdaf512456749a45e49b9a9
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
             checksum/operator-config: cd23d39043d711d4710b7c31c571b44149b466fe9b587e4bbf5fbcbd88ea453b
@@ -10194,7 +10126,7 @@ cert strategy initContainer, admission enabled, mtls disabled:
         metadata:
           annotations:
             checksum/admission-certgen-scripts: 510fc0d01bf9b1eb52f63bd22c861a7298b2bd784058f316ef2c2ad57da24258
-            checksum/capabilities-config: dac4a898a0811fa7cd2ae7f2d3ee9a614980435ea677285d02f77c0544faca48
+            checksum/capabilities-config: c6b3532c849b73061cc2c0d8914a366b66a0174924f7a6bfa70291d28ba4aac6
             checksum/cloud-config: 8162ea8a2f11a08c26f80a3931e2a648021747023fdaf512456749a45e49b9a9
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
             checksum/operator-config: cd23d39043d711d4710b7c31c571b44149b466fe9b587e4bbf5fbcbd88ea453b
@@ -10759,7 +10691,7 @@ cert strategy initContainer, admission enabled, mtls enabled:
         metadata:
           annotations:
             checksum/admission-certgen-scripts: 510fc0d01bf9b1eb52f63bd22c861a7298b2bd784058f316ef2c2ad57da24258
-            checksum/capabilities-config: dac4a898a0811fa7cd2ae7f2d3ee9a614980435ea677285d02f77c0544faca48
+            checksum/capabilities-config: c6b3532c849b73061cc2c0d8914a366b66a0174924f7a6bfa70291d28ba4aac6
             checksum/cloud-config: 8162ea8a2f11a08c26f80a3931e2a648021747023fdaf512456749a45e49b9a9
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
             checksum/operator-config: cd23d39043d711d4710b7c31c571b44149b466fe9b587e4bbf5fbcbd88ea453b
@@ -11314,7 +11246,7 @@ cert strategy template, admission disabled, mtls disabled:
       template:
         metadata:
           annotations:
-            checksum/capabilities-config: bdfb804a16ead27192ec1d7c000724b4ef8d073d3a18c84c2b0d75c03d0e5653
+            checksum/capabilities-config: 78b69b008d0dced0711888b5b97a3651b7bed638837b134496d149132ac1147c
             checksum/cloud-config: 8162ea8a2f11a08c26f80a3931e2a648021747023fdaf512456749a45e49b9a9
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
             checksum/operator-config: cd23d39043d711d4710b7c31c571b44149b466fe9b587e4bbf5fbcbd88ea453b
@@ -11616,7 +11548,7 @@ cert strategy template, admission disabled, mtls enabled:
       template:
         metadata:
           annotations:
-            checksum/capabilities-config: bdfb804a16ead27192ec1d7c000724b4ef8d073d3a18c84c2b0d75c03d0e5653
+            checksum/capabilities-config: 78b69b008d0dced0711888b5b97a3651b7bed638837b134496d149132ac1147c
             checksum/cloud-config: 8162ea8a2f11a08c26f80a3931e2a648021747023fdaf512456749a45e49b9a9
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
             checksum/operator-config: cd23d39043d711d4710b7c31c571b44149b466fe9b587e4bbf5fbcbd88ea453b
@@ -12100,7 +12032,7 @@ cert strategy template, admission enabled, mtls disabled:
       template:
         metadata:
           annotations:
-            checksum/capabilities-config: dac4a898a0811fa7cd2ae7f2d3ee9a614980435ea677285d02f77c0544faca48
+            checksum/capabilities-config: c6b3532c849b73061cc2c0d8914a366b66a0174924f7a6bfa70291d28ba4aac6
             checksum/cloud-config: 8162ea8a2f11a08c26f80a3931e2a648021747023fdaf512456749a45e49b9a9
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
             checksum/operator-config: cd23d39043d711d4710b7c31c571b44149b466fe9b587e4bbf5fbcbd88ea453b
@@ -12541,7 +12473,7 @@ cert strategy template, admission enabled, mtls enabled:
       template:
         metadata:
           annotations:
-            checksum/capabilities-config: dac4a898a0811fa7cd2ae7f2d3ee9a614980435ea677285d02f77c0544faca48
+            checksum/capabilities-config: c6b3532c849b73061cc2c0d8914a366b66a0174924f7a6bfa70291d28ba4aac6
             checksum/cloud-config: 8162ea8a2f11a08c26f80a3931e2a648021747023fdaf512456749a45e49b9a9
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
             checksum/operator-config: cd23d39043d711d4710b7c31c571b44149b466fe9b587e4bbf5fbcbd88ea453b
@@ -12950,10 +12882,10 @@ default capabilities:
     data:
       capabilities: |
         {
-          "capabilities":{"admissionController":"disable","autoUpgrading":"disable","hostProfileService":"disable","httpDetection":"disable","malwareDetection":"disable","networkPolicyService":"enable","nodeSbomGeneration":"enable","operator":"enable","runtimeDetection":"disable","runtimeObservability":"enable","scanEmbeddedSBOMs":"disable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"disable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
+          "capabilities":{"admissionController":"disable","autoUpgrading":"disable","hostProfileService":"disable","httpDetection":"disable","networkPolicyService":"enable","nodeSbomGeneration":"enable","operator":"enable","runtimeDetection":"disable","runtimeObservability":"enable","scanEmbeddedSBOMs":"disable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"disable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
           "effectiveCapabilities":{"httpDetection":"disable"},
           "capabilityWarnings":[],
-          "components":{"autoUpdater":{"enabled":false},"clamAV":{"enabled":false},"cloudSecret":{"name":"cloud-secret"},"customCaCertificates":{"name":"custom-ca-certificates"},"nodeAgent":{"enabled":true},"operator":{"enabled":true},"sbomScanner":{"enabled":false},"storage":{"enabled":true}},
+          "components":{"autoUpdater":{"enabled":false},"cloudSecret":{"name":"cloud-secret"},"customCaCertificates":{"name":"custom-ca-certificates"},"nodeAgent":{"enabled":true},"operator":{"enabled":true},"sbomScanner":{"enabled":false},"storage":{"enabled":true}},
           "configurations":{"persistence":"enable","priorityClass":{"daemonset":100000100,"enabled":true},"prometheusAnnotations":"disable"} ,
           "serviceScanConfig" :{"enabled":false,"interval":"1h"}
         }
@@ -13639,8 +13571,6 @@ default capabilities:
             "hostProfileServiceEnabled": false,
             "directAlerts": {"enabled": true, "port": 50405, "jwtPublicKeyPath": "/etc/node-agent-direct/public.pem", "windowBytes": 67108864},
             "networkServiceEnabled": true,
-            "malwareDetectionEnabled": false,
-            "hostMalwareSensorEnabled": false,
             "hostNetworkSensorEnabled": false,
             "dnsReportFailures": true,
             "nestedContainersEnabled": false,
@@ -13725,7 +13655,7 @@ default capabilities:
           annotations:
             checksum/cloud-config: f315887bdf96fc815b21575acf09f7d9c293c7b9b834ef4ad71a08061659d3dc
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
-            checksum/node-agent-config: 903a6e5480a6742d6d0b9810febc0da332b46f894cce5eeed2003339db6da030
+            checksum/node-agent-config: 70c8ca07638155e08f6a6330459784cd958be352e60218e2f4b5310ebb426bee
             checksum/proxy-config: c03b6781aa61faaacfa84a96809236591dde0cbd43a204e05d5ba3044bb9d5d8
           labels:
             app: node-agent
@@ -15313,7 +15243,7 @@ default capabilities:
       template:
         metadata:
           annotations:
-            checksum/capabilities-config: 07552918e12e309513dca53a67d62b31d5fa4a3bab6b30ef9ea67494ac46ec0b
+            checksum/capabilities-config: d6ee2df46c9733fae948beb3b5cc036869c2fdcbd0c9f2d0fb669d2608a795c9
             checksum/cloud-config: f315887bdf96fc815b21575acf09f7d9c293c7b9b834ef4ad71a08061659d3dc
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
             checksum/operator-config: c207204a2ba2165e4f17b41bcde5e8d5be1ba85ce81d705efe97c524b23b836d
@@ -16557,10 +16487,10 @@ disable otel:
     data:
       capabilities: |
         {
-          "capabilities":{"admissionController":"enable","autoUpgrading":"disable","hostProfileService":"disable","httpDetection":"enable","malwareDetection":"disable","networkPolicyService":"enable","nodeSbomGeneration":"enable","operator":"enable","runtimeDetection":"disable","runtimeObservability":"enable","scanEmbeddedSBOMs":"disable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"disable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
+          "capabilities":{"admissionController":"enable","autoUpgrading":"disable","hostProfileService":"disable","httpDetection":"enable","networkPolicyService":"enable","nodeSbomGeneration":"enable","operator":"enable","runtimeDetection":"disable","runtimeObservability":"enable","scanEmbeddedSBOMs":"disable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"disable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
           "effectiveCapabilities":{"httpDetection":"disable"},
           "capabilityWarnings":["capabilities.httpDetection=enable but capabilities.runtimeDetection is not enabled. HTTP detection runs on top of runtime detection, so httpDetectionEnabled renders as FALSE in the node-agent configmap. To use it, set capabilities.runtimeDetection=enable."],
-          "components":{"autoUpdater":{"enabled":false},"clamAV":{"enabled":false},"cloudSecret":{"name":"cloud-secret"},"customCaCertificates":{"name":"custom-ca-certificates"},"nodeAgent":{"enabled":true},"operator":{"enabled":true},"sbomScanner":{"enabled":false},"storage":{"enabled":true}},
+          "components":{"autoUpdater":{"enabled":false},"cloudSecret":{"name":"cloud-secret"},"customCaCertificates":{"name":"custom-ca-certificates"},"nodeAgent":{"enabled":true},"operator":{"enabled":true},"sbomScanner":{"enabled":false},"storage":{"enabled":true}},
           "configurations":{"persistence":"enable","priorityClass":{"daemonset":100000100,"enabled":true},"prometheusAnnotations":"disable"} ,
           "serviceScanConfig" :{"enabled":false,"interval":"1h"}
         }
@@ -17246,8 +17176,6 @@ disable otel:
             "hostProfileServiceEnabled": false,
             "directAlerts": {"enabled": true, "port": 50405, "jwtPublicKeyPath": "/etc/node-agent-direct/public.pem", "windowBytes": 67108864},
             "networkServiceEnabled": true,
-            "malwareDetectionEnabled": false,
-            "hostMalwareSensorEnabled": false,
             "hostNetworkSensorEnabled": false,
             "dnsReportFailures": true,
             "nestedContainersEnabled": false,
@@ -17332,7 +17260,7 @@ disable otel:
           annotations:
             checksum/cloud-config: f315887bdf96fc815b21575acf09f7d9c293c7b9b834ef4ad71a08061659d3dc
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
-            checksum/node-agent-config: 092e1541cc86d8dd0a7579b27bc4a0143a567c9be8c5eb7b03ff9182c2ab841b
+            checksum/node-agent-config: 601094c64a7ecd73d935c4faab11409d59dec514a49a8c6c65745bef3671ff15
           labels:
             app: node-agent
             app.kubernetes.io/component: node-agent
@@ -18208,7 +18136,7 @@ disable otel:
       template:
         metadata:
           annotations:
-            checksum/capabilities-config: dac4a898a0811fa7cd2ae7f2d3ee9a614980435ea677285d02f77c0544faca48
+            checksum/capabilities-config: c6b3532c849b73061cc2c0d8914a366b66a0174924f7a6bfa70291d28ba4aac6
             checksum/cloud-config: f315887bdf96fc815b21575acf09f7d9c293c7b9b834ef4ad71a08061659d3dc
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
             checksum/operator-config: cd23d39043d711d4710b7c31c571b44149b466fe9b587e4bbf5fbcbd88ea453b
@@ -19316,10 +19244,10 @@ minimal capabilities:
     data:
       capabilities: |
         {
-          "capabilities":{"admissionController":"enable","autoUpgrading":"disable","hostProfileService":"disable","httpDetection":"enable","malwareDetection":"disable","networkPolicyService":"enable","nodeSbomGeneration":"enable","operator":"enable","runtimeDetection":"disable","runtimeObservability":"enable","scanEmbeddedSBOMs":"disable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"disable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
+          "capabilities":{"admissionController":"enable","autoUpgrading":"disable","hostProfileService":"disable","httpDetection":"enable","networkPolicyService":"enable","nodeSbomGeneration":"enable","operator":"enable","runtimeDetection":"disable","runtimeObservability":"enable","scanEmbeddedSBOMs":"disable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"disable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
           "effectiveCapabilities":{"httpDetection":"disable"},
           "capabilityWarnings":["capabilities.httpDetection=enable but capabilities.runtimeDetection is not enabled. HTTP detection runs on top of runtime detection, so httpDetectionEnabled renders as FALSE in the node-agent configmap. To use it, set capabilities.runtimeDetection=enable."],
-          "components":{"autoUpdater":{"enabled":false},"clamAV":{"enabled":false},"cloudSecret":{"name":"cloud-secret"},"customCaCertificates":{"name":"custom-ca-certificates"},"nodeAgent":{"enabled":true},"operator":{"enabled":true},"sbomScanner":{"enabled":false},"storage":{"enabled":true}},
+          "components":{"autoUpdater":{"enabled":false},"cloudSecret":{"name":"cloud-secret"},"customCaCertificates":{"name":"custom-ca-certificates"},"nodeAgent":{"enabled":true},"operator":{"enabled":true},"sbomScanner":{"enabled":false},"storage":{"enabled":true}},
           "configurations":{"otelUrl":"otelCollector.svc.monitoring:4317","persistence":"enable","priorityClass":{"daemonset":100000100,"enabled":true},"prometheusAnnotations":"disable"} ,
           "serviceScanConfig" :{"enabled":false,"interval":"1h"}
         }
@@ -20005,8 +19933,6 @@ minimal capabilities:
             "hostProfileServiceEnabled": false,
             "directAlerts": {"enabled": true, "port": 50405, "jwtPublicKeyPath": "/etc/node-agent-direct/public.pem", "windowBytes": 67108864},
             "networkServiceEnabled": true,
-            "malwareDetectionEnabled": false,
-            "hostMalwareSensorEnabled": false,
             "hostNetworkSensorEnabled": false,
             "dnsReportFailures": true,
             "nestedContainersEnabled": false,
@@ -20090,7 +20016,7 @@ minimal capabilities:
           annotations:
             checksum/cloud-config: f315887bdf96fc815b21575acf09f7d9c293c7b9b834ef4ad71a08061659d3dc
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
-            checksum/node-agent-config: be1f355898d141fe13f69159f0306692c08d10b3c9936070d44fd9d30130e19e
+            checksum/node-agent-config: 304e745202e9f070d8975ac8c8c730a6225ac8b9d313d9affd1344cb1e83721b
           labels:
             app: node-agent
             app.kubernetes.io/component: node-agent
@@ -20968,7 +20894,7 @@ minimal capabilities:
       template:
         metadata:
           annotations:
-            checksum/capabilities-config: b515cc85929363bf132b7ff57e73580560199b7fba771363188db8b8deff493c
+            checksum/capabilities-config: 9913b689e944ad6b16fe4fcaf63e4501a4c1e4205ee9259869e43145e0cdc5e4
             checksum/cloud-config: f315887bdf96fc815b21575acf09f7d9c293c7b9b834ef4ad71a08061659d3dc
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
             checksum/operator-config: 897b9695f85200fafc0400f7ad53a4381fec26c8cebb032423b3dd41d044dc08
@@ -22268,10 +22194,10 @@ multiple node agents:
     data:
       capabilities: |
         {
-          "capabilities":{"admissionController":"enable","autoUpgrading":"enable","hostProfileService":"disable","httpDetection":"enable","malwareDetection":"enable","networkPolicyService":"enable","nodeSbomGeneration":"enable","operator":"enable","runtimeDetection":"enable","runtimeObservability":"enable","scanEmbeddedSBOMs":"enable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"enable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
+          "capabilities":{"admissionController":"enable","autoUpgrading":"enable","hostProfileService":"disable","httpDetection":"enable","networkPolicyService":"enable","nodeSbomGeneration":"enable","operator":"enable","runtimeDetection":"enable","runtimeObservability":"enable","scanEmbeddedSBOMs":"enable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"enable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
           "effectiveCapabilities":{"httpDetection":"enable"},
           "capabilityWarnings":[],
-          "components":{"autoUpdater":{"enabled":true},"clamAV":{"enabled":true},"cloudSecret":{"name":"cloud-secret"},"customCaCertificates":{"name":"custom-ca-certificates"},"nodeAgent":{"enabled":true},"operator":{"enabled":true},"sbomScanner":{"enabled":false},"storage":{"enabled":true}},
+          "components":{"autoUpdater":{"enabled":true},"cloudSecret":{"name":"cloud-secret"},"customCaCertificates":{"name":"custom-ca-certificates"},"nodeAgent":{"enabled":true},"operator":{"enabled":true},"sbomScanner":{"enabled":false},"storage":{"enabled":true}},
           "configurations":{"excludeJsonPaths":[".containers[*].env[?(@.name==\"KUBECONFIG\")]"],"otelUrl":"otelCollector.svc.monitoring:4317","persistence":"enable","priorityClass":{"daemonset":100000100,"enabled":true},"prometheusAnnotations":"disable"} ,
           "serviceScanConfig" :{"enabled":false,"interval":"1h"}
         }
@@ -22999,8 +22925,6 @@ multiple node agents:
             "hostProfileServiceEnabled": false,
             "directAlerts": {"enabled": true, "port": 50405, "jwtPublicKeyPath": "/etc/node-agent-direct/public.pem", "windowBytes": 67108864},
             "networkServiceEnabled": true,
-            "malwareDetectionEnabled": true,
-            "hostMalwareSensorEnabled": false,
             "hostNetworkSensorEnabled": false,
             "dnsReportFailures": true,
             "nestedContainersEnabled": false,
@@ -23056,43 +22980,6 @@ multiple node agents:
       name: node-agent
       namespace: kubescape
   27: |
-    apiVersion: v1
-    data:
-      clamd.conf: |-
-        Foreground yes
-        User root
-        Debug no
-        LeaveTemporaryFiles no
-        LogTime no
-        LogClean no
-        LogVerbose no
-        LocalSocket /run/clamav/clamd.sock
-        LocalSocketGroup clamav
-        LocalSocketMode 660
-        MaxDirectoryRecursion 20
-        ExtendedDetectionInfo yes
-      freshclam.conf: |-
-        Foreground yes
-        DatabaseDirectory /var/lib/clamav
-        UpdateLogFile /dev/stdout
-        Debug no
-        LogFileMaxSize 0
-        LogTime yes
-        DatabaseOwner root
-        DNSDatabaseInfo current.cvd.clamav.net
-        DatabaseMirror database.clamav.net
-        MaxAttempts 3
-        ScriptedUpdates no
-        CompressLocalDatabase no
-        TestDatabases yes
-        Checks 0
-        ConnectTimeout 30
-        ReceiveTimeout 60
-    kind: ConfigMap
-    metadata:
-      name: clamav
-      namespace: kubescape
-  28: |
     apiVersion: apps/v1
     kind: DaemonSet
     metadata:
@@ -23122,7 +23009,7 @@ multiple node agents:
           annotations:
             checksum/cloud-config: c19778db0eebdd857872a86431ff3d7adcdcc185d3ed15460aa6857ea0465af5
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
-            checksum/node-agent-config: c350cb47a997859be4201ab7b22061b40291ac21f3d3d763bc2c69d74773727d
+            checksum/node-agent-config: 7fa7c4f3c7dddfe5c9681c32a7186cefb7796c443fae5ea4c534c6740540d4c8
             checksum/proxy-config: c03b6781aa61faaacfa84a96809236591dde0cbd43a204e05d5ba3044bb9d5d8
           labels:
             app: node-agent
@@ -23148,29 +23035,6 @@ multiple node agents:
                           - linux
           automountServiceAccountToken: true
           containers:
-            - image: quay.io/kubescape/klamav:1.3.1-34_alpha
-              imagePullPolicy: IfNotPresent
-              name: clamav
-              resources:
-                limits:
-                  cpu: 300m
-                  memory: 512Mi
-                requests:
-                  cpu: 100m
-                  memory: 256Mi
-              securityContext:
-                capabilities:
-                  add:
-                    - SYS_PTRACE
-                runAsUser: 0
-              volumeMounts:
-                - mountPath: /var/lib/clamav-tmp
-                  name: clamdb
-                - mountPath: /run/clamav
-                  name: clamrun
-                - mountPath: /etc/clamav
-                  name: etc
-                  readOnly: true
             - env:
                 - name: GOMEMLIMIT
                   value: 409MiB
@@ -23182,8 +23046,6 @@ multiple node agents:
                   value: zap
                 - name: OTEL_COLLECTOR_SVC
                   value: otelCollector.svc.monitoring:4317
-                - name: CLAMAV_SOCKET
-                  value: /clamav/clamd.sock
                 - name: HTTPS_PROXY
                   value: https://foo:bar@baz:1234
                 - name: no_proxy
@@ -23403,7 +23265,7 @@ multiple node agents:
             - name: custom-ca-certificates
               secret:
                 secretName: custom-ca-certificates
-  29: |
+  28: |
     apiVersion: apps/v1
     kind: DaemonSet
     metadata:
@@ -23433,7 +23295,7 @@ multiple node agents:
           annotations:
             checksum/cloud-config: c19778db0eebdd857872a86431ff3d7adcdcc185d3ed15460aa6857ea0465af5
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
-            checksum/node-agent-config: c350cb47a997859be4201ab7b22061b40291ac21f3d3d763bc2c69d74773727d
+            checksum/node-agent-config: 7fa7c4f3c7dddfe5c9681c32a7186cefb7796c443fae5ea4c534c6740540d4c8
             checksum/proxy-config: c03b6781aa61faaacfa84a96809236591dde0cbd43a204e05d5ba3044bb9d5d8
           labels:
             app: node-agent
@@ -23459,29 +23321,6 @@ multiple node agents:
                           - linux
           automountServiceAccountToken: true
           containers:
-            - image: quay.io/kubescape/klamav:1.3.1-34_alpha
-              imagePullPolicy: IfNotPresent
-              name: clamav
-              resources:
-                limits:
-                  cpu: 300m
-                  memory: 512Mi
-                requests:
-                  cpu: 100m
-                  memory: 256Mi
-              securityContext:
-                capabilities:
-                  add:
-                    - SYS_PTRACE
-                runAsUser: 0
-              volumeMounts:
-                - mountPath: /var/lib/clamav-tmp
-                  name: clamdb
-                - mountPath: /run/clamav
-                  name: clamrun
-                - mountPath: /etc/clamav
-                  name: etc
-                  readOnly: true
             - env:
                 - name: GOMEMLIMIT
                   value: 409MiB
@@ -23493,8 +23332,6 @@ multiple node agents:
                   value: zap
                 - name: OTEL_COLLECTOR_SVC
                   value: otelCollector.svc.monitoring:4317
-                - name: CLAMAV_SOCKET
-                  value: /clamav/clamd.sock
                 - name: HTTPS_PROXY
                   value: https://foo:bar@baz:1234
                 - name: no_proxy
@@ -23714,7 +23551,7 @@ multiple node agents:
             - name: custom-ca-certificates
               secret:
                 secretName: custom-ca-certificates
-  30: |
+  29: |
     apiVersion: kubescape.io/v1
     kind: RuntimeRuleAlertBinding
     metadata:
@@ -23771,7 +23608,7 @@ multiple node agents:
         - ruleName: Unexpected io_uring Operation Detected
         - ruleName: Kubelet TLS Exec Request Detected
         - ruleName: Signed profile tampered
-  31: |
+  30: |
     apiVersion: kubescape.io/v1
     kind: Rules
     metadata:
@@ -24488,7 +24325,7 @@ multiple node agents:
             - context:kubernetes
             - admission
             - exec
-  32: |
+  31: |
     apiVersion: v1
     data:
       direct-keygen.sh: |
@@ -24536,7 +24373,7 @@ multiple node agents:
         tier: ks-control-plane
       name: node-agent-direct-keygen
       namespace: kubescape
-  33: |
+  32: |
     apiVersion: batch/v1
     kind: Job
     metadata:
@@ -24612,7 +24449,7 @@ multiple node agents:
             - emptyDir: {}
               name: tmp
       ttlSecondsAfterFinished: 300
-  34: |
+  33: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: Role
     metadata:
@@ -24639,7 +24476,7 @@ multiple node agents:
           - get
           - create
           - delete
-  35: |
+  34: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
@@ -24665,7 +24502,7 @@ multiple node agents:
       - kind: ServiceAccount
         name: node-agent-direct-keygen
         namespace: kubescape
-  36: |
+  35: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
@@ -24690,7 +24527,7 @@ multiple node agents:
         verbs:
           - get
           - create
-  37: |
+  36: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -24715,7 +24552,7 @@ multiple node agents:
       - kind: ServiceAccount
         name: node-agent-direct-keygen
         namespace: kubescape
-  38: |
+  37: |
     apiVersion: v1
     kind: ServiceAccount
     metadata:
@@ -24733,7 +24570,7 @@ multiple node agents:
         tier: ks-control-plane
       name: node-agent-direct-keygen
       namespace: kubescape
-  39: |
+  38: |
     apiVersion: networking.k8s.io/v1
     kind: NetworkPolicy
     metadata:
@@ -24792,7 +24629,7 @@ multiple node agents:
           app.kubernetes.io/name: kubescape-operator
       policyTypes:
         - Egress
-  40: |
+  39: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
@@ -24818,7 +24655,7 @@ multiple node agents:
       - kind: ServiceAccount
         name: node-agent
         namespace: kubescape
-  41: |
+  40: |
     apiVersion: v1
     kind: Service
     metadata:
@@ -24846,7 +24683,7 @@ multiple node agents:
         app.kubernetes.io/component: node-agent
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/name: kubescape-operator
-  42: |
+  41: |
     apiVersion: v1
     kind: ServiceAccount
     metadata:
@@ -24864,7 +24701,7 @@ multiple node agents:
         tier: ks-control-plane
       name: node-agent
       namespace: kubescape
-  43: |
+  42: |
     apiVersion: v1
     data:
       tls.crt: bW9jay1jYS1jZXJ0
@@ -24887,7 +24724,7 @@ multiple node agents:
       name: kubescape-admission-webhook-ca
       namespace: kubescape
     type: kubernetes.io/tls
-  44: |
+  43: |
     apiVersion: v1
     data:
       ca.crt: bW9jay1jYS1jZXJ0
@@ -24910,7 +24747,7 @@ multiple node agents:
       name: kubescape-admission-webhook-tls
       namespace: kubescape
     type: kubernetes.io/tls
-  45: |
+  44: |
     apiVersion: v1
     kind: Service
     metadata:
@@ -24937,7 +24774,7 @@ multiple node agents:
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/name: kubescape-operator
       type: ClusterIP
-  46: |
+  45: |
     apiVersion: admissionregistration.k8s.io/v1
     kind: ValidatingWebhookConfiguration
     metadata:
@@ -24994,7 +24831,7 @@ multiple node agents:
               - networkpolicies
             scope: '*'
         sideEffects: None
-  47: |
+  46: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
@@ -25115,7 +24952,7 @@ multiple node agents:
           - list
           - update
           - patch
-  48: |
+  47: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -25140,7 +24977,7 @@ multiple node agents:
       - kind: ServiceAccount
         name: operator
         namespace: kubescape
-  49: |
+  48: |
     apiVersion: v1
     data:
       config.json: |
@@ -25190,7 +25027,7 @@ multiple node agents:
         tier: ks-control-plane
       name: operator
       namespace: kubescape
-  50: |
+  49: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -25225,7 +25062,7 @@ multiple node agents:
       template:
         metadata:
           annotations:
-            checksum/capabilities-config: 943b37732be581b39b559ebbe06c281c8444b3b86cc711996cd71ff0d6b9e970
+            checksum/capabilities-config: b1aceea9a3ca23b1cae7e9032a8c8aec637617c0b5ffb3c3e7885dfba9873d20
             checksum/cloud-config: c19778db0eebdd857872a86431ff3d7adcdcc185d3ed15460aa6857ea0465af5
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
             checksum/operator-config: c43a824ccd8dd824e7e77a95c7c197514e1a3a2e4d2b7cf77ff4518f2195d697
@@ -25375,7 +25212,7 @@ multiple node agents:
                     path: config.json
                 name: operator
               name: config
-  51: |
+  50: |
     apiVersion: networking.k8s.io/v1
     kind: NetworkPolicy
     metadata:
@@ -25443,7 +25280,7 @@ multiple node agents:
       policyTypes:
         - Ingress
         - Egress
-  52: |
+  51: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: Role
     metadata:
@@ -25487,7 +25324,7 @@ multiple node agents:
           - list
           - patch
           - delete
-  53: |
+  52: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
@@ -25513,7 +25350,7 @@ multiple node agents:
       - kind: ServiceAccount
         name: operator
         namespace: kubescape
-  54: |
+  53: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
@@ -25539,7 +25376,7 @@ multiple node agents:
       - kind: ServiceAccount
         name: operator
         namespace: kubescape
-  55: |
+  54: |
     apiVersion: v1
     kind: Service
     metadata:
@@ -25567,7 +25404,7 @@ multiple node agents:
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/name: kubescape-operator
       type: ClusterIP
-  56: |
+  55: |
     apiVersion: v1
     automountServiceAccountToken: false
     kind: ServiceAccount
@@ -25586,7 +25423,7 @@ multiple node agents:
         tier: ks-control-plane
       name: operator
       namespace: kubescape
-  57: |
+  56: |
     apiVersion: v1
     data:
       proxy.crt: foo
@@ -25610,7 +25447,7 @@ multiple node agents:
       name: kubescape-proxy-certificate
       namespace: kubescape
     type: Opaque
-  58: |
+  57: |
     apiVersion: apiregistration.k8s.io/v1
     kind: APIService
     metadata:
@@ -25636,7 +25473,7 @@ multiple node agents:
         namespace: kubescape
       version: v1beta1
       versionPriority: 15
-  59: |
+  58: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
@@ -25709,7 +25546,7 @@ multiple node agents:
           - get
           - watch
           - list
-  60: |
+  59: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -25734,7 +25571,7 @@ multiple node agents:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  61: |
+  60: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -25759,7 +25596,7 @@ multiple node agents:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  62: |
+  61: |
     apiVersion: v1
     data:
       config.json: |
@@ -25792,7 +25629,7 @@ multiple node agents:
         tier: ks-control-plane
       name: storage
       namespace: kubescape
-  63: |
+  62: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -25914,7 +25751,7 @@ multiple node agents:
                     path: config.json
                 name: storage
               name: config
-  64: |
+  63: |
     apiVersion: networking.k8s.io/v1
     kind: NetworkPolicy
     metadata:
@@ -25973,7 +25810,7 @@ multiple node agents:
       policyTypes:
         - Ingress
         - Egress
-  65: |
+  64: |
     apiVersion: v1
     kind: PersistentVolumeClaim
     metadata:
@@ -25997,7 +25834,7 @@ multiple node agents:
       resources:
         requests:
           storage: 5Gi
-  66: |
+  65: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
@@ -26023,7 +25860,7 @@ multiple node agents:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  67: |
+  66: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
@@ -26049,7 +25886,7 @@ multiple node agents:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  68: |
+  67: |
     apiVersion: apiextensions.k8s.io/v1
     kind: CustomResourceDefinition
     metadata:
@@ -26373,7 +26210,7 @@ multiple node agents:
           storage: true
           subresources:
             status: {}
-  69: |
+  68: |
     apiVersion: v1
     kind: Service
     metadata:
@@ -26402,7 +26239,7 @@ multiple node agents:
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/name: kubescape-operator
       type: ClusterIP
-  70: |
+  69: |
     apiVersion: v1
     kind: ServiceAccount
     metadata:
@@ -26502,10 +26339,10 @@ priority class scheduling:
     data:
       capabilities: |
         {
-          "capabilities":{"admissionController":"enable","autoUpgrading":"disable","hostProfileService":"disable","httpDetection":"enable","malwareDetection":"disable","networkPolicyService":"enable","nodeSbomGeneration":"enable","operator":"enable","runtimeDetection":"enable","runtimeObservability":"enable","scanEmbeddedSBOMs":"disable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"disable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
+          "capabilities":{"admissionController":"enable","autoUpgrading":"disable","hostProfileService":"disable","httpDetection":"enable","networkPolicyService":"enable","nodeSbomGeneration":"enable","operator":"enable","runtimeDetection":"enable","runtimeObservability":"enable","scanEmbeddedSBOMs":"disable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"disable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
           "effectiveCapabilities":{"httpDetection":"enable"},
           "capabilityWarnings":[],
-          "components":{"autoUpdater":{"enabled":false},"clamAV":{"enabled":false},"cloudSecret":{"name":"cloud-secret"},"customCaCertificates":{"name":"custom-ca-certificates"},"nodeAgent":{"enabled":true},"operator":{"enabled":true},"sbomScanner":{"enabled":false},"storage":{"enabled":true}},
+          "components":{"autoUpdater":{"enabled":false},"cloudSecret":{"name":"cloud-secret"},"customCaCertificates":{"name":"custom-ca-certificates"},"nodeAgent":{"enabled":true},"operator":{"enabled":true},"sbomScanner":{"enabled":false},"storage":{"enabled":true}},
           "configurations":{"persistence":"enable","priorityClass":{"daemonset":100000100,"enabled":true},"prometheusAnnotations":"disable"} ,
           "serviceScanConfig" :{"enabled":false,"interval":"1h"}
         }
@@ -27191,8 +27028,6 @@ priority class scheduling:
             "hostProfileServiceEnabled": false,
             "directAlerts": {"enabled": true, "port": 50405, "jwtPublicKeyPath": "/etc/node-agent-direct/public.pem", "windowBytes": 67108864},
             "networkServiceEnabled": true,
-            "malwareDetectionEnabled": false,
-            "hostMalwareSensorEnabled": false,
             "hostNetworkSensorEnabled": false,
             "dnsReportFailures": true,
             "nestedContainersEnabled": false,
@@ -27277,7 +27112,7 @@ priority class scheduling:
           annotations:
             checksum/cloud-config: f315887bdf96fc815b21575acf09f7d9c293c7b9b834ef4ad71a08061659d3dc
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
-            checksum/node-agent-config: 7ec939f4528e7925dbbcb263316ffa88a3a26557e2ca3fc33e0f21c41c345706
+            checksum/node-agent-config: 03241e50d655b4e7ebee286a3fbb872c1993ae874e1892dd97843d8972ca646a
           labels:
             app: node-agent
             app.kubernetes.io/component: node-agent
@@ -28153,7 +27988,7 @@ priority class scheduling:
       template:
         metadata:
           annotations:
-            checksum/capabilities-config: 6d324cd81db5f81cd09eb0b684bb7c5324300ed2ec847731d47b1c9cd6150296
+            checksum/capabilities-config: e151f67f36e0605be7502308b65e82422ec5032e2803b640e767fe5518a2e3f3
             checksum/cloud-config: f315887bdf96fc815b21575acf09f7d9c293c7b9b834ef4ad71a08061659d3dc
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
             checksum/operator-config: cd23d39043d711d4710b7c31c571b44149b466fe9b587e4bbf5fbcbd88ea453b

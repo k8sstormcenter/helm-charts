@@ -20,7 +20,6 @@ tests:
       capabilities.runtimeObservability: disable
       capabilities.networkPolicyService: disable
       capabilities.runtimeDetection: disable
-      capabilities.malwareDetection: disable
       capabilities.seccompProfileService: disable
     asserts:
       - notContains:
