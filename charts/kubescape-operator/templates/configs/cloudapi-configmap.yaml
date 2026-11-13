@@ -13,7 +13,7 @@ metadata:
 data:
   clusterData: |
     {
-      "serviceDiscovery": {{ $components.serviceDiscovery.enabled }},
+      "serviceDiscovery": false,
       "vulnScanURL": "kubevuln:8080",
       "kubevulnURL": "kubevuln:8080",
       "kubescapeURL": "kubescape:8080",
@@ -26,7 +26,7 @@ data:
       "nodeAgent": "{{ $components.nodeAgent.enabled }}",
       "maxImageSize": {{ .Values.kubevuln.config.maxImageSize }},
       "maxSBOMSize": {{ .Values.kubevuln.config.maxSBOMSize }},
-      "keepLocal": {{ not $components.serviceDiscovery.enabled }},
+      "keepLocal": true,
       "scanTimeout": "5m",
       "scanEmbeddedSBOMs": {{ eq .Values.capabilities.scanEmbeddedSBOMs "enable" }},
       "vexGeneration": false,

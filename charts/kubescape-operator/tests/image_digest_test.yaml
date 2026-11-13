@@ -12,7 +12,6 @@ templates:
   - operator/admission-webhook/configmap.yaml
   - storage/configmap.yaml
   - storage/certgen/configmap.yaml
-  - synchronizer/configmap.yaml
 capabilities:
   apiVersions:
     - batch/v1

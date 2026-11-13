@@ -1,5 +1,4 @@
 {{- $components := fromYaml (include "components" .) }}
-{{- $configurations := fromYaml (include "configurations" .) }}
   {{- if $components.storage.enabled }}
 apiVersion: v1
 kind: ConfigMap
@@ -17,7 +16,7 @@ data:
       {{- if .Values.storage.disableVirtualCRDs }}
       "disableVirtualCRDs": true,
       {{- else }}
-      "disableVirtualCRDs": {{ not $configurations.virtualCrds }},
+      "disableVirtualCRDs": false,
       {{- end }}
       "disableSeccompProfileEndpoint": {{ eq .Values.capabilities.seccompProfileBackend "crd" }},
       "excludeJsonPaths": {{ .Values.configurations.excludeJsonPaths | toJson }},

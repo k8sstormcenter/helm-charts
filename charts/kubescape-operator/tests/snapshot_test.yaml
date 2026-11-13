@@ -24,8 +24,6 @@ tests:
         - batch/v1
     set:
       unittest: true
-      account: 9e6c0c2c-6bd0-4919-815b-55030de7c9a0
-      accessKey: f304d73b-d43c-412b-82ea-e4c859493ce6
       alertCRD:
         installDefault: true
       capabilities:
@@ -39,12 +37,10 @@ tests:
         seccompProfileService: enable
         autoUpgrading: enable
         admissionController: enable
-        manageWorkloads: enable
         syncSBOM: enable
       excludeLabels:
         foo: [bar, baz]
         baz: [qux]
-      server: api.armosec.io
       configurations:
         otelUrl: "otelCollector.svc.monitoring:4317"
         excludeJsonPaths:
@@ -72,7 +68,6 @@ tests:
         enabled: true
         name: armo-kubescape-node-agent-1.27
       nodeAgent.config.skipKernelVersionCheck: true
-      storage.forceVirtualCrds: true
       storage.mtls.enabled: false
   - it: minimal capabilities
     asserts:
@@ -94,10 +89,7 @@ tests:
         - batch/v1
     set:
       unittest: true
-      account: 9e6c0c2c-6bd0-4919-815b-55030de7c9a0
-      accessKey: f304d73b-d43c-412b-82ea-e4c859493ce6
       clusterName: kind-kind
-      server: api.armosec.io
   - it: default capabilities
     asserts:
       - matchSnapshot: {}
@@ -106,8 +98,6 @@ tests:
         - batch/v1
     set:
       unittest: true
-      account: 9e6c0c2c-6bd0-4919-815b-55030de7c9a0
-      accessKey: f304d73b-d43c-412b-82ea-e4c859493ce6
       alertCRD:
         installDefault: true
       capabilities:
@@ -118,7 +108,6 @@ tests:
         malwareDetection: disable
         autoUpgrading: disable
         admissionController: disable
-      server: api.armosec.io
       clusterName: kind-kind
       excludeNamespaces: "kubescape,kube-system,kube-public,kube-node-lease,kubeconfig,gmp-system,gmp-public"
       global:
@@ -320,8 +309,6 @@ tests:
         - batch/v1
     set:
       unittest: true
-      account: 9e6c0c2c-6bd0-4919-815b-55030de7c9a0
-      accessKey: f304d73b-d43c-412b-82ea-e4c859493ce6
       alertCRD:
         installDefault: true
       capabilities:
@@ -335,12 +322,10 @@ tests:
         seccompProfileService: enable
         autoUpgrading: enable
         admissionController: enable
-        manageWorkloads: enable
         syncSBOM: enable
       excludeLabels:
         foo: [bar, baz]
         baz: [qux]
-      server: api.armosec.io
       configurations:
         otelUrl: "otelCollector.svc.monitoring:4317"
         excludeJsonPaths:
@@ -391,27 +376,7 @@ tests:
                 cpu: 200m
                 memory: 512Mi
       nodeAgent.config.skipKernelVersionCheck: true
-      storage.forceVirtualCrds: true
       storage.mtls.enabled: false
-  - it: backend-storage enabled allows scanning capabilities
-    asserts:
-      - matchSnapshot: {}
-    capabilities:
-      apiVersions:
-        - batch/v1
-    set:
-      unittest: true
-      account: 9e6c0c2c-6bd0-4919-815b-55030de7c9a0
-      accessKey: f304d73b-d43c-412b-82ea-e4c859493ce6
-      alertCRD:
-        installDefault: true
-      capabilities:
-        backend-storage: enable
-        runtimeObservability: enable
-        networkPolicyService: enable
-      server: api.armosec.io
-      clusterName: kind-kind
-      excludeNamespaces: "kubescape,kube-system,kube-public,kube-node-lease"
   - it: priority class scheduling
     asserts:
       - matchSnapshot: {}
@@ -420,9 +385,6 @@ tests:
         - batch/v1
     set:
       unittest: true
-      account: 9e6c0c2c-6bd0-4919-815b-55030de7c9a0
-      accessKey: f304d73b-d43c-412b-82ea-e4c859493ce6
-      server: api.armosec.io
       clusterName: kind-kind
       capabilities:
         runtimeDetection: enable
@@ -649,9 +611,6 @@ tests:
         - batch/v1
     set:
       unittest: true
-      account: 9e6c0c2c-6bd0-4919-815b-55030de7c9a0
-      accessKey: f304d73b-d43c-412b-82ea-e4c859493ce6
-      server: api.armosec.io
       clusterName: kind-kind
       capabilities:
         runtimeDetection: enable
@@ -671,9 +630,6 @@ tests:
         - batch/v1
     set:
       unittest: true
-      account: 9e6c0c2c-6bd0-4919-815b-55030de7c9a0
-      accessKey: f304d73b-d43c-412b-82ea-e4c859493ce6
-      server: api.armosec.io
       clusterName: kind-kind
       capabilities:
         runtimeDetection: enable

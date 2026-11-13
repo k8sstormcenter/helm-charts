@@ -1,6 +1,5 @@
 {{- $checksums := fromYaml (include "checksums" .) }}
 {{- $components := fromYaml (include "components" .) }}
-{{- $configurations := fromYaml (include "configurations" .) }}
 {{- if $components.storage.enabled }}
 apiVersion: apps/v1
 kind: Deployment

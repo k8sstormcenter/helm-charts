@@ -108,10 +108,6 @@ Parameters:
 {{- end }}
 - name: AGENT_VERSION
   value: "{{ .Values.nodeAgent.image.tag }}"
-{{- if .Values.server }}
-- name: API_URL
-  value: "https://{{ .Values.server }}"
-{{- end }}
 {{- range .Values.nodeAgent.env }}
 {{- if .autoscalerMode }}
 - {{ toYaml . | nindent 2 | trim }}

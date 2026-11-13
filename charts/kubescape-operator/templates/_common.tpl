@@ -11,36 +11,16 @@ nodeAgentConfig: {{ include (printf "%s/node-agent/configmap.yaml" $.Template.Ba
 operatorConfig: {{ include (printf "%s/operator/configmap.yaml" $.Template.BasePath) . | replace .Chart.AppVersion "" | replace .Chart.Version "" | sha256sum }}
 proxySecret: {{ include (printf "%s/%s/%s" $.Template.BasePath $.Values.global.proxySecretDirectory "proxy-secret.yaml") . | replace .Chart.AppVersion "" | replace .Chart.Version "" | sha256sum }}
 storageConfig: {{ include (printf "%s/storage/configmap.yaml" $.Template.BasePath) . | replace .Chart.AppVersion "" | replace .Chart.Version "" | sha256sum }}
-synchronizerConfig: {{ include (printf "%s/synchronizer/configmap.yaml" $.Template.BasePath) . | replace .Chart.AppVersion "" | replace .Chart.Version "" | sha256sum }}
 admissionCertgenScripts: {{ include (printf "%s/operator/admission-webhook/configmap.yaml" $.Template.BasePath) . | replace .Chart.AppVersion "" | replace .Chart.Version "" | sha256sum }}
 storageCertgenScripts: {{ include (printf "%s/storage/certgen/configmap.yaml" $.Template.BasePath) . | replace .Chart.AppVersion "" | replace .Chart.Version "" | sha256sum }}
 {{- end -}}
 
 
 {{- define "configurations" -}}
-{{- $createCloudSecret := (empty .Values.credentials.cloudSecret) -}}
-{{- $submit := not (empty .Values.server) -}}
-{{- $virtualCrds := not (empty .Values.storage.forceVirtualCrds) -}}
-createCloudSecret: {{ $createCloudSecret }}
 runtimeObservability: {{ eq .Values.capabilities.runtimeObservability "enable" }}
-backendStorageEnabled: {{ eq (index .Values.capabilities "backend-storage" | default "") "enable" }}
-virtualCrds: {{ or $virtualCrds (not $submit) }}
-submit: {{ $submit }}
-  {{- if $submit -}}
-    {{- if and (empty .Values.account) $createCloudSecret -}}
-      {{- fail "submitting is enabled but value for account is not defined: please register at https://cloud.armosec.io to get yours and re-run with  --set account=<your Guid>" }}
-    {{- end -}}
-    {{- if and (empty .Values.accessKey) $createCloudSecret -}}
-      {{- fail "submitting is enabled but value for accessKey is not defined: To obtain an access key, go to 'Settings' -> 'Agent Access Keys' at https://cloud.armosec.io and re-run with  --set accessKey=<your key>" }}
-    {{- end -}}
-    {{- if empty .Values.clusterName -}}
-      {{- fail "value for clusterName is not defined: re-run with  --set clusterName=<your cluster name>" }}
-    {{- end -}}
-  {{- end -}}
 {{- end -}}
 
 {{- define "components" -}}
-{{- $configurations := fromYaml (include "configurations" .) }}
 nodeAgent:
   enabled: {{ or
    (eq .Values.capabilities.runtimeObservability "enable")
@@ -51,15 +31,10 @@ nodeAgent:
   }}
 operator:
   enabled: {{ eq .Values.capabilities.operator "enable" }}
-serviceDiscovery:
-  enabled: {{ $configurations.submit }}
 storage:
   enabled: {{ .Values.storage.enabled }}
 cloudSecret:
-  create: {{ $configurations.createCloudSecret }}
-  name: {{ if $configurations.createCloudSecret }}"cloud-secret"{{ else }}{{ .Values.credentials.cloudSecret }}{{ end }}
-synchronizer:
-  enabled: {{ $configurations.submit }}
+  name: cloud-secret
 clamAV:
   enabled: {{ eq .Values.capabilities.malwareDetection "enable" }}
 sbomScanner:
@@ -81,8 +56,6 @@ that value can never drift apart. See issue #851.
 {{- define "capabilities.gates" -}}
 {{- $c := .Values.capabilities -}}
 {{- $configurations := fromYaml (include "configurations" .) -}}
-{{- $submit := $configurations.submit -}}
-{{- $backendStorage := $configurations.backendStorageEnabled -}}
 {{- $runtimeDetection := eq $c.runtimeDetection "enable" -}}
 {{- $httpDetection := and (eq $c.httpDetection "enable") $runtimeDetection -}}
 {{- $hostProfile := and (eq ($c.hostProfileService | default "disable") "enable") $configurations.runtimeObservability -}}
