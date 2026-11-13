@@ -43,7 +43,6 @@ submit: {{ $submit }}
 {{- $configurations := fromYaml (include "configurations" .) }}
 nodeAgent:
   enabled: {{ or
-   (eq .Values.capabilities.relevancy "enable")
    (eq .Values.capabilities.runtimeObservability "enable")
    (eq .Values.capabilities.networkPolicyService "enable")
    (eq .Values.capabilities.runtimeDetection "enable")

@@ -233,7 +233,7 @@ all capabilities:
           "kubescapeURL": "kubescape:8080",
           "clusterName": "kind-kind",
           "storage": true,
-          "relevantImageVulnerabilitiesEnabled": true,
+          "relevantImageVulnerabilitiesEnabled": false,
           "namespace": "kubescape",
           "imageVulnerabilitiesScanningEnabled": false,
           "postureScanEnabled": false,
@@ -248,7 +248,7 @@ all capabilities:
           "useDefaultMatchers": false,
           "storeFilteredSbom": true,
           "continuousPostureScan": false,
-          "relevantImageVulnerabilitiesConfiguration": "enable",
+          "relevantImageVulnerabilitiesConfiguration": "disable",
           "riskAcceptance": true
         }
     kind: ConfigMap
@@ -274,7 +274,7 @@ all capabilities:
     data:
       capabilities: |
         {
-          "capabilities":{"admissionController":"enable","autoUpgrading":"enable","hostProfileService":"disable","httpDetection":"enable","malwareDetection":"enable","manageWorkloads":"enable","networkEventsStreaming":"enable","networkPolicyService":"enable","nodeProfileService":"enable","nodeSbomGeneration":"enable","operator":"enable","relevancy":"enable","remediation":"enable","riskAcceptance":"enable","runtimeDetection":"enable","runtimeObservability":"enable","scanEmbeddedSBOMs":"enable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"enable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
+          "capabilities":{"admissionController":"enable","autoUpgrading":"enable","hostProfileService":"disable","httpDetection":"enable","malwareDetection":"enable","manageWorkloads":"enable","networkEventsStreaming":"enable","networkPolicyService":"enable","nodeProfileService":"enable","nodeSbomGeneration":"enable","operator":"enable","remediation":"enable","riskAcceptance":"enable","runtimeDetection":"enable","runtimeObservability":"enable","scanEmbeddedSBOMs":"enable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"enable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
           "effectiveCapabilities":{"httpDetection":"enable","networkEventsStreaming":"enable","nodeProfileService":"enable"},
           "capabilityWarnings":[],
           "components":{"autoUpdater":{"enabled":true},"clamAV":{"enabled":true},"cloudSecret":{"create":true,"name":"cloud-secret"},"customCaCertificates":{"name":"custom-ca-certificates"},"nodeAgent":{"enabled":true},"operator":{"enabled":true},"sbomScanner":{"enabled":false},"serviceDiscovery":{"enabled":true},"storage":{"enabled":true},"synchronizer":{"enabled":true}},
@@ -1132,7 +1132,7 @@ all capabilities:
       template:
         metadata:
           annotations:
-            checksum/cloud-config: e3f0603f9a5d1dfa8e0e6a597ed66fdf3eeb3094fdfa0c4943fed7d54a79bb26
+            checksum/cloud-config: 4729fa7c7bd171c76f5db717bd81f5f2357f9cf7cea5910bd8925a7586dd9b44
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
             checksum/node-agent-config: 7c8c87ab1e121ce2eb7ade04c916b964fd4ee10c2aa3cbe5c96ef90a874db78c
             checksum/proxy-config: c03b6781aa61faaacfa84a96809236591dde0cbd43a204e05d5ba3044bb9d5d8
@@ -2961,8 +2961,8 @@ all capabilities:
       template:
         metadata:
           annotations:
-            checksum/capabilities-config: df8d7518e2512d152c278452ee368f61fb1306ee6fa3f6bf735845924f9e55c7
-            checksum/cloud-config: e3f0603f9a5d1dfa8e0e6a597ed66fdf3eeb3094fdfa0c4943fed7d54a79bb26
+            checksum/capabilities-config: 9a9aa97a8f31c9a14bb1ea42bdff6ffa9d30ff7efd4955c2b4abad8b47623edc
+            checksum/cloud-config: 4729fa7c7bd171c76f5db717bd81f5f2357f9cf7cea5910bd8925a7586dd9b44
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
             checksum/operator-config: 02dd603eb05df8c1f17ddda15da5952dfa5f6df29c328c12e6a1c9da94d467ea
             checksum/proxy-config: c03b6781aa61faaacfa84a96809236591dde0cbd43a204e05d5ba3044bb9d5d8
@@ -3560,7 +3560,7 @@ all capabilities:
       template:
         metadata:
           annotations:
-            checksum/cloud-config: e3f0603f9a5d1dfa8e0e6a597ed66fdf3eeb3094fdfa0c4943fed7d54a79bb26
+            checksum/cloud-config: 4729fa7c7bd171c76f5db717bd81f5f2357f9cf7cea5910bd8925a7586dd9b44
             checksum/storage-config: 1ea6cd96a34b413e579082e520fc488b12a53c20f3764d47de0f81f0a4ec7fbc
           labels:
             app: storage
@@ -4753,7 +4753,7 @@ all capabilities:
       template:
         metadata:
           annotations:
-            checksum/cloud-config: e3f0603f9a5d1dfa8e0e6a597ed66fdf3eeb3094fdfa0c4943fed7d54a79bb26
+            checksum/cloud-config: 4729fa7c7bd171c76f5db717bd81f5f2357f9cf7cea5910bd8925a7586dd9b44
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
             checksum/proxy-config: c03b6781aa61faaacfa84a96809236591dde0cbd43a204e05d5ba3044bb9d5d8
             checksum/synchronizer-configmap: f1c83380b4ab227f8219ffd32e23133bbf93d37a08f4f07e3c91063394ec0ad5
@@ -5155,7 +5155,7 @@ autoscaler mode with sbom sidecar:
     data:
       capabilities: |
         {
-          "capabilities":{"admissionController":"enable","autoUpgrading":"disable","hostProfileService":"disable","httpDetection":"enable","malwareDetection":"disable","manageWorkloads":"disable","networkEventsStreaming":"enable","networkPolicyService":"enable","nodeProfileService":"enable","nodeSbomGeneration":"enable","operator":"enable","relevancy":"disable","remediation":"disable","riskAcceptance":"disable","runtimeDetection":"enable","runtimeObservability":"enable","scanEmbeddedSBOMs":"disable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"disable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
+          "capabilities":{"admissionController":"enable","autoUpgrading":"disable","hostProfileService":"disable","httpDetection":"enable","malwareDetection":"disable","manageWorkloads":"disable","networkEventsStreaming":"enable","networkPolicyService":"enable","nodeProfileService":"enable","nodeSbomGeneration":"enable","operator":"enable","remediation":"disable","riskAcceptance":"disable","runtimeDetection":"enable","runtimeObservability":"enable","scanEmbeddedSBOMs":"disable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"disable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
           "effectiveCapabilities":{"httpDetection":"enable","networkEventsStreaming":"enable","nodeProfileService":"enable"},
           "capabilityWarnings":[],
           "components":{"autoUpdater":{"enabled":false},"clamAV":{"enabled":false},"cloudSecret":{"create":true,"name":"cloud-secret"},"customCaCertificates":{"name":"custom-ca-certificates"},"nodeAgent":{"enabled":true},"operator":{"enabled":true},"sbomScanner":{"enabled":true},"serviceDiscovery":{"enabled":true},"storage":{"enabled":true},"synchronizer":{"enabled":true}},
@@ -6577,7 +6577,7 @@ autoscaler mode with sbom sidecar:
       template:
         metadata:
           annotations:
-            checksum/capabilities-config: fd7c96c01eb0dbb8db6e9beb7e6d55f61616980eb8c4da4b7378fe91ddb02ede
+            checksum/capabilities-config: 052a8f0f2dd2a30c79c66ee7cfea4fa15087ec94eb92dbc1f2b35ef7d8fb9136
             checksum/cloud-config: 578b4012d93ca58623ff3ce97387526497ea876e78ac083aaa49c8da82595bc0
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
             checksum/operator-config: 4dad8d5a04b29e4a897531f5f5e445edee95cb3e3f45714451141a3748c94e2a
@@ -8418,7 +8418,7 @@ autoscaler mode without sbom sidecar:
     data:
       capabilities: |
         {
-          "capabilities":{"admissionController":"enable","autoUpgrading":"disable","hostProfileService":"disable","httpDetection":"enable","malwareDetection":"disable","manageWorkloads":"disable","networkEventsStreaming":"enable","networkPolicyService":"enable","nodeProfileService":"enable","nodeSbomGeneration":"enable","operator":"enable","relevancy":"disable","remediation":"disable","riskAcceptance":"disable","runtimeDetection":"enable","runtimeObservability":"enable","scanEmbeddedSBOMs":"disable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"disable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
+          "capabilities":{"admissionController":"enable","autoUpgrading":"disable","hostProfileService":"disable","httpDetection":"enable","malwareDetection":"disable","manageWorkloads":"disable","networkEventsStreaming":"enable","networkPolicyService":"enable","nodeProfileService":"enable","nodeSbomGeneration":"enable","operator":"enable","remediation":"disable","riskAcceptance":"disable","runtimeDetection":"enable","runtimeObservability":"enable","scanEmbeddedSBOMs":"disable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"disable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
           "effectiveCapabilities":{"httpDetection":"enable","networkEventsStreaming":"enable","nodeProfileService":"enable"},
           "capabilityWarnings":[],
           "components":{"autoUpdater":{"enabled":false},"clamAV":{"enabled":false},"cloudSecret":{"create":true,"name":"cloud-secret"},"customCaCertificates":{"name":"custom-ca-certificates"},"nodeAgent":{"enabled":true},"operator":{"enabled":true},"sbomScanner":{"enabled":false},"serviceDiscovery":{"enabled":true},"storage":{"enabled":true},"synchronizer":{"enabled":true}},
@@ -9840,7 +9840,7 @@ autoscaler mode without sbom sidecar:
       template:
         metadata:
           annotations:
-            checksum/capabilities-config: a37c006e10f427eedacaa1e35702bf7f54640e2613c6d51ef571f6ede944d347
+            checksum/capabilities-config: 82b2f93f0d7ac1248b96ac944644a769be85aba4cfdc57dea92259d4cb737e0c
             checksum/cloud-config: 578b4012d93ca58623ff3ce97387526497ea876e78ac083aaa49c8da82595bc0
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
             checksum/operator-config: e3e529667959cffa5c542b0129e662f6bb0dde656cf07ecac7dec1834d65b385
@@ -11642,7 +11642,7 @@ backend-storage enabled allows scanning capabilities:
           "kubescapeURL": "kubescape:8080",
           "clusterName": "kind-kind",
           "storage": true,
-          "relevantImageVulnerabilitiesEnabled": true,
+          "relevantImageVulnerabilitiesEnabled": false,
           "namespace": "kubescape",
           "imageVulnerabilitiesScanningEnabled": false,
           "postureScanEnabled": false,
@@ -11657,7 +11657,7 @@ backend-storage enabled allows scanning capabilities:
           "useDefaultMatchers": false,
           "storeFilteredSbom": false,
           "continuousPostureScan": false,
-          "relevantImageVulnerabilitiesConfiguration": "enable",
+          "relevantImageVulnerabilitiesConfiguration": "disable",
           "riskAcceptance": false
         }
     kind: ConfigMap
@@ -11683,7 +11683,7 @@ backend-storage enabled allows scanning capabilities:
     data:
       capabilities: |
         {
-          "capabilities":{"admissionController":"enable","autoUpgrading":"disable","backend-storage":"enable","hostProfileService":"disable","httpDetection":"enable","malwareDetection":"disable","manageWorkloads":"disable","networkEventsStreaming":"enable","networkPolicyService":"enable","nodeProfileService":"enable","nodeSbomGeneration":"enable","operator":"enable","relevancy":"enable","remediation":"disable","riskAcceptance":"disable","runtimeDetection":"disable","runtimeObservability":"enable","scanEmbeddedSBOMs":"disable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"disable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
+          "capabilities":{"admissionController":"enable","autoUpgrading":"disable","backend-storage":"enable","hostProfileService":"disable","httpDetection":"enable","malwareDetection":"disable","manageWorkloads":"disable","networkEventsStreaming":"enable","networkPolicyService":"enable","nodeProfileService":"enable","nodeSbomGeneration":"enable","operator":"enable","remediation":"disable","riskAcceptance":"disable","runtimeDetection":"disable","runtimeObservability":"enable","scanEmbeddedSBOMs":"disable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"disable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
           "effectiveCapabilities":{"httpDetection":"disable","networkEventsStreaming":"enable","nodeProfileService":"enable"},
           "capabilityWarnings":["capabilities.httpDetection=enable but capabilities.runtimeDetection is not enabled. HTTP detection runs on top of runtime detection, so httpDetectionEnabled renders as FALSE in the node-agent configmap. To use it, set capabilities.runtimeDetection=enable."],
           "components":{"autoUpdater":{"enabled":false},"clamAV":{"enabled":false},"cloudSecret":{"create":true,"name":"cloud-secret"},"customCaCertificates":{"name":"custom-ca-certificates"},"nodeAgent":{"enabled":true},"operator":{"enabled":true},"sbomScanner":{"enabled":false},"serviceDiscovery":{"enabled":true},"storage":{"enabled":true},"synchronizer":{"enabled":true}},
@@ -12462,7 +12462,7 @@ backend-storage enabled allows scanning capabilities:
       template:
         metadata:
           annotations:
-            checksum/cloud-config: 90130d5b07aa6ed30dfba1923e35c75e203694db45b8de83a31abe958335ad0e
+            checksum/cloud-config: 578b4012d93ca58623ff3ce97387526497ea876e78ac083aaa49c8da82595bc0
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
             checksum/node-agent-config: ba0bce1531210b0583d8a8f238a0b9b7bca41c36e4dc3273588e58ba41761abb
           labels:
@@ -14120,8 +14120,8 @@ backend-storage enabled allows scanning capabilities:
       template:
         metadata:
           annotations:
-            checksum/capabilities-config: abf52a719ce232716d0df44ded3dadc586d38b5140555d7b6053b1bfebf4ddf1
-            checksum/cloud-config: 90130d5b07aa6ed30dfba1923e35c75e203694db45b8de83a31abe958335ad0e
+            checksum/capabilities-config: b4bc01c97ac2a79f46df250b57396a6c14e687381301d68f70d5d5a279994799
+            checksum/cloud-config: 578b4012d93ca58623ff3ce97387526497ea876e78ac083aaa49c8da82595bc0
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
             checksum/operator-config: 2b5a3dd2a1c7e5fbd21638ae2f52b77f65177e1f287fc7207407eadfc2812b5a
           labels:
@@ -14630,7 +14630,7 @@ backend-storage enabled allows scanning capabilities:
       template:
         metadata:
           annotations:
-            checksum/cloud-config: 90130d5b07aa6ed30dfba1923e35c75e203694db45b8de83a31abe958335ad0e
+            checksum/cloud-config: 578b4012d93ca58623ff3ce97387526497ea876e78ac083aaa49c8da82595bc0
             checksum/storage-config: f8f88aaf0fe7b48a8e274019125a8038b9de3cce5ab669c5cd658f85d769d426
           labels:
             app: storage
@@ -15654,7 +15654,7 @@ backend-storage enabled allows scanning capabilities:
       template:
         metadata:
           annotations:
-            checksum/cloud-config: 90130d5b07aa6ed30dfba1923e35c75e203694db45b8de83a31abe958335ad0e
+            checksum/cloud-config: 578b4012d93ca58623ff3ce97387526497ea876e78ac083aaa49c8da82595bc0
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
             checksum/synchronizer-configmap: c43947fbb741972e7be667da7aa9ab69b0e998bde2e48d33c7f9b53c00a384f0
           labels:
@@ -15897,7 +15897,7 @@ cert strategy initContainer, admission disabled, mtls disabled:
       template:
         metadata:
           annotations:
-            checksum/capabilities-config: ee9038dc13bcf320545c042be9252035839faec23b8199d891803f070dbd2649
+            checksum/capabilities-config: df444ac711871b77cb0606e930b137a319c72357df2373900e858779a99d4adb
             checksum/cloud-config: 8162ea8a2f11a08c26f80a3931e2a648021747023fdaf512456749a45e49b9a9
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
             checksum/operator-config: cd23d39043d711d4710b7c31c571b44149b466fe9b587e4bbf5fbcbd88ea453b
@@ -16199,7 +16199,7 @@ cert strategy initContainer, admission disabled, mtls enabled:
       template:
         metadata:
           annotations:
-            checksum/capabilities-config: ee9038dc13bcf320545c042be9252035839faec23b8199d891803f070dbd2649
+            checksum/capabilities-config: df444ac711871b77cb0606e930b137a319c72357df2373900e858779a99d4adb
             checksum/cloud-config: 8162ea8a2f11a08c26f80a3931e2a648021747023fdaf512456749a45e49b9a9
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
             checksum/operator-config: cd23d39043d711d4710b7c31c571b44149b466fe9b587e4bbf5fbcbd88ea453b
@@ -16863,7 +16863,7 @@ cert strategy initContainer, admission enabled, mtls disabled:
         metadata:
           annotations:
             checksum/admission-certgen-scripts: 510fc0d01bf9b1eb52f63bd22c861a7298b2bd784058f316ef2c2ad57da24258
-            checksum/capabilities-config: e7191e735e817d54ecc7766f6f4bf35083901bf548cf6eb13911a2878a00ee4a
+            checksum/capabilities-config: 40ece903407e515545b648c155fbd38b342ed8a14e59d1b307e0803421304028
             checksum/cloud-config: 8162ea8a2f11a08c26f80a3931e2a648021747023fdaf512456749a45e49b9a9
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
             checksum/operator-config: cd23d39043d711d4710b7c31c571b44149b466fe9b587e4bbf5fbcbd88ea453b
@@ -17428,7 +17428,7 @@ cert strategy initContainer, admission enabled, mtls enabled:
         metadata:
           annotations:
             checksum/admission-certgen-scripts: 510fc0d01bf9b1eb52f63bd22c861a7298b2bd784058f316ef2c2ad57da24258
-            checksum/capabilities-config: e7191e735e817d54ecc7766f6f4bf35083901bf548cf6eb13911a2878a00ee4a
+            checksum/capabilities-config: 40ece903407e515545b648c155fbd38b342ed8a14e59d1b307e0803421304028
             checksum/cloud-config: 8162ea8a2f11a08c26f80a3931e2a648021747023fdaf512456749a45e49b9a9
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
             checksum/operator-config: cd23d39043d711d4710b7c31c571b44149b466fe9b587e4bbf5fbcbd88ea453b
@@ -17983,7 +17983,7 @@ cert strategy template, admission disabled, mtls disabled:
       template:
         metadata:
           annotations:
-            checksum/capabilities-config: ee9038dc13bcf320545c042be9252035839faec23b8199d891803f070dbd2649
+            checksum/capabilities-config: df444ac711871b77cb0606e930b137a319c72357df2373900e858779a99d4adb
             checksum/cloud-config: 8162ea8a2f11a08c26f80a3931e2a648021747023fdaf512456749a45e49b9a9
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
             checksum/operator-config: cd23d39043d711d4710b7c31c571b44149b466fe9b587e4bbf5fbcbd88ea453b
@@ -18285,7 +18285,7 @@ cert strategy template, admission disabled, mtls enabled:
       template:
         metadata:
           annotations:
-            checksum/capabilities-config: ee9038dc13bcf320545c042be9252035839faec23b8199d891803f070dbd2649
+            checksum/capabilities-config: df444ac711871b77cb0606e930b137a319c72357df2373900e858779a99d4adb
             checksum/cloud-config: 8162ea8a2f11a08c26f80a3931e2a648021747023fdaf512456749a45e49b9a9
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
             checksum/operator-config: cd23d39043d711d4710b7c31c571b44149b466fe9b587e4bbf5fbcbd88ea453b
@@ -18769,7 +18769,7 @@ cert strategy template, admission enabled, mtls disabled:
       template:
         metadata:
           annotations:
-            checksum/capabilities-config: e7191e735e817d54ecc7766f6f4bf35083901bf548cf6eb13911a2878a00ee4a
+            checksum/capabilities-config: 40ece903407e515545b648c155fbd38b342ed8a14e59d1b307e0803421304028
             checksum/cloud-config: 8162ea8a2f11a08c26f80a3931e2a648021747023fdaf512456749a45e49b9a9
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
             checksum/operator-config: cd23d39043d711d4710b7c31c571b44149b466fe9b587e4bbf5fbcbd88ea453b
@@ -19210,7 +19210,7 @@ cert strategy template, admission enabled, mtls enabled:
       template:
         metadata:
           annotations:
-            checksum/capabilities-config: e7191e735e817d54ecc7766f6f4bf35083901bf548cf6eb13911a2878a00ee4a
+            checksum/capabilities-config: 40ece903407e515545b648c155fbd38b342ed8a14e59d1b307e0803421304028
             checksum/cloud-config: 8162ea8a2f11a08c26f80a3931e2a648021747023fdaf512456749a45e49b9a9
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
             checksum/operator-config: cd23d39043d711d4710b7c31c571b44149b466fe9b587e4bbf5fbcbd88ea453b
@@ -19578,7 +19578,7 @@ default capabilities:
           "kubescapeURL": "kubescape:8080",
           "clusterName": "kind-kind",
           "storage": true,
-          "relevantImageVulnerabilitiesEnabled": true,
+          "relevantImageVulnerabilitiesEnabled": false,
           "namespace": "kubescape",
           "imageVulnerabilitiesScanningEnabled": false,
           "postureScanEnabled": false,
@@ -19593,7 +19593,7 @@ default capabilities:
           "useDefaultMatchers": false,
           "storeFilteredSbom": false,
           "continuousPostureScan": false,
-          "relevantImageVulnerabilitiesConfiguration": "enable",
+          "relevantImageVulnerabilitiesConfiguration": "disable",
           "riskAcceptance": false
         }
     kind: ConfigMap
@@ -19619,7 +19619,7 @@ default capabilities:
     data:
       capabilities: |
         {
-          "capabilities":{"admissionController":"disable","autoUpgrading":"disable","hostProfileService":"disable","httpDetection":"disable","malwareDetection":"disable","manageWorkloads":"disable","networkEventsStreaming":"enable","networkPolicyService":"enable","nodeProfileService":"disable","nodeSbomGeneration":"enable","operator":"enable","relevancy":"enable","remediation":"disable","riskAcceptance":"disable","runtimeDetection":"disable","runtimeObservability":"enable","scanEmbeddedSBOMs":"disable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"disable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
+          "capabilities":{"admissionController":"disable","autoUpgrading":"disable","hostProfileService":"disable","httpDetection":"disable","malwareDetection":"disable","manageWorkloads":"disable","networkEventsStreaming":"enable","networkPolicyService":"enable","nodeProfileService":"disable","nodeSbomGeneration":"enable","operator":"enable","remediation":"disable","riskAcceptance":"disable","runtimeDetection":"disable","runtimeObservability":"enable","scanEmbeddedSBOMs":"disable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"disable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
           "effectiveCapabilities":{"httpDetection":"disable","networkEventsStreaming":"enable","nodeProfileService":"disable"},
           "capabilityWarnings":[],
           "components":{"autoUpdater":{"enabled":false},"clamAV":{"enabled":false},"cloudSecret":{"create":true,"name":"cloud-secret"},"customCaCertificates":{"name":"custom-ca-certificates"},"nodeAgent":{"enabled":true},"operator":{"enabled":true},"sbomScanner":{"enabled":false},"serviceDiscovery":{"enabled":true},"storage":{"enabled":true},"synchronizer":{"enabled":true}},
@@ -20398,7 +20398,7 @@ default capabilities:
       template:
         metadata:
           annotations:
-            checksum/cloud-config: 90130d5b07aa6ed30dfba1923e35c75e203694db45b8de83a31abe958335ad0e
+            checksum/cloud-config: 578b4012d93ca58623ff3ce97387526497ea876e78ac083aaa49c8da82595bc0
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
             checksum/node-agent-config: 5df435e150491fceb690f10068a0aefff13a61c3c84813570d2b10d728cbcddb
             checksum/proxy-config: c03b6781aa61faaacfa84a96809236591dde0cbd43a204e05d5ba3044bb9d5d8
@@ -21991,8 +21991,8 @@ default capabilities:
       template:
         metadata:
           annotations:
-            checksum/capabilities-config: a520fe861f2404e0142c3ab13b8f888003f1022b0c3888a47db6ff2dd4c3aec8
-            checksum/cloud-config: 90130d5b07aa6ed30dfba1923e35c75e203694db45b8de83a31abe958335ad0e
+            checksum/capabilities-config: 848c3a7aa68d6e21a7b5b71b04740bd0173a863b290ac800a66f669fec720466
+            checksum/cloud-config: 578b4012d93ca58623ff3ce97387526497ea876e78ac083aaa49c8da82595bc0
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
             checksum/operator-config: f8a67a3bc2c38d9567bc2cd334a01848d20da0329f76b8e414930289a1bd766f
             checksum/proxy-config: c03b6781aa61faaacfa84a96809236591dde0cbd43a204e05d5ba3044bb9d5d8
@@ -22586,7 +22586,7 @@ default capabilities:
       template:
         metadata:
           annotations:
-            checksum/cloud-config: 90130d5b07aa6ed30dfba1923e35c75e203694db45b8de83a31abe958335ad0e
+            checksum/cloud-config: 578b4012d93ca58623ff3ce97387526497ea876e78ac083aaa49c8da82595bc0
             checksum/storage-config: f8f88aaf0fe7b48a8e274019125a8038b9de3cce5ab669c5cd658f85d769d426
           labels:
             app: storage
@@ -23661,7 +23661,7 @@ default capabilities:
       template:
         metadata:
           annotations:
-            checksum/cloud-config: 90130d5b07aa6ed30dfba1923e35c75e203694db45b8de83a31abe958335ad0e
+            checksum/cloud-config: 578b4012d93ca58623ff3ce97387526497ea876e78ac083aaa49c8da82595bc0
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
             checksum/proxy-config: c03b6781aa61faaacfa84a96809236591dde0cbd43a204e05d5ba3044bb9d5d8
             checksum/synchronizer-configmap: 77923ccf52f639e2212347cf07ac28648c138fca84b2d9e99a7a92121d01941c
@@ -24025,7 +24025,7 @@ disable otel:
     data:
       capabilities: |
         {
-          "capabilities":{"admissionController":"enable","autoUpgrading":"disable","hostProfileService":"disable","httpDetection":"enable","malwareDetection":"disable","manageWorkloads":"disable","networkEventsStreaming":"enable","networkPolicyService":"enable","nodeProfileService":"enable","nodeSbomGeneration":"enable","operator":"enable","relevancy":"disable","remediation":"disable","riskAcceptance":"disable","runtimeDetection":"disable","runtimeObservability":"enable","scanEmbeddedSBOMs":"disable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"disable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
+          "capabilities":{"admissionController":"enable","autoUpgrading":"disable","hostProfileService":"disable","httpDetection":"enable","malwareDetection":"disable","manageWorkloads":"disable","networkEventsStreaming":"enable","networkPolicyService":"enable","nodeProfileService":"enable","nodeSbomGeneration":"enable","operator":"enable","remediation":"disable","riskAcceptance":"disable","runtimeDetection":"disable","runtimeObservability":"enable","scanEmbeddedSBOMs":"disable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"disable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
           "effectiveCapabilities":{"httpDetection":"disable","networkEventsStreaming":"enable","nodeProfileService":"enable"},
           "capabilityWarnings":["capabilities.httpDetection=enable but capabilities.runtimeDetection is not enabled. HTTP detection runs on top of runtime detection, so httpDetectionEnabled renders as FALSE in the node-agent configmap. To use it, set capabilities.runtimeDetection=enable."],
           "components":{"autoUpdater":{"enabled":false},"clamAV":{"enabled":false},"cloudSecret":{"create":true,"name":"cloud-secret"},"customCaCertificates":{"name":"custom-ca-certificates"},"nodeAgent":{"enabled":true},"operator":{"enabled":true},"sbomScanner":{"enabled":false},"serviceDiscovery":{"enabled":true},"storage":{"enabled":true},"synchronizer":{"enabled":true}},
@@ -25685,7 +25685,7 @@ disable otel:
       template:
         metadata:
           annotations:
-            checksum/capabilities-config: 60337ef0dfb0a4b06ca6fa338af04995a5c8c3d81295bbb9b3c0180310363abe
+            checksum/capabilities-config: 27e790ba70905eeaece94966983e63fdc5788e5e9f7775cc7af69481f7b41026
             checksum/cloud-config: 578b4012d93ca58623ff3ce97387526497ea876e78ac083aaa49c8da82595bc0
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
             checksum/operator-config: 510d33bb3ddb82d81e4e871ba80dff8e74dbe57e41ad9416e3f9c87a7369e924
@@ -27514,7 +27514,7 @@ minimal capabilities:
     data:
       capabilities: |
         {
-          "capabilities":{"admissionController":"enable","autoUpgrading":"disable","hostProfileService":"disable","httpDetection":"enable","malwareDetection":"disable","manageWorkloads":"disable","networkEventsStreaming":"enable","networkPolicyService":"enable","nodeProfileService":"enable","nodeSbomGeneration":"enable","operator":"enable","relevancy":"disable","remediation":"disable","riskAcceptance":"disable","runtimeDetection":"disable","runtimeObservability":"enable","scanEmbeddedSBOMs":"disable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"disable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
+          "capabilities":{"admissionController":"enable","autoUpgrading":"disable","hostProfileService":"disable","httpDetection":"enable","malwareDetection":"disable","manageWorkloads":"disable","networkEventsStreaming":"enable","networkPolicyService":"enable","nodeProfileService":"enable","nodeSbomGeneration":"enable","operator":"enable","remediation":"disable","riskAcceptance":"disable","runtimeDetection":"disable","runtimeObservability":"enable","scanEmbeddedSBOMs":"disable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"disable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
           "effectiveCapabilities":{"httpDetection":"disable","networkEventsStreaming":"disable","nodeProfileService":"disable"},
           "capabilityWarnings":["capabilities.nodeProfileService=enable but the backend is not configured (.Values.server is empty / submit is disabled). This capability requires the synchronizer, which is only enabled when connected to a backend, so nodeProfileServiceEnabled renders as FALSE in the node-agent configmap and node profiles will NOT be generated. To use it, set .Values.server (requires account and accessKey, or an existing credentials.cloudSecret).","capabilities.networkEventsStreaming=enable but the backend is not configured (.Values.server is empty / submit is disabled). This capability requires submitting data to a backend, so networkStreamingEnabled renders as FALSE in the node-agent configmap and network events will NOT be streamed. To use it, set .Values.server (requires account and accessKey, or an existing credentials.cloudSecret).","capabilities.httpDetection=enable but capabilities.runtimeDetection is not enabled. HTTP detection runs on top of runtime detection, so httpDetectionEnabled renders as FALSE in the node-agent configmap. To use it, set capabilities.runtimeDetection=enable."],
           "components":{"autoUpdater":{"enabled":false},"clamAV":{"enabled":false},"cloudSecret":{"create":true,"name":"cloud-secret"},"customCaCertificates":{"name":"custom-ca-certificates"},"nodeAgent":{"enabled":true},"operator":{"enabled":true},"sbomScanner":{"enabled":false},"serviceDiscovery":{"enabled":false},"storage":{"enabled":true},"synchronizer":{"enabled":false}},
@@ -29171,7 +29171,7 @@ minimal capabilities:
       template:
         metadata:
           annotations:
-            checksum/capabilities-config: 7a49a6fc780134d0e85ffe2f7611c8bfed75bdb6752c0f5ec13eaf8d21906162
+            checksum/capabilities-config: a8e7a3dfbfefb3bdd0fa5e5c6711e93bca85f7c98419f8de6d0f54a5f4e8db43
             checksum/cloud-config: f315887bdf96fc815b21575acf09f7d9c293c7b9b834ef4ad71a08061659d3dc
             checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
             checksum/operator-config: 897b9695f85200fafc0400f7ad53a4381fec26c8cebb032423b3dd41d044dc08
@@ -30430,7 +30430,7 @@ multiple node agents:
           "kubescapeURL": "kubescape:8080",
           "clusterName": "kind-kind",
           "storage": true,
-          "relevantImageVulnerabilitiesEnabled": true,
+          "relevantImageVulnerabilitiesEnabled": false,
           "namespace": "kubescape",
           "imageVulnerabilitiesScanningEnabled": false,
           "postureScanEnabled": false,
@@ -30445,7 +30445,7 @@ multiple node agents:
           "useDefaultMatchers": false,
           "storeFilteredSbom": true,
           "continuousPostureScan": false,
-          "relevantImageVulnerabilitiesConfiguration": "enable",
+          "relevantImageVulnerabilitiesConfiguration": "disable",
           "riskAcceptance": true
         }
     kind: ConfigMap
@@ -30471,7 +30471,7 @@ multiple node agents:
     data:
       capabilities: |
         {
-          "capabilities":{"admissionController":"enable","autoUpgrading":"enable","hostProfileService":"disable","httpDetection":"enable","malwareDetection":"enable","manageWorkloads":"enable","networkEventsStreaming":"enable","networkPolicyService":"enable","nodeProfileService":"enable","nodeSbomGeneration":"enable","operator":"enable","relevancy":"enable","remediation":"enable","riskAcceptance":"enable","runtimeDetection":"enable","runtimeObservability":"enable","scanEmbeddedSBOMs":"enable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"enable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
+          "capabilities":{"admissionController":"enable","autoUpgrading":"enable","hostProfileService":"disable","httpDetection":"enable","malwareDetection":"enable","manageWorkloads":"enable","networkEventsStreaming":"enable","networkPolicyService":"enable","nodeProfileService":"enable","nodeSbomGeneration":"enable","operator":"enable","remediation":"enable","riskAcceptance":"enable","runtimeDetection":"enable","runtimeObservability":"enable","scanEmbeddedSBOMs":"enable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"enable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
           "effectiveCapabilities":{"httpDetection":"enable","networkEventsStreaming":"enable","nodeProfileService":"enable"},
           "capabilityWarnings":[],
           "components":{"autoUpdater":{"enabled":true},"clamAV":{"enabled":true},"cloudSecret":{"create":true,"name":"cloud-secret"},"customCaCertificates":{"name":"custom-ca-certificates"},"nodeAgent":{"enabled":true},"operator":{"enabled":true},"sbomScanner":{"enabled":false},"serviceDiscovery":{"enabled":true},"storage":{"enabled":true},"synchronizer":{"enabled":true}},
@@ -31329,7 +31329,7 @@ multiple node agents:
       template:
         metadata:
           annotations:
-            checksum/cloud-config: e3f0603f9a5d1dfa8e0e6a597ed66fdf3eeb3094fdfa0c4943fed7d54a79bb26
+            checksum/cloud-config: 4729fa7c7bd171c76f5db717bd81f5f2357f9cf7cea5910bd8925a7586dd9b44
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
             checksum/node-agent-config: 7c8c87ab1e121ce2eb7ade04c916b964fd4ee10c2aa3cbe5c96ef90a874db78c
             checksum/proxy-config: c03b6781aa61faaacfa84a96809236591dde0cbd43a204e05d5ba3044bb9d5d8
@@ -31642,7 +31642,7 @@ multiple node agents:
       template:
         metadata:
           annotations:
-            checksum/cloud-config: e3f0603f9a5d1dfa8e0e6a597ed66fdf3eeb3094fdfa0c4943fed7d54a79bb26
+            checksum/cloud-config: 4729fa7c7bd171c76f5db717bd81f5f2357f9cf7cea5910bd8925a7586dd9b44
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
             checksum/node-agent-config: 7c8c87ab1e121ce2eb7ade04c916b964fd4ee10c2aa3cbe5c96ef90a874db78c
             checksum/proxy-config: c03b6781aa61faaacfa84a96809236591dde0cbd43a204e05d5ba3044bb9d5d8
@@ -33472,8 +33472,8 @@ multiple node agents:
       template:
         metadata:
           annotations:
-            checksum/capabilities-config: df8d7518e2512d152c278452ee368f61fb1306ee6fa3f6bf735845924f9e55c7
-            checksum/cloud-config: e3f0603f9a5d1dfa8e0e6a597ed66fdf3eeb3094fdfa0c4943fed7d54a79bb26
+            checksum/capabilities-config: 9a9aa97a8f31c9a14bb1ea42bdff6ffa9d30ff7efd4955c2b4abad8b47623edc
+            checksum/cloud-config: 4729fa7c7bd171c76f5db717bd81f5f2357f9cf7cea5910bd8925a7586dd9b44
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
             checksum/operator-config: 02dd603eb05df8c1f17ddda15da5952dfa5f6df29c328c12e6a1c9da94d467ea
             checksum/proxy-config: c03b6781aa61faaacfa84a96809236591dde0cbd43a204e05d5ba3044bb9d5d8
@@ -34071,7 +34071,7 @@ multiple node agents:
       template:
         metadata:
           annotations:
-            checksum/cloud-config: e3f0603f9a5d1dfa8e0e6a597ed66fdf3eeb3094fdfa0c4943fed7d54a79bb26
+            checksum/cloud-config: 4729fa7c7bd171c76f5db717bd81f5f2357f9cf7cea5910bd8925a7586dd9b44
             checksum/storage-config: 1ea6cd96a34b413e579082e520fc488b12a53c20f3764d47de0f81f0a4ec7fbc
           labels:
             app: storage
@@ -35264,7 +35264,7 @@ multiple node agents:
       template:
         metadata:
           annotations:
-            checksum/cloud-config: e3f0603f9a5d1dfa8e0e6a597ed66fdf3eeb3094fdfa0c4943fed7d54a79bb26
+            checksum/cloud-config: 4729fa7c7bd171c76f5db717bd81f5f2357f9cf7cea5910bd8925a7586dd9b44
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
             checksum/proxy-config: c03b6781aa61faaacfa84a96809236591dde0cbd43a204e05d5ba3044bb9d5d8
             checksum/synchronizer-configmap: f1c83380b4ab227f8219ffd32e23133bbf93d37a08f4f07e3c91063394ec0ad5
@@ -35625,7 +35625,7 @@ priority class scheduling:
           "kubescapeURL": "kubescape:8080",
           "clusterName": "kind-kind",
           "storage": true,
-          "relevantImageVulnerabilitiesEnabled": true,
+          "relevantImageVulnerabilitiesEnabled": false,
           "namespace": "kubescape",
           "imageVulnerabilitiesScanningEnabled": false,
           "postureScanEnabled": false,
@@ -35640,7 +35640,7 @@ priority class scheduling:
           "useDefaultMatchers": false,
           "storeFilteredSbom": false,
           "continuousPostureScan": false,
-          "relevantImageVulnerabilitiesConfiguration": "enable",
+          "relevantImageVulnerabilitiesConfiguration": "disable",
           "riskAcceptance": false
         }
     kind: ConfigMap
@@ -35666,7 +35666,7 @@ priority class scheduling:
     data:
       capabilities: |
         {
-          "capabilities":{"admissionController":"enable","autoUpgrading":"disable","hostProfileService":"disable","httpDetection":"enable","malwareDetection":"disable","manageWorkloads":"disable","networkEventsStreaming":"enable","networkPolicyService":"enable","nodeProfileService":"enable","nodeSbomGeneration":"enable","operator":"enable","relevancy":"enable","remediation":"disable","riskAcceptance":"disable","runtimeDetection":"enable","runtimeObservability":"enable","scanEmbeddedSBOMs":"disable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"disable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
+          "capabilities":{"admissionController":"enable","autoUpgrading":"disable","hostProfileService":"disable","httpDetection":"enable","malwareDetection":"disable","manageWorkloads":"disable","networkEventsStreaming":"enable","networkPolicyService":"enable","nodeProfileService":"enable","nodeSbomGeneration":"enable","operator":"enable","remediation":"disable","riskAcceptance":"disable","runtimeDetection":"enable","runtimeObservability":"enable","scanEmbeddedSBOMs":"disable","seccompProfileBackend":"crd","seccompProfileService":"enable","syncSBOM":"disable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
           "effectiveCapabilities":{"httpDetection":"enable","networkEventsStreaming":"enable","nodeProfileService":"enable"},
           "capabilityWarnings":[],
           "components":{"autoUpdater":{"enabled":false},"clamAV":{"enabled":false},"cloudSecret":{"create":true,"name":"cloud-secret"},"customCaCertificates":{"name":"custom-ca-certificates"},"nodeAgent":{"enabled":true},"operator":{"enabled":true},"sbomScanner":{"enabled":false},"serviceDiscovery":{"enabled":true},"storage":{"enabled":true},"synchronizer":{"enabled":true}},
@@ -36445,7 +36445,7 @@ priority class scheduling:
       template:
         metadata:
           annotations:
-            checksum/cloud-config: 90130d5b07aa6ed30dfba1923e35c75e203694db45b8de83a31abe958335ad0e
+            checksum/cloud-config: 578b4012d93ca58623ff3ce97387526497ea876e78ac083aaa49c8da82595bc0
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
             checksum/node-agent-config: 8bff6a89ff702282c3939665b6150ab6fb8f569b05e79e6eac22181a2d2cef0d
           labels:
@@ -37326,8 +37326,8 @@ priority class scheduling:
       template:
         metadata:
           annotations:
-            checksum/capabilities-config: 98e9fee293f492843533f7448698143ff7e0b5e19a4ad7efed8b3929ead487b6
-            checksum/cloud-config: 90130d5b07aa6ed30dfba1923e35c75e203694db45b8de83a31abe958335ad0e
+            checksum/capabilities-config: 82b2f93f0d7ac1248b96ac944644a769be85aba4cfdc57dea92259d4cb737e0c
+            checksum/cloud-config: 578b4012d93ca58623ff3ce97387526497ea876e78ac083aaa49c8da82595bc0
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
             checksum/operator-config: 510d33bb3ddb82d81e4e871ba80dff8e74dbe57e41ad9416e3f9c87a7369e924
           labels:
@@ -37837,7 +37837,7 @@ priority class scheduling:
       template:
         metadata:
           annotations:
-            checksum/cloud-config: 90130d5b07aa6ed30dfba1923e35c75e203694db45b8de83a31abe958335ad0e
+            checksum/cloud-config: 578b4012d93ca58623ff3ce97387526497ea876e78ac083aaa49c8da82595bc0
             checksum/storage-config: f8f88aaf0fe7b48a8e274019125a8038b9de3cce5ab669c5cd658f85d769d426
           labels:
             app: storage
@@ -38862,7 +38862,7 @@ priority class scheduling:
       template:
         metadata:
           annotations:
-            checksum/cloud-config: 90130d5b07aa6ed30dfba1923e35c75e203694db45b8de83a31abe958335ad0e
+            checksum/cloud-config: 578b4012d93ca58623ff3ce97387526497ea876e78ac083aaa49c8da82595bc0
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
             checksum/synchronizer-configmap: 797167c5b004e92bdd7747fd6fb764de656135980c2c2b7acaccabc3a96b32d5
           labels:
@@ -39069,2628 +39069,6 @@ priority class scheduling:
         kubescape.io/ignore: "true"
         tier: ks-control-plane
       name: synchronizer
-      namespace: kubescape
-relevancy only:
-  1: |+
-    raw: |+
-      Thank you for installing kubescape-operator version 1.41.0-duckling141.
-
-
-  2: |
-    apiVersion: v1
-    data:
-      accessKey: ""
-      account: ""
-    kind: Secret
-    metadata:
-      annotations: null
-      labels:
-        app: cloud-secret
-        app.kubernetes.io/component: cloud-secret
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        kubescape.io/infra: credentials
-        tier: ks-control-plane
-      name: cloud-secret
-      namespace: kubescape
-    type: Opaque
-  3: |
-    apiVersion: v1
-    data:
-      clusterData: |
-        {
-          "serviceDiscovery": false,
-          "vulnScanURL": "kubevuln:8080",
-          "kubevulnURL": "kubevuln:8080",
-          "kubescapeURL": "kubescape:8080",
-          "clusterName": "kind-kind",
-          "storage": true,
-          "relevantImageVulnerabilitiesEnabled": true,
-          "namespace": "kubescape",
-          "imageVulnerabilitiesScanningEnabled": false,
-          "postureScanEnabled": false,
-          "nodeAgent": "true",
-          "maxImageSize": 5.36870912e+09,
-          "maxSBOMSize": 2.097152e+07,
-          "keepLocal": true,
-          "scanTimeout": "5m",
-          "scanEmbeddedSBOMs": false,
-          "vexGeneration": false,
-          "cveMatchingMode": "adaptive",
-          "useDefaultMatchers": false,
-          "storeFilteredSbom": false,
-          "continuousPostureScan": false,
-          "relevantImageVulnerabilitiesConfiguration": "enable",
-          "riskAcceptance": false
-        }
-    kind: ConfigMap
-    metadata:
-      annotations: null
-      labels:
-        app: ks-cloud-config
-        app.kubernetes.io/component: ks-cloud-config
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        kubescape.io/infra: config
-        kubescape.io/tier: core
-        tier: ks-control-plane
-      name: ks-cloud-config
-      namespace: kubescape
-  4: |
-    apiVersion: v1
-    data:
-      capabilities: |
-        {
-          "capabilities":{"admissionController":"disable","autoUpgrading":"disable","hostProfileService":"disable","httpDetection":"disable","malwareDetection":"disable","manageWorkloads":"disable","networkEventsStreaming":"disable","networkPolicyService":"disable","nodeProfileService":"disable","nodeSbomGeneration":"disable","operator":"enable","relevancy":"enable","remediation":"disable","riskAcceptance":"disable","runtimeDetection":"disable","runtimeObservability":"disable","scanEmbeddedSBOMs":"disable","seccompProfileBackend":"crd","seccompProfileService":"disable","syncSBOM":"disable","testing":{"nodeAgentMultiplication":{"enabled":false,"replicas":5}}},
-          "effectiveCapabilities":{"httpDetection":"disable","networkEventsStreaming":"disable","nodeProfileService":"disable"},
-          "capabilityWarnings":[],
-          "components":{"autoUpdater":{"enabled":false},"clamAV":{"enabled":false},"cloudSecret":{"create":true,"name":"cloud-secret"},"customCaCertificates":{"name":"custom-ca-certificates"},"nodeAgent":{"enabled":true},"operator":{"enabled":true},"sbomScanner":{"enabled":false},"serviceDiscovery":{"enabled":false},"storage":{"enabled":true},"synchronizer":{"enabled":false}},
-          "configurations":{"otelUrl":"otelCollector.svc.monitoring:4317","persistence":"enable","priorityClass":{"daemonset":100000100,"enabled":true},"prometheusAnnotations":"disable"} ,
-          "serviceScanConfig" :{"enabled":false,"interval":"1h"}
-        }
-    kind: ConfigMap
-    metadata:
-      annotations: null
-      labels:
-        app: ks-capabilities
-        app.kubernetes.io/component: ks-capabilities
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        kubescape.io/tier: core
-        tier: ks-control-plane
-      name: ks-capabilities
-      namespace: kubescape
-  5: |
-    apiVersion: scheduling.k8s.io/v1
-    description: This priority class is for node-agent daemonset pods
-    globalDefault: false
-    kind: PriorityClass
-    metadata:
-      annotations: null
-      labels:
-        app: kubescape-critical
-        app.kubernetes.io/component: kubescape-critical
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        tier: ks-control-plane
-      name: kubescape-critical
-    value: 1.000001e+08
-  6: |
-    apiVersion: apiextensions.k8s.io/v1
-    kind: CustomResourceDefinition
-    metadata:
-      name: cloudproviderinfos.hostdata.kubescape.cloud
-    spec:
-      group: hostdata.kubescape.cloud
-      names:
-        kind: CloudProviderInfo
-        listKind: CloudProviderInfoList
-        plural: cloudproviderinfos
-        singular: cloudproviderinfo
-      scope: Cluster
-      versions:
-        - additionalPrinterColumns:
-            - jsonPath: .spec.nodeName
-              name: Node
-              type: string
-            - jsonPath: .status.lastSensed
-              name: Last Sensed
-              type: string
-          name: v1beta1
-          schema:
-            openAPIV3Schema:
-              properties:
-                spec:
-                  type: object
-                  x-kubernetes-preserve-unknown-fields: true
-                status:
-                  type: object
-                  x-kubernetes-preserve-unknown-fields: true
-              type: object
-          served: true
-          storage: true
-  7: |
-    apiVersion: apiextensions.k8s.io/v1
-    kind: CustomResourceDefinition
-    metadata:
-      name: cniinfos.hostdata.kubescape.cloud
-    spec:
-      group: hostdata.kubescape.cloud
-      names:
-        kind: CNIInfo
-        listKind: CNIInfoList
-        plural: cniinfos
-        singular: cniinfo
-      scope: Cluster
-      versions:
-        - additionalPrinterColumns:
-            - jsonPath: .spec.nodeName
-              name: Node
-              type: string
-            - jsonPath: .status.lastSensed
-              name: Last Sensed
-              type: string
-          name: v1beta1
-          schema:
-            openAPIV3Schema:
-              properties:
-                spec:
-                  type: object
-                  x-kubernetes-preserve-unknown-fields: true
-                status:
-                  type: object
-                  x-kubernetes-preserve-unknown-fields: true
-              type: object
-          served: true
-          storage: true
-  8: |
-    apiVersion: apiextensions.k8s.io/v1
-    kind: CustomResourceDefinition
-    metadata:
-      name: controlplaneinfos.hostdata.kubescape.cloud
-    spec:
-      group: hostdata.kubescape.cloud
-      names:
-        kind: ControlPlaneInfo
-        listKind: ControlPlaneInfoList
-        plural: controlplaneinfos
-        singular: controlplaneinfo
-      scope: Cluster
-      versions:
-        - additionalPrinterColumns:
-            - jsonPath: .spec.nodeName
-              name: Node
-              type: string
-            - jsonPath: .status.lastSensed
-              name: Last Sensed
-              type: string
-          name: v1beta1
-          schema:
-            openAPIV3Schema:
-              properties:
-                spec:
-                  type: object
-                  x-kubernetes-preserve-unknown-fields: true
-                status:
-                  type: object
-                  x-kubernetes-preserve-unknown-fields: true
-              type: object
-          served: true
-          storage: true
-  9: |
-    apiVersion: apiextensions.k8s.io/v1
-    kind: CustomResourceDefinition
-    metadata:
-      name: kernelversions.hostdata.kubescape.cloud
-    spec:
-      group: hostdata.kubescape.cloud
-      names:
-        kind: KernelVersion
-        listKind: KernelVersionList
-        plural: kernelversions
-        singular: kernelversion
-      scope: Cluster
-      versions:
-        - additionalPrinterColumns:
-            - jsonPath: .spec.nodeName
-              name: Node
-              type: string
-            - jsonPath: .status.lastSensed
-              name: Last Sensed
-              type: string
-          name: v1beta1
-          schema:
-            openAPIV3Schema:
-              properties:
-                spec:
-                  type: object
-                  x-kubernetes-preserve-unknown-fields: true
-                status:
-                  type: object
-                  x-kubernetes-preserve-unknown-fields: true
-              type: object
-          served: true
-          storage: true
-  10: |
-    apiVersion: apiextensions.k8s.io/v1
-    kind: CustomResourceDefinition
-    metadata:
-      name: kubeletinfos.hostdata.kubescape.cloud
-    spec:
-      group: hostdata.kubescape.cloud
-      names:
-        kind: KubeletInfo
-        listKind: KubeletInfoList
-        plural: kubeletinfos
-        singular: kubeletinfo
-      scope: Cluster
-      versions:
-        - additionalPrinterColumns:
-            - jsonPath: .spec.nodeName
-              name: Node
-              type: string
-            - jsonPath: .status.lastSensed
-              name: Last Sensed
-              type: string
-          name: v1beta1
-          schema:
-            openAPIV3Schema:
-              properties:
-                spec:
-                  type: object
-                  x-kubernetes-preserve-unknown-fields: true
-                status:
-                  type: object
-                  x-kubernetes-preserve-unknown-fields: true
-              type: object
-          served: true
-          storage: true
-  11: |
-    apiVersion: apiextensions.k8s.io/v1
-    kind: CustomResourceDefinition
-    metadata:
-      name: kubeproxyinfos.hostdata.kubescape.cloud
-    spec:
-      group: hostdata.kubescape.cloud
-      names:
-        kind: KubeProxyInfo
-        listKind: KubeProxyInfoList
-        plural: kubeproxyinfos
-        singular: kubeproxyinfo
-      scope: Cluster
-      versions:
-        - additionalPrinterColumns:
-            - jsonPath: .spec.nodeName
-              name: Node
-              type: string
-            - jsonPath: .status.lastSensed
-              name: Last Sensed
-              type: string
-          name: v1beta1
-          schema:
-            openAPIV3Schema:
-              properties:
-                spec:
-                  type: object
-                  x-kubernetes-preserve-unknown-fields: true
-                status:
-                  type: object
-                  x-kubernetes-preserve-unknown-fields: true
-              type: object
-          served: true
-          storage: true
-  12: |
-    apiVersion: apiextensions.k8s.io/v1
-    kind: CustomResourceDefinition
-    metadata:
-      name: linuxkernelvariables.hostdata.kubescape.cloud
-    spec:
-      group: hostdata.kubescape.cloud
-      names:
-        kind: LinuxKernelVariables
-        listKind: LinuxKernelVariablesList
-        plural: linuxkernelvariables
-        singular: linuxkernelvariable
-      scope: Cluster
-      versions:
-        - additionalPrinterColumns:
-            - jsonPath: .spec.nodeName
-              name: Node
-              type: string
-            - jsonPath: .status.lastSensed
-              name: Last Sensed
-              type: string
-          name: v1beta1
-          schema:
-            openAPIV3Schema:
-              properties:
-                spec:
-                  type: object
-                  x-kubernetes-preserve-unknown-fields: true
-                status:
-                  type: object
-                  x-kubernetes-preserve-unknown-fields: true
-              type: object
-          served: true
-          storage: true
-  13: |
-    apiVersion: apiextensions.k8s.io/v1
-    kind: CustomResourceDefinition
-    metadata:
-      name: linuxsecurityhardeningstatuses.hostdata.kubescape.cloud
-    spec:
-      group: hostdata.kubescape.cloud
-      names:
-        kind: LinuxSecurityHardeningStatus
-        listKind: LinuxSecurityHardeningStatusList
-        plural: linuxsecurityhardeningstatuses
-        singular: linuxsecurityhardeningstatus
-      scope: Cluster
-      versions:
-        - additionalPrinterColumns:
-            - jsonPath: .spec.nodeName
-              name: Node
-              type: string
-            - jsonPath: .status.lastSensed
-              name: Last Sensed
-              type: string
-          name: v1beta1
-          schema:
-            openAPIV3Schema:
-              properties:
-                spec:
-                  type: object
-                  x-kubernetes-preserve-unknown-fields: true
-                status:
-                  type: object
-                  x-kubernetes-preserve-unknown-fields: true
-              type: object
-          served: true
-          storage: true
-  14: |
-    apiVersion: apiextensions.k8s.io/v1
-    kind: CustomResourceDefinition
-    metadata:
-      name: openportslists.hostdata.kubescape.cloud
-    spec:
-      group: hostdata.kubescape.cloud
-      names:
-        kind: OpenPortsList
-        listKind: OpenPortsListList
-        plural: openportslists
-        singular: openportslist
-      scope: Cluster
-      versions:
-        - additionalPrinterColumns:
-            - jsonPath: .spec.nodeName
-              name: Node
-              type: string
-            - jsonPath: .status.lastSensed
-              name: Last Sensed
-              type: string
-          name: v1beta1
-          schema:
-            openAPIV3Schema:
-              properties:
-                spec:
-                  type: object
-                  x-kubernetes-preserve-unknown-fields: true
-                status:
-                  type: object
-                  x-kubernetes-preserve-unknown-fields: true
-              type: object
-          served: true
-          storage: true
-  15: |
-    apiVersion: apiextensions.k8s.io/v1
-    kind: CustomResourceDefinition
-    metadata:
-      annotations:
-        controller-gen.kubebuilder.io/version: v0.11.1
-      name: osreleasefiles.hostdata.kubescape.cloud
-    spec:
-      group: hostdata.kubescape.cloud
-      names:
-        kind: OsReleaseFile
-        listKind: OsReleaseFileList
-        plural: osreleasefiles
-        singular: osreleasefile
-      scope: Cluster
-      versions:
-        - additionalPrinterColumns:
-            - jsonPath: .spec.nodeName
-              name: Node
-              type: string
-            - jsonPath: .status.lastSensed
-              name: Last Sensed
-              type: string
-            - jsonPath: .metadata.creationTimestamp
-              name: Age
-              type: date
-          name: v1beta1
-          schema:
-            openAPIV3Schema:
-              description: OsReleaseFile contains the OS release information from a node
-              properties:
-                apiVersion:
-                  description: APIVersion defines the versioned schema of this representation of an object.
-                  type: string
-                kind:
-                  description: Kind is a string value representing the REST resource this object represents.
-                  type: string
-                metadata:
-                  type: object
-                spec:
-                  description: OsReleaseFileSpec contains the actual OS release file content
-                  properties:
-                    content:
-                      description: Content is the raw content of the OS release file
-                      type: string
-                    nodeName:
-                      description: NodeName is the name of the node this data came from
-                      type: string
-                  type: object
-                status:
-                  description: OsReleaseFileStatus contains status information about the sensing
-                  properties:
-                    error:
-                      description: Error contains any error message from the last sensing attempt
-                      type: string
-                    lastSensed:
-                      description: LastSensed is the timestamp when this data was last collected
-                      format: date-time
-                      type: string
-                  type: object
-              type: object
-          served: true
-          storage: true
-  16: |
-    apiVersion: v1
-    data:
-      trust-policy.json: |
-        {
-          "policy": {
-            "classes": {
-              "admission": {
-                "signers": [
-                  "key:58fd31c363a8fac06d6eb596c2e8c63d5913b4dc4b971ee62579ec41fff78826"
-                ],
-                "allowedSpecPaths": [
-                  "ingress",
-                  "egress"
-                ]
-              },
-              "base": {
-                "signers": [
-                  "key:162a08d59135652ee095ad2e0d927104c9e4eefe94f4ae844e7387ba1a7352d2"
-                ],
-                "allowedSpecPaths": [
-                  "architectures",
-                  "capabilities",
-                  "execs",
-                  "opens",
-                  "syscalls",
-                  "seccompProfile",
-                  "endpoints",
-                  "imageID",
-                  "imageTag",
-                  "rulePolicies",
-                  "identifiedCallStacks",
-                  "labelSelector"
-                ]
-              },
-              "overlay": {
-                "signers": [
-                  "key:58fd31c363a8fac06d6eb596c2e8c63d5913b4dc4b971ee62579ec41fff78826"
-                ],
-                "allowedSpecPaths": [
-                  "execs",
-                  "opens"
-                ]
-              }
-            }
-          },
-          "annotations": {
-            "signature.kubescape.io/certificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJXekNDQVFHZ0F3SUJBZ0lRS2VKQVd2MllrOFFQN09sRUdOai9zakFLQmdncWhrak9QUVFEQWpBVU1SSXcKRUFZRFZRUURFd2xzYjJOaGJDMXJaWGt3SGhjTk1qWXdPREV4TVRjek9UQTBXaGNOTWpjd09ERXhNVGN6T1RBMApXakFVTVJJd0VBWURWUVFERXdsc2IyTmhiQzFyWlhrd1dUQVRCZ2NxaGtqT1BRSUJCZ2dxaGtqT1BRTUJCd05DCkFBVEFnaVE5TVBtc1k4Lzl0aWFORWZGNThDZ0lqV2JBaUpBeEVEdnpGMUxtdE5QZk9YVHJLQ2xqMFBnRFhOR3QKQ09yWUtRWGx5TEE3YVJJa1o3ZUhyaU1Ub3pVd016QU9CZ05WSFE4QkFmOEVCQU1DQjRBd0V3WURWUjBsQkF3dwpDZ1lJS3dZQkJRVUhBd013REFZRFZSMFRBUUgvQkFJd0FEQUtCZ2dxaGtqT1BRUURBZ05JQURCRkFpRUFoajRMCjVWZGVFaU1RSkJRV0NBZmFWcURKb1hiWnBwcWYvOGlDaDc3TXIxRUNJR2tZalJ2QUs5dzVzT1ZjQ282UDVEY3QKNzVIRVVGMXRqMUZTZ1V3NmFPS1oKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=",
-            "signature.kubescape.io/identity": "local-key",
-            "signature.kubescape.io/issuer": "local",
-            "signature.kubescape.io/signature": "MEQCICsn0SKro/Z1NFK9iTdWkcUAGyl+zEFkrJGZQG/R7inXAiBy6zigq/MkNmwgXZk7ec8kKKiiaO1LVwwikdQXVDOhOg==",
-            "signature.kubescape.io/timestamp": "1786469944"
-          }
-        }
-    kind: ConfigMap
-    metadata:
-      labels:
-        kubescape.io/ignore: "true"
-      name: node-agent-bundle-policy
-      namespace: kubescape
-  17: |
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: ClusterRole
-    metadata:
-      annotations: null
-      labels:
-        app: node-agent
-        app.kubernetes.io/component: node-agent
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        tier: ks-control-plane
-      name: node-agent
-    rules:
-      - apiGroups:
-          - ""
-        resources:
-          - nodes
-          - nodes/proxy
-          - services
-          - endpoints
-          - namespaces
-          - configmaps
-        verbs:
-          - get
-          - watch
-          - list
-      - apiGroups:
-          - discovery.k8s.io
-        resources:
-          - endpointslices
-        verbs:
-          - get
-          - watch
-          - list
-      - apiGroups:
-          - ""
-        resources:
-          - pods
-        verbs:
-          - get
-          - watch
-          - list
-          - delete
-      - apiGroups:
-          - ""
-        resources:
-          - events
-        verbs:
-          - get
-          - watch
-          - list
-      - apiGroups:
-          - batch
-        resources:
-          - jobs
-          - cronjobs
-        verbs:
-          - get
-          - watch
-          - list
-      - apiGroups:
-          - apps
-        resources:
-          - deployments
-          - daemonsets
-          - statefulsets
-          - replicasets
-        verbs:
-          - get
-          - watch
-          - list
-      - apiGroups:
-          - kubescape.io
-        resources:
-          - seccompprofiles
-        verbs:
-          - get
-          - watch
-          - list
-      - apiGroups:
-          - spdx.softwarecomposition.kubescape.io
-        resources:
-          - containerprofiles
-        verbs:
-          - create
-          - get
-          - update
-          - watch
-          - list
-          - patch
-          - delete
-      - apiGroups:
-          - spdx.softwarecomposition.kubescape.io
-        resources:
-          - sbomsyfts
-        verbs:
-          - create
-          - get
-          - update
-          - watch
-          - list
-          - patch
-      - apiGroups:
-          - spdx.softwarecomposition.kubescape.io
-        resources:
-          - rogueartifacts
-        verbs:
-          - create
-          - get
-          - update
-          - watch
-          - list
-          - patch
-          - delete
-      - apiGroups:
-          - kubescape.io
-        resources:
-          - runtimerulealertbindings
-        verbs:
-          - list
-          - watch
-      - apiGroups:
-          - kubescape.io
-        resources:
-          - operatorcommands
-        verbs:
-          - get
-          - watch
-          - list
-      - apiGroups:
-          - kubescape.io
-        resources:
-          - operatorcommands/status
-        verbs:
-          - get
-          - watch
-          - list
-          - update
-          - patch
-      - apiGroups:
-          - events.k8s.io
-        resources:
-          - events
-        verbs:
-          - create
-          - patch
-          - get
-      - apiGroups:
-          - kubescape.io
-        resources:
-          - rules
-        verbs:
-          - list
-          - watch
-      - apiGroups:
-          - hostdata.kubescape.cloud
-        resources:
-          - osreleasefiles
-          - kernelversions
-          - linuxsecurityhardeningstatuses
-          - openportslists
-          - linuxkernelvariables
-          - kubeletinfos
-          - kubeproxyinfos
-          - controlplaneinfos
-          - cloudproviderinfos
-          - cniinfos
-        verbs:
-          - create
-          - get
-          - update
-          - patch
-          - list
-          - watch
-  18: |
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: ClusterRoleBinding
-    metadata:
-      annotations: null
-      labels:
-        app: node-agent
-        app.kubernetes.io/component: node-agent
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        tier: ks-control-plane
-      name: node-agent
-    roleRef:
-      apiGroup: rbac.authorization.k8s.io
-      kind: ClusterRole
-      name: node-agent
-    subjects:
-      - kind: ServiceAccount
-        name: node-agent
-        namespace: kubescape
-  19: |
-    apiVersion: v1
-    data:
-      config.json: |
-        {
-            "applicationProfileServiceEnabled": true,
-            "backendStorageEnabled": false,
-            "prometheusExporterEnabled": true,
-            "runtimeDetectionEnabled": false,
-            "httpDetectionEnabled": false,
-            "hostProfileServiceEnabled": false,
-            "directAlerts": {"enabled": true, "port": 50405, "jwtPublicKeyPath": "/etc/node-agent-direct/public.pem", "windowBytes": 67108864},
-            "networkServiceEnabled": false,
-            "malwareDetectionEnabled": false,
-            "hostMalwareSensorEnabled": false,
-            "hostNetworkSensorEnabled": false,
-            "dnsReportFailures": true,
-            "nestedContainersEnabled": false,
-            "nestedContainerRules": ["R0010","R1002","R1004","R1005","R1006","R1015","R1032"],
-            "hostSensorEnabled": true,
-            "hostSensorInterval": "5m",
-            "nodeProfileServiceEnabled": false,
-            "networkStreamingEnabled": false,
-            "maxImageSize": 5.36870912e+09,
-            "maxSBOMSize": 2.097152e+07,
-            "sbomGenerationEnabled": false,
-            "enableEmbeddedSBOMs": false,
-            "seccompServiceEnabled": false,
-            "seccompProfileBackend": "crd",
-            "initialDelay": "2m",
-            "updateDataPeriod": "10m",
-            "hostProfileUpdateDataPeriod": "30m",
-            "nodeProfileInterval": "10m",
-            "networkStreamingInterval": "2m",
-            "maxSniffingTimePerContainer": "24h",
-            "bundleTrustPolicyPath": "/etc/bundle/trust-policy.json",
-            "excludeLabels":null,
-            "exporters": {
-              "alertManagerExporterUrls":[],
-              "stdoutExporter":true,
-              "syslogExporterURL": ""
-            },
-            "excludeJsonPaths":null,
-            "ruleCooldown": {
-                "ruleCooldownDuration": "1h",
-                "ruleCooldownAfterCount": 1,
-                "ruleCooldownOnProfileFailure": true,
-                "ruleCooldownMaxSize": 20000
-            },
-            "alertDeduplication": {
-                "bypass": true
-            },
-            "scanFailureReporting": false,
-            "suggester": {"bobctlPath":"/usr/bin/bobctl","defaultBundle":"","delta":{"argsLiteralCap":3,"enabled":false,"expiry":"24h"},"enabled":false,"eventInterval":"10m","maxPerMinute":10,"mode":"whole","peers":{"crossNamespace":false,"enabled":false},"queueSize":64,"scope":"network","skipNamespaces":["kube-system","kubescape"],"timeout":"60s","workDir":"/tmp/suggester"}
-        }
-    kind: ConfigMap
-    metadata:
-      annotations: null
-      labels:
-        app: node-agent
-        app.kubernetes.io/component: node-agent
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        kubescape.io/tier: core
-        tier: ks-control-plane
-      name: node-agent
-      namespace: kubescape
-  20: |
-    apiVersion: apps/v1
-    kind: DaemonSet
-    metadata:
-      annotations: null
-      labels:
-        app: node-agent
-        app.kubernetes.io/component: node-agent
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        kubescape.io/tier: core
-        tier: ks-control-plane
-      name: node-agent
-      namespace: kubescape
-    spec:
-      selector:
-        matchLabels:
-          app.kubernetes.io/component: node-agent
-          app.kubernetes.io/instance: RELEASE-NAME
-          app.kubernetes.io/name: kubescape-operator
-      template:
-        metadata:
-          annotations:
-            checksum/cloud-config: eb8bb57bf88e95e3308f34aa6ad606c171a50a0407f37a7943bde599b223b551
-            checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
-            checksum/node-agent-config: fb8baf17a868ae40e94f3a477ed5fe33568201c0b97ee4ba42029df59760c5d7
-            container.apparmor.security.beta.kubernetes.io/node-agent: unconfined
-          labels:
-            app: node-agent
-            app.kubernetes.io/component: node-agent
-            app.kubernetes.io/instance: RELEASE-NAME
-            app.kubernetes.io/managed-by: Helm
-            app.kubernetes.io/name: kubescape-operator
-            app.kubernetes.io/part-of: kubescape
-            kubescape.io/ignore: "true"
-            kubescape.io/tier: core
-            otel: enabled
-            tier: ks-control-plane
-        spec:
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                  - matchExpressions:
-                      - key: kubernetes.io/os
-                        operator: In
-                        values:
-                          - linux
-          automountServiceAccountToken: true
-          containers:
-            - env:
-                - name: GOMEMLIMIT
-                  value: 1120MiB
-                - name: HOST_ROOT
-                  value: /host
-                - name: KS_LOGGER_LEVEL
-                  value: info
-                - name: KS_LOGGER_NAME
-                  value: zap
-                - name: OTEL_COLLECTOR_SVC
-                  value: otelCollector.svc.monitoring:4317
-                - name: NODE_NAME
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: spec.nodeName
-                - name: POD_NAME
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: metadata.name
-                - name: NAMESPACE_NAME
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: metadata.namespace
-                - name: KUBELET_ROOT
-                  value: /var/lib/kubelet
-                - name: AGENT_VERSION
-                  value: v0.1.0-m3-0f2f7afe
-                - name: NodeName
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: spec.nodeName
-              image: docker.io/entlein/duckling:v0.1.0-m3-0f2f7afe@sha256:125e2882f0322051a53a0f201c640db00f370563c99b8ac9456624f98710670e
-              imagePullPolicy: IfNotPresent
-              livenessProbe:
-                failureThreshold: 3
-                httpGet:
-                  path: /livez
-                  port: 7888
-                periodSeconds: 10
-                timeoutSeconds: 5
-              name: node-agent
-              ports:
-                - containerPort: 50405
-                  hostPort: 50405
-                  name: direct-alerts
-                  protocol: TCP
-              readinessProbe:
-                failureThreshold: 3
-                httpGet:
-                  path: /readyz
-                  port: 7888
-                periodSeconds: 10
-                timeoutSeconds: 5
-              resources:
-                limits:
-                  cpu: 500m
-                  memory: 1400Mi
-                requests:
-                  cpu: 100m
-                  memory: 180Mi
-              securityContext:
-                capabilities:
-                  add:
-                    - SYS_ADMIN
-                    - SYS_PTRACE
-                    - NET_ADMIN
-                    - SYSLOG
-                    - SYS_RESOURCE
-                    - IPC_LOCK
-                    - NET_RAW
-                privileged: false
-                runAsUser: 0
-                seLinuxOptions:
-                  type: spc_t
-              startupProbe:
-                failureThreshold: 30
-                httpGet:
-                  path: /readyz
-                  port: 7888
-                periodSeconds: 10
-                timeoutSeconds: 5
-              volumeMounts:
-                - mountPath: /etc/node-agent-direct
-                  name: direct-jwt
-                  readOnly: true
-                - mountPath: /host
-                  name: host
-                  readOnly: true
-                - mountPath: /var/lib/kubelet
-                  name: kubeletdir
-                - mountPath: /run
-                  name: run
-                - mountPath: /var
-                  name: var
-                  readOnly: true
-                - mountPath: /lib/modules
-                  name: modules
-                  readOnly: true
-                - mountPath: /sys/kernel/debug
-                  name: debugfs
-                - mountPath: /sys/fs/cgroup
-                  name: cgroup
-                  readOnly: true
-                - mountPath: /sys/fs/bpf
-                  name: bpffs
-                - mountPath: /data
-                  name: data
-                - mountPath: /profiles
-                  name: profiles
-                - mountPath: /boot
-                  name: boot
-                  readOnly: true
-                - mountPath: /clamav
-                  name: clamrun
-                - mountPath: /etc/credentials
-                  name: cloud-secret
-                  readOnly: true
-                - mountPath: /etc/config/clusterData.json
-                  name: ks-cloud-config
-                  readOnly: true
-                  subPath: clusterData.json
-                - mountPath: /etc/config/config.json
-                  name: config
-                  readOnly: true
-                  subPath: config.json
-                - mountPath: /etc/bundle
-                  name: bundle-policy
-                  readOnly: true
-          hostPID: true
-          nodeSelector:
-            kubernetes.io/os: linux
-          priorityClassName: kubescape-critical
-          securityContext: null
-          serviceAccountName: node-agent
-          tolerations: null
-          volumes:
-            - hostPath:
-                path: /
-              name: host
-            - hostPath:
-                path: /var/lib/kubelet
-              name: kubeletdir
-            - hostPath:
-                path: /run
-              name: run
-            - hostPath:
-                path: /var
-              name: var
-            - hostPath:
-                path: /sys/fs/cgroup
-              name: cgroup
-            - hostPath:
-                path: /lib/modules
-              name: modules
-            - hostPath:
-                path: /sys/fs/bpf
-              name: bpffs
-            - hostPath:
-                path: /sys/kernel/debug
-              name: debugfs
-            - hostPath:
-                path: /boot
-              name: boot
-            - emptyDir: null
-              name: data
-            - emptyDir: null
-              name: profiles
-            - hostPath:
-                path: /
-                type: Directory
-              name: host-filesystem
-            - name: direct-jwt
-              secret:
-                secretName: node-agent-direct-jwt-pub
-            - emptyDir: {}
-              name: clamdb
-            - emptyDir: {}
-              name: clamrun
-            - configMap:
-                items:
-                  - key: clamd.conf
-                    path: clamd.conf
-                  - key: freshclam.conf
-                    path: freshclam.conf
-                name: clamav
-              name: etc
-            - name: cloud-secret
-              secret:
-                secretName: cloud-secret
-            - configMap:
-                items:
-                  - key: clusterData
-                    path: clusterData.json
-                name: ks-cloud-config
-              name: ks-cloud-config
-            - configMap:
-                items:
-                  - key: config.json
-                    path: config.json
-                name: node-agent
-              name: config
-            - configMap:
-                name: node-agent-bundle-policy
-              name: bundle-policy
-  21: |
-    apiVersion: v1
-    data:
-      direct-keygen.sh: |
-        #!/usr/bin/env bash
-        set -euo pipefail
-        PUB_NS=${PUB_NS:?}
-        PRIV_NS=${PRIV_NS:?}
-        PRIV=node-agent-direct-jwt
-        PUB=node-agent-direct-jwt-pub
-
-        has() { kubectl -n "$1" get secret "$2" >/dev/null 2>&1; }
-        kubectl get namespace "$PRIV_NS" >/dev/null 2>&1 || kubectl create namespace "$PRIV_NS"
-
-        if has "$PRIV_NS" "$PRIV"; then
-          if has "$PUB_NS" "$PUB"; then
-            echo "keypair present, nothing to do"
-            exit 0
-          fi
-          echo "public half missing, deriving it from the existing private key"
-          kubectl -n "$PRIV_NS" get secret "$PRIV" -o jsonpath='{.data.key\.pem}' | base64 -d \
-            | openssl ec -pubout 2>/dev/null \
-            | kubectl -n "$PUB_NS" create secret generic "$PUB" --from-file=public.pem=/dev/stdin
-          exit 0
-        fi
-
-        echo "minting a new ES256 keypair"
-        key=$(openssl ecparam -name prime256v1 -genkey -noout)
-        printf '%s\n' "$key" | kubectl -n "$PRIV_NS" create secret generic "$PRIV" --from-file=key.pem=/dev/stdin
-        has "$PUB_NS" "$PUB" && kubectl -n "$PUB_NS" delete secret "$PUB"
-        printf '%s\n' "$key" | openssl ec -pubout 2>/dev/null \
-          | kubectl -n "$PUB_NS" create secret generic "$PUB" --from-file=public.pem=/dev/stdin
-    kind: ConfigMap
-    metadata:
-      annotations: null
-      labels:
-        app: node-agent
-        app.kubernetes.io/component: node-agent
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        tier: ks-control-plane
-      name: node-agent-direct-keygen
-      namespace: kubescape
-  22: |
-    apiVersion: batch/v1
-    kind: Job
-    metadata:
-      annotations: null
-      labels:
-        app: node-agent-direct-keygen
-        app.kubernetes.io/component: node-agent-direct-keygen
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        tier: ks-control-plane
-      name: node-agent-direct-keygen
-      namespace: kubescape
-    spec:
-      backoffLimit: 6
-      template:
-        metadata:
-          labels:
-            app: node-agent-direct-keygen
-            app.kubernetes.io/component: node-agent-direct-keygen
-            app.kubernetes.io/instance: RELEASE-NAME
-            app.kubernetes.io/managed-by: Helm
-            app.kubernetes.io/name: kubescape-operator
-            app.kubernetes.io/part-of: kubescape
-            kubescape.io/ignore: "true"
-            tier: ks-control-plane
-        spec:
-          containers:
-            - command:
-                - /scripts/direct-keygen.sh
-              env:
-                - name: PUB_NS
-                  value: kubescape
-                - name: PRIV_NS
-                  value: kubescape
-              image: quay.io/kubescape/kubectl:1.36.1
-              imagePullPolicy: IfNotPresent
-              name: keygen
-              resources:
-                limits:
-                  cpu: 200m
-                  memory: 128Mi
-                requests:
-                  cpu: 10m
-                  memory: 32Mi
-              securityContext:
-                allowPrivilegeEscalation: false
-                capabilities:
-                  drop:
-                    - ALL
-                readOnlyRootFilesystem: true
-                runAsNonRoot: true
-                runAsUser: 1000
-              volumeMounts:
-                - mountPath: /scripts
-                  name: scripts
-                - mountPath: /tmp
-                  name: tmp
-          restartPolicy: OnFailure
-          serviceAccountName: node-agent-direct-keygen
-          volumes:
-            - configMap:
-                defaultMode: 493
-                name: node-agent-direct-keygen
-              name: scripts
-            - emptyDir: {}
-              name: tmp
-      ttlSecondsAfterFinished: 300
-  23: |
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: Role
-    metadata:
-      annotations: null
-      labels:
-        app: node-agent
-        app.kubernetes.io/component: node-agent
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        tier: ks-control-plane
-      name: node-agent-direct-keygen
-      namespace: kubescape
-    rules:
-      - apiGroups:
-          - ""
-        resources:
-          - secrets
-        verbs:
-          - get
-          - create
-          - delete
-  24: |
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: RoleBinding
-    metadata:
-      annotations: null
-      labels:
-        app: node-agent
-        app.kubernetes.io/component: node-agent
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        tier: ks-control-plane
-      name: node-agent-direct-keygen
-      namespace: kubescape
-    roleRef:
-      apiGroup: rbac.authorization.k8s.io
-      kind: Role
-      name: node-agent-direct-keygen
-    subjects:
-      - kind: ServiceAccount
-        name: node-agent-direct-keygen
-        namespace: kubescape
-  25: |
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: ClusterRole
-    metadata:
-      annotations: null
-      labels:
-        app: node-agent
-        app.kubernetes.io/component: node-agent
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        tier: ks-control-plane
-      name: NAMESPACE-node-agent-direct-keygen
-    rules:
-      - apiGroups:
-          - ""
-        resources:
-          - namespaces
-        verbs:
-          - get
-          - create
-  26: |
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: ClusterRoleBinding
-    metadata:
-      annotations: null
-      labels:
-        app: node-agent
-        app.kubernetes.io/component: node-agent
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        tier: ks-control-plane
-      name: NAMESPACE-node-agent-direct-keygen
-    roleRef:
-      apiGroup: rbac.authorization.k8s.io
-      kind: ClusterRole
-      name: NAMESPACE-node-agent-direct-keygen
-    subjects:
-      - kind: ServiceAccount
-        name: node-agent-direct-keygen
-        namespace: kubescape
-  27: |
-    apiVersion: v1
-    kind: ServiceAccount
-    metadata:
-      annotations: null
-      labels:
-        app: node-agent
-        app.kubernetes.io/component: node-agent
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        tier: ks-control-plane
-      name: node-agent-direct-keygen
-      namespace: kubescape
-  28: |
-    apiVersion: v1
-    kind: Service
-    metadata:
-      annotations: null
-      labels:
-        app: node-agent
-        app.kubernetes.io/component: node-agent
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        tier: ks-control-plane
-      name: node-agent
-      namespace: kubescape
-    spec:
-      ports:
-        - name: prometheus
-          port: 8080
-          protocol: TCP
-          targetPort: 8080
-      selector:
-        app.kubernetes.io/component: node-agent
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/name: kubescape-operator
-  29: |
-    apiVersion: v1
-    kind: ServiceAccount
-    metadata:
-      annotations: null
-      labels:
-        app: node-agent
-        app.kubernetes.io/component: node-agent
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        tier: ks-control-plane
-      name: node-agent
-      namespace: kubescape
-  30: |
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: ClusterRole
-    metadata:
-      annotations: null
-      labels:
-        app: operator
-        app.kubernetes.io/component: operator
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        tier: ks-control-plane
-      name: operator
-    rules:
-      - apiGroups:
-          - ""
-        resources:
-          - pods
-          - nodes
-          - namespaces
-          - configmaps
-          - services
-        verbs:
-          - get
-          - watch
-          - list
-      - apiGroups:
-          - ""
-        resources:
-          - events
-        verbs:
-          - create
-          - patch
-      - apiGroups:
-          - ""
-        resources:
-          - secrets
-        verbs:
-          - get
-          - watch
-          - list
-      - apiGroups:
-          - batch
-        resources:
-          - jobs
-          - cronjobs
-        verbs:
-          - get
-          - watch
-          - list
-          - create
-          - update
-          - delete
-          - patch
-      - apiGroups:
-          - apps
-        resources:
-          - deployments
-          - daemonsets
-          - statefulsets
-          - replicasets
-        verbs:
-          - get
-          - watch
-          - list
-      - apiGroups:
-          - spdx.softwarecomposition.kubescape.io
-        resources:
-          - containerprofiles
-          - sbomsyfts
-        verbs:
-          - get
-          - watch
-          - list
-          - delete
-      - apiGroups:
-          - kubescape.io
-        resources:
-          - runtimerulealertbindings
-          - rules
-        verbs:
-          - list
-          - watch
-          - get
-      - apiGroups:
-          - kubescape.io
-        resources:
-          - servicesscanresults
-        verbs:
-          - get
-          - watch
-          - list
-          - create
-          - update
-          - delete
-          - patch
-      - apiGroups:
-          - kubescape.io
-        resources:
-          - operatorcommands
-        verbs:
-          - get
-          - watch
-          - list
-          - create
-          - update
-          - patch
-      - apiGroups:
-          - kubescape.io
-        resources:
-          - operatorcommands/status
-        verbs:
-          - get
-          - watch
-          - list
-          - update
-          - patch
-  31: |
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: ClusterRoleBinding
-    metadata:
-      annotations: null
-      labels:
-        app: operator
-        app.kubernetes.io/component: operator
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        tier: ks-control-plane
-      name: operator
-    roleRef:
-      apiGroup: rbac.authorization.k8s.io
-      kind: ClusterRole
-      name: operator
-    subjects:
-      - kind: ServiceAccount
-        name: operator
-        namespace: kubescape
-  32: |
-    apiVersion: v1
-    data:
-      config.json: |
-        {
-          "namespace": "kubescape",
-          "excludeJsonPaths":null,
-          "nodeAgentAutoscaler": {
-            "enabled": false,
-            "nodeGroupLabel": "node.kubernetes.io/instance-type",
-            "resourcePercentages": {
-              "requestCPU": 2,
-              "requestMemory": 2,
-              "limitCPU": 5,
-              "limitMemory": 5
-            },
-            "minResources": {
-              "cpu": "100m",
-              "memory": "180Mi"
-            },
-            "maxResources": {
-              "cpu": "2000m",
-              "memory": "4Gi"
-            },
-            "reconcileInterval": "5m",
-            "templatePath": "/etc/templates/daemonset-template.yaml",
-            "operatorDeploymentName": "operator",
-            "goMemLimitPercentage": 0.8,
-            "seLinuxType": "spc_t",
-            "bottlerocketAutoDetect": true
-          }
-        }
-    kind: ConfigMap
-    metadata:
-      annotations: null
-      labels:
-        app: operator
-        app.kubernetes.io/component: operator
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        kubescape.io/tier: core
-        tier: ks-control-plane
-      name: operator
-      namespace: kubescape
-  33: |
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      annotations: null
-      labels:
-        app: operator
-        app.kubernetes.io/component: operator
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        kubescape.io/tier: core
-        tier: ks-control-plane
-      name: operator
-      namespace: kubescape
-    spec:
-      replicas: 1
-      revisionHistoryLimit: 2
-      selector:
-        matchLabels:
-          app.kubernetes.io/component: operator
-          app.kubernetes.io/instance: RELEASE-NAME
-          app.kubernetes.io/name: kubescape-operator
-      strategy:
-        rollingUpdate:
-          maxSurge: 0%
-          maxUnavailable: 100%
-        type: RollingUpdate
-      template:
-        metadata:
-          annotations:
-            checksum/capabilities-config: 1c432cc5223cfdd104f910f66d345b7e5e0b375a06f8ff6fb45ec6075b52c87d
-            checksum/cloud-config: eb8bb57bf88e95e3308f34aa6ad606c171a50a0407f37a7943bde599b223b551
-            checksum/cloud-secret: 3248919273cee6d6f750f97ea378fc79fff1f03b131f21d584a00258bf475a80
-            checksum/operator-config: bddabc38a767de3ad12c73596ffd31be81312ec45dddee9a321cb13f51b96736
-          labels:
-            app: operator
-            app.kubernetes.io/component: operator
-            app.kubernetes.io/instance: RELEASE-NAME
-            app.kubernetes.io/managed-by: Helm
-            app.kubernetes.io/name: kubescape-operator
-            app.kubernetes.io/part-of: kubescape
-            kubescape.io/ignore: "true"
-            kubescape.io/tier: core
-            tier: ks-control-plane
-        spec:
-          affinity: null
-          automountServiceAccountToken: true
-          containers:
-            - env:
-                - name: NODE_NAME
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: spec.nodeName
-                - name: HELM_RELEASE
-                  value: kubescape-operator
-                - name: GOMEMLIMIT
-                  valueFrom:
-                    resourceFieldRef:
-                      divisor: "1"
-                      resource: limits.memory
-                - name: KS_LOGGER_LEVEL
-                  value: info
-                - name: KS_LOGGER_NAME
-                  value: zap
-              image: quay.io/kubescape/operator:v0.2.162
-              imagePullPolicy: IfNotPresent
-              livenessProbe:
-                httpGet:
-                  path: /v1/liveness
-                  port: readiness-port
-                initialDelaySeconds: 3
-                periodSeconds: 3
-              name: operator
-              ports:
-                - containerPort: 4002
-                  name: trigger-port
-                  protocol: TCP
-                - containerPort: 8000
-                  name: readiness-port
-                  protocol: TCP
-              readinessProbe:
-                httpGet:
-                  path: /v1/readiness
-                  port: readiness-port
-                initialDelaySeconds: 10
-                periodSeconds: 5
-              resources:
-                limits:
-                  cpu: 300m
-                  memory: 300Mi
-                requests:
-                  cpu: 50m
-                  memory: 100Mi
-              securityContext:
-                allowPrivilegeEscalation: false
-                capabilities:
-                  drop:
-                    - ALL
-                readOnlyRootFilesystem: true
-                runAsNonRoot: true
-              volumeMounts:
-                - mountPath: /etc/credentials
-                  name: cloud-secret
-                  readOnly: true
-                - mountPath: /tmp
-                  name: tmp-dir
-                - mountPath: /etc/config/clusterData.json
-                  name: ks-cloud-config
-                  readOnly: true
-                  subPath: clusterData.json
-                - mountPath: /etc/config/capabilities.json
-                  name: ks-capabilities
-                  readOnly: true
-                  subPath: capabilities.json
-                - mountPath: /etc/config/config.json
-                  name: config
-                  readOnly: true
-                  subPath: config.json
-          nodeSelector:
-            kubernetes.io/os: linux
-          securityContext:
-            fsGroup: 65532
-            runAsUser: 65532
-            seccompProfile:
-              type: RuntimeDefault
-          serviceAccountName: operator
-          tolerations: null
-          volumes:
-            - name: cloud-secret
-              secret:
-                secretName: cloud-secret
-            - emptyDir: {}
-              name: tmp-dir
-            - configMap:
-                items:
-                  - key: clusterData
-                    path: clusterData.json
-                name: ks-cloud-config
-              name: ks-cloud-config
-            - configMap:
-                items:
-                  - key: capabilities
-                    path: capabilities.json
-                name: ks-capabilities
-              name: ks-capabilities
-            - configMap:
-                items:
-                  - key: config.json
-                    path: config.json
-                name: operator
-              name: config
-  34: |
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: Role
-    metadata:
-      annotations: null
-      labels:
-        app: operator
-        app.kubernetes.io/component: operator
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        tier: ks-control-plane
-      name: operator
-      namespace: kubescape
-    rules:
-      - apiGroups:
-          - ""
-        resources:
-          - configmaps
-          - secrets
-        verbs:
-          - create
-          - get
-          - update
-          - watch
-          - list
-          - patch
-          - delete
-      - apiGroups:
-          - batch
-        resources:
-          - cronjobs
-        verbs:
-          - create
-          - get
-          - update
-          - watch
-          - list
-          - patch
-          - delete
-  35: |
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: RoleBinding
-    metadata:
-      annotations: null
-      labels:
-        app: operator
-        app.kubernetes.io/component: operator
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        tier: ks-control-plane
-      name: operator
-      namespace: kubescape
-    roleRef:
-      apiGroup: rbac.authorization.k8s.io
-      kind: Role
-      name: operator
-    subjects:
-      - kind: ServiceAccount
-        name: operator
-        namespace: kubescape
-  36: |
-    apiVersion: v1
-    kind: Service
-    metadata:
-      annotations: null
-      labels:
-        app: operator
-        app.kubernetes.io/component: operator
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        tier: ks-control-plane
-      name: operator
-      namespace: kubescape
-    spec:
-      ports:
-        - port: 4002
-          protocol: TCP
-          targetPort: 4002
-      selector:
-        app.kubernetes.io/component: operator
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/name: kubescape-operator
-      type: ClusterIP
-  37: |
-    apiVersion: v1
-    automountServiceAccountToken: false
-    kind: ServiceAccount
-    metadata:
-      annotations: null
-      labels:
-        app: operator
-        app.kubernetes.io/component: operator
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        tier: ks-control-plane
-      name: operator
-      namespace: kubescape
-  38: |
-    apiVersion: apiregistration.k8s.io/v1
-    kind: APIService
-    metadata:
-      annotations: null
-      labels:
-        app: storage
-        app.kubernetes.io/component: storage
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        tier: ks-control-plane
-      name: v1beta1.spdx.softwarecomposition.kubescape.io
-    spec:
-      caBundle: bW9jay1jYS1jZXJ0
-      group: spdx.softwarecomposition.kubescape.io
-      groupPriorityMinimum: 1000
-      service:
-        name: storage
-        namespace: kubescape
-      version: v1beta1
-      versionPriority: 15
-  39: |
-    apiVersion: v1
-    data:
-      tls.crt: bW9jay1jYS1jZXJ0
-      tls.key: bW9jay1jYS1rZXk=
-    kind: Secret
-    metadata:
-      annotations:
-        helm.sh/resource-policy: keep
-      labels:
-        app: storage
-        app.kubernetes.io/component: storage
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        tier: ks-control-plane
-      name: storage-tls-ca
-      namespace: kubescape
-    type: kubernetes.io/tls
-  40: |
-    apiVersion: v1
-    data:
-      ca.crt: bW9jay1jYS1jZXJ0
-      tls.crt: bW9jay1jZXJ0LWNlcnQ=
-      tls.key: bW9jay1jZXJ0LWtleQ==
-    kind: Secret
-    metadata:
-      annotations: null
-      labels:
-        app: storage
-        app.kubernetes.io/component: storage
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        tier: ks-control-plane
-      name: storage-tls
-      namespace: kubescape
-    type: kubernetes.io/tls
-  41: |
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: ClusterRole
-    metadata:
-      annotations: null
-      labels:
-        app: storage
-        app.kubernetes.io/component: storage
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        tier: ks-control-plane
-      name: storage
-    rules:
-      - apiGroups:
-          - ""
-        resources:
-          - namespaces
-          - pods
-          - services
-        verbs:
-          - get
-          - watch
-          - list
-      - apiGroups:
-          - ""
-        resources:
-          - nodes
-        verbs:
-          - get
-          - list
-      - apiGroups:
-          - admissionregistration.k8s.io
-        resources:
-          - mutatingwebhookconfigurations
-          - validatingwebhookconfigurations
-        verbs:
-          - get
-          - watch
-          - list
-      - apiGroups:
-          - apps
-        resources:
-          - daemonsets
-          - deployments
-          - replicasets
-          - statefulsets
-        verbs:
-          - get
-          - watch
-          - list
-      - apiGroups:
-          - batch
-        resources:
-          - cronjobs
-          - jobs
-        verbs:
-          - get
-          - watch
-          - list
-      - apiGroups:
-          - flowcontrol.apiserver.k8s.io
-        resources:
-          - prioritylevelconfigurations
-          - flowschemas
-        verbs:
-          - get
-          - watch
-          - list
-  42: |
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: ClusterRoleBinding
-    metadata:
-      annotations: null
-      labels:
-        app: storage
-        app.kubernetes.io/component: storage
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        tier: ks-control-plane
-      name: storage:system:auth-delegator
-    roleRef:
-      apiGroup: rbac.authorization.k8s.io
-      kind: ClusterRole
-      name: system:auth-delegator
-    subjects:
-      - kind: ServiceAccount
-        name: storage
-        namespace: kubescape
-  43: |
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: ClusterRoleBinding
-    metadata:
-      annotations: null
-      labels:
-        app: storage
-        app.kubernetes.io/component: storage
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        tier: ks-control-plane
-      name: storage
-    roleRef:
-      apiGroup: rbac.authorization.k8s.io
-      kind: ClusterRole
-      name: storage
-    subjects:
-      - kind: ServiceAccount
-        name: storage
-        namespace: kubescape
-  44: |
-    apiVersion: v1
-    data:
-      config.json: |
-        {
-          "cleanupInterval": "6h",
-          "maxSniffingTimePerContainer": "24h",
-          "disableVirtualCRDs": false,
-          "disableSeccompProfileEndpoint": true,
-          "excludeJsonPaths": null,
-          "defaultQueueLength": 100,
-          "defaultWorkerCount": 2,
-          "defaultMaxObjectSize": 400000,
-          "queueManagerEnabled": true,
-          "kindQueues": {"containerprofiles":{"maxObjectSize":2500000,"queueLength":50,"workerCount":2},"sbomsyftfiltereds":{"maxObjectSize":50000000,"queueLength":50,"workerCount":1},"sbomsyfts":{"maxObjectSize":100000000,"queueLength":50,"workerCount":1}},
-          "tlsClientCaFile": "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt",
-          "tlsServerCertFile": "/etc/storage-ca-certificates/tls.crt",
-          "tlsServerKeyFile": "/etc/storage-ca-certificates/tls.key",
-          "serverBindPort": "8443"
-        }
-    kind: ConfigMap
-    metadata:
-      labels:
-        app: storage
-        app.kubernetes.io/component: storage
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        kubescape.io/tier: core
-        tier: ks-control-plane
-      name: storage
-      namespace: kubescape
-  45: |
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      annotations: null
-      labels:
-        app: storage
-        app.kubernetes.io/component: storage
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        kubescape.io/tier: core
-        tier: ks-control-plane
-      name: storage
-      namespace: kubescape
-    spec:
-      replicas: 1
-      revisionHistoryLimit: 2
-      selector:
-        matchLabels:
-          app.kubernetes.io/component: storage
-          app.kubernetes.io/instance: RELEASE-NAME
-          app.kubernetes.io/name: kubescape-operator
-      strategy:
-        type: Recreate
-      template:
-        metadata:
-          annotations:
-            checksum/cloud-config: eb8bb57bf88e95e3308f34aa6ad606c171a50a0407f37a7943bde599b223b551
-            checksum/storage-config: cadbb034b82afa2e7607968d63e701e0f7eb166d0714ee28f887fb149ed91fb4
-          labels:
-            app: storage
-            app.kubernetes.io/component: storage
-            app.kubernetes.io/instance: RELEASE-NAME
-            app.kubernetes.io/managed-by: Helm
-            app.kubernetes.io/name: kubescape-operator
-            app.kubernetes.io/part-of: kubescape
-            kubescape.io/ignore: "true"
-            kubescape.io/tier: core
-            tier: ks-control-plane
-        spec:
-          affinity: null
-          containers:
-            - env:
-                - name: GOMEMLIMIT
-                  valueFrom:
-                    resourceFieldRef:
-                      divisor: "1"
-                      resource: limits.memory
-                - name: KS_LOGGER_LEVEL
-                  value: info
-                - name: KS_LOGGER_NAME
-                  value: zap
-              image: ghcr.io/k8sstormcenter/storage:m3-acd5fefd@sha256:61fb57fcefbce088a818f45801b19137b6f12763906f2b48cd3d0e0fb4a11e8e
-              imagePullPolicy: IfNotPresent
-              livenessProbe:
-                httpGet:
-                  path: /livez
-                  port: 8443
-                  scheme: HTTPS
-              name: apiserver
-              readinessProbe:
-                httpGet:
-                  path: /readyz
-                  port: 8443
-                  scheme: HTTPS
-              resources:
-                limits:
-                  cpu: 1500m
-                  memory: 1500Mi
-                requests:
-                  cpu: 100m
-                  memory: 400Mi
-              securityContext:
-                allowPrivilegeEscalation: false
-                capabilities:
-                  drop:
-                    - ALL
-                runAsNonRoot: true
-              volumeMounts:
-                - mountPath: /data
-                  name: data
-                - mountPath: /etc/config/clusterData.json
-                  name: ks-cloud-config
-                  readOnly: true
-                  subPath: clusterData.json
-                - mountPath: /etc/config/config.json
-                  name: config
-                  readOnly: true
-                  subPath: config.json
-                - mountPath: /etc/storage-ca-certificates
-                  name: ca-certificates
-                  readOnly: true
-          nodeSelector:
-            kubernetes.io/os: linux
-          securityContext:
-            fsGroup: 65532
-            runAsUser: 65532
-            seccompProfile:
-              type: RuntimeDefault
-          serviceAccountName: storage
-          tolerations: null
-          volumes:
-            - name: data
-              persistentVolumeClaim:
-                claimName: kubescape-storage
-            - configMap:
-                items:
-                  - key: clusterData
-                    path: clusterData.json
-                name: ks-cloud-config
-              name: ks-cloud-config
-            - configMap:
-                items:
-                  - key: config.json
-                    path: config.json
-                name: storage
-              name: config
-            - name: ca-certificates
-              secret:
-                secretName: storage-tls
-  46: |
-    apiVersion: v1
-    kind: PersistentVolumeClaim
-    metadata:
-      annotations: null
-      labels:
-        app: storage
-        app.kubernetes.io/component: storage
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        tier: ks-control-plane
-      name: kubescape-storage
-      namespace: kubescape
-    spec:
-      accessModes:
-        - ReadWriteOnce
-      resources:
-        requests:
-          storage: 5Gi
-  47: |
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: RoleBinding
-    metadata:
-      annotations: null
-      labels:
-        app: storage
-        app.kubernetes.io/component: storage
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        tier: ks-control-plane
-      name: storage-auth-reader
-      namespace: kube-system
-    roleRef:
-      apiGroup: rbac.authorization.k8s.io
-      kind: Role
-      name: extension-apiserver-authentication-reader
-    subjects:
-      - kind: ServiceAccount
-        name: storage
-        namespace: kubescape
-  48: |
-    apiVersion: apiextensions.k8s.io/v1
-    kind: CustomResourceDefinition
-    metadata:
-      annotations: null
-      labels:
-        app: seccompprofile
-        app.kubernetes.io/component: seccompprofile
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        tier: ks-control-plane
-      name: seccompprofiles.kubescape.io
-    spec:
-      group: kubescape.io
-      names:
-        kind: SeccompProfile
-        listKind: SeccompProfileList
-        plural: seccompprofiles
-        shortNames:
-          - scp
-        singular: seccompprofile
-      scope: Namespaced
-      versions:
-        - additionalPrinterColumns:
-            - jsonPath: .metadata.creationTimestamp
-              name: Age
-              type: date
-          name: v1
-          schema:
-            openAPIV3Schema:
-              properties:
-                apiVersion:
-                  type: string
-                kind:
-                  type: string
-                metadata:
-                  type: object
-                spec:
-                  properties:
-                    containers:
-                      items:
-                        properties:
-                          name:
-                            description: Name of the container
-                            type: string
-                          path:
-                            description: Path to the seccomp profile
-                            type: string
-                          spec:
-                            properties:
-                              architectures:
-                                description: The architecture used for system calls
-                                items:
-                                  type: string
-                                type: array
-                              baseProfileName:
-                                description: Name of base profile to union into this profile
-                                type: string
-                              defaultAction:
-                                description: The default action for seccomp
-                                type: string
-                              disabled:
-                                description: Whether the profile is disabled
-                                type: boolean
-                              flags:
-                                description: List of flags to use with seccomp(2)
-                                items:
-                                  type: string
-                                type: array
-                              listenerMetadata:
-                                description: Opaque data to pass to the seccomp agent
-                                type: string
-                              listenerPath:
-                                description: Path of UNIX domain socket to contact a seccomp agent
-                                type: string
-                              syscalls:
-                                items:
-                                  properties:
-                                    action:
-                                      description: The action for seccomp rules
-                                      type: string
-                                    args:
-                                      items:
-                                        properties:
-                                          index:
-                                            description: The index for syscall arguments
-                                            format: int64
-                                            type: integer
-                                          op:
-                                            description: The operator for syscall arguments
-                                            type: string
-                                          value:
-                                            description: The value for syscall arguments
-                                            format: int64
-                                            type: integer
-                                          valueTwo:
-                                            description: The second value for syscall arguments
-                                            format: int64
-                                            type: integer
-                                        type: object
-                                      type: array
-                                    errnoRet:
-                                      description: The errno return code to use
-                                      format: int64
-                                      type: integer
-                                    names:
-                                      description: The names of the syscalls
-                                      items:
-                                        type: string
-                                      type: array
-                                  type: object
-                                type: array
-                            type: object
-                            x-kubernetes-preserve-unknown-fields: true
-                        type: object
-                      type: array
-                    ephemeralContainers:
-                      items:
-                        properties:
-                          name:
-                            description: Name of the ephemeral container
-                            type: string
-                          path:
-                            description: Path to the seccomp profile
-                            type: string
-                          spec:
-                            properties:
-                              architectures:
-                                description: The architecture used for system calls
-                                items:
-                                  type: string
-                                type: array
-                              baseProfileName:
-                                description: Name of base profile to union into this profile
-                                type: string
-                              defaultAction:
-                                description: The default action for seccomp
-                                type: string
-                              disabled:
-                                description: Whether the profile is disabled
-                                type: boolean
-                              flags:
-                                description: List of flags to use with seccomp(2)
-                                items:
-                                  type: string
-                                type: array
-                              listenerMetadata:
-                                description: Opaque data to pass to the seccomp agent
-                                type: string
-                              listenerPath:
-                                description: Path of UNIX domain socket to contact a seccomp agent
-                                type: string
-                              syscalls:
-                                items:
-                                  properties:
-                                    action:
-                                      description: The action for seccomp rules
-                                      type: string
-                                    args:
-                                      items:
-                                        properties:
-                                          index:
-                                            description: The index for syscall arguments
-                                            format: int64
-                                            type: integer
-                                          op:
-                                            description: The operator for syscall arguments
-                                            type: string
-                                          value:
-                                            description: The value for syscall arguments
-                                            format: int64
-                                            type: integer
-                                          valueTwo:
-                                            description: The second value for syscall arguments
-                                            format: int64
-                                            type: integer
-                                        type: object
-                                      type: array
-                                    errnoRet:
-                                      description: The errno return code to use
-                                      format: int64
-                                      type: integer
-                                    names:
-                                      description: The names of the syscalls
-                                      items:
-                                        type: string
-                                      type: array
-                                  type: object
-                                type: array
-                            type: object
-                            x-kubernetes-preserve-unknown-fields: true
-                        type: object
-                      type: array
-                    initContainers:
-                      items:
-                        properties:
-                          name:
-                            description: Name of the init container
-                            type: string
-                          path:
-                            description: Path to the seccomp profile
-                            type: string
-                          spec:
-                            properties:
-                              architectures:
-                                description: The architecture used for system calls
-                                items:
-                                  type: string
-                                type: array
-                              baseProfileName:
-                                description: Name of base profile to union into this profile
-                                type: string
-                              defaultAction:
-                                description: The default action for seccomp
-                                type: string
-                              disabled:
-                                description: Whether the profile is disabled
-                                type: boolean
-                              flags:
-                                description: List of flags to use with seccomp(2)
-                                items:
-                                  type: string
-                                type: array
-                              listenerMetadata:
-                                description: Opaque data to pass to the seccomp agent
-                                type: string
-                              listenerPath:
-                                description: Path of UNIX domain socket to contact a seccomp agent
-                                type: string
-                              syscalls:
-                                items:
-                                  properties:
-                                    action:
-                                      description: The action for seccomp rules
-                                      type: string
-                                    args:
-                                      items:
-                                        properties:
-                                          index:
-                                            description: The index for syscall arguments
-                                            format: int64
-                                            type: integer
-                                          op:
-                                            description: The operator for syscall arguments
-                                            type: string
-                                          value:
-                                            description: The value for syscall arguments
-                                            format: int64
-                                            type: integer
-                                          valueTwo:
-                                            description: The second value for syscall arguments
-                                            format: int64
-                                            type: integer
-                                        type: object
-                                      type: array
-                                    errnoRet:
-                                      description: The errno return code to use
-                                      format: int64
-                                      type: integer
-                                    names:
-                                      description: The names of the syscalls
-                                      items:
-                                        type: string
-                                      type: array
-                                  type: object
-                                type: array
-                            type: object
-                            x-kubernetes-preserve-unknown-fields: true
-                        type: object
-                      type: array
-                  type: object
-                status:
-                  properties:
-                    containers:
-                      additionalProperties:
-                        properties:
-                          activeWorkloads:
-                            description: Active workloads using this profile
-                            items:
-                              type: string
-                            type: array
-                          conditions:
-                            items:
-                              properties:
-                                lastTransitionTime:
-                                  description: Last time this condition transitioned
-                                  format: date-time
-                                  type: string
-                                message:
-                                  description: Message about this condition's last transition
-                                  type: string
-                                reason:
-                                  description: Reason for this condition's last transition
-                                  type: string
-                                status:
-                                  description: Status of this condition (True, False, Unknown)
-                                  type: string
-                                type:
-                                  description: Type of this condition
-                                  type: string
-                              type: object
-                            type: array
-                          localhostProfile:
-                            description: Path for securityContext.seccompProfile.localhostProfile
-                            type: string
-                          path:
-                            description: Path to the seccomp profile
-                            type: string
-                          status:
-                            description: Profile state
-                            type: string
-                        type: object
-                      type: object
-                  type: object
-              type: object
-          served: true
-          storage: true
-          subresources:
-            status: {}
-  49: |
-    apiVersion: v1
-    kind: Service
-    metadata:
-      annotations: null
-      labels:
-        app: storage
-        app.kubernetes.io/component: storage
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        tier: ks-control-plane
-      name: storage
-      namespace: kubescape
-    spec:
-      ports:
-        - name: https
-          port: 443
-          protocol: TCP
-          targetPort: 8443
-      selector:
-        app.kubernetes.io/component: storage
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/name: kubescape-operator
-      type: ClusterIP
-  50: |
-    apiVersion: v1
-    kind: ServiceAccount
-    metadata:
-      annotations: null
-      labels:
-        app: storage
-        app.kubernetes.io/component: storage
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: kubescape-operator
-        app.kubernetes.io/part-of: kubescape
-        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
-        helm.sh/chart: kubescape-operator-1.41.0-duckling141
-        kubescape.io/ignore: "true"
-        tier: ks-control-plane
-      name: storage
       namespace: kubescape
 with image pull secret generated:
   1: |

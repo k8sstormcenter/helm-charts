@@ -3,7 +3,6 @@ templates:
   - configs/components-configmap.yaml
   - configs/cloudapi-configmap.yaml
   - configs/cloud-secret.yaml
-  - configs/matchingRules-configmap.yaml
   - node-agent/configmap.yaml
   - operator/deployment.yaml
   - operator/admission-webhook/configmap.yaml
@@ -19,7 +18,6 @@ tests:
       unittest: true
       clusterName: kind-kind
       nodeAgent.autoscaler.enabled: true
-      capabilities.relevancy: disable
       capabilities.runtimeObservability: disable
       capabilities.networkPolicyService: disable
       capabilities.runtimeDetection: disable

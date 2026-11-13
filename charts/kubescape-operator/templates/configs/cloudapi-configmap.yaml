@@ -19,7 +19,7 @@ data:
       "kubescapeURL": "kubescape:8080",
       "clusterName": "{{ regexReplaceAll "\\W+" .Values.clusterName "-" }}",
       "storage": {{ $components.storage.enabled }},
-      "relevantImageVulnerabilitiesEnabled": {{ eq .Values.capabilities.relevancy "enable" }},
+      "relevantImageVulnerabilitiesEnabled": false,
       "namespace": "{{ .Values.ksNamespace }}",
       "imageVulnerabilitiesScanningEnabled": false,
       "postureScanEnabled": false,
@@ -34,6 +34,6 @@ data:
       "useDefaultMatchers": false,
       "storeFilteredSbom": {{ or .Values.kubevuln.config.storeFilteredSboms (eq .Values.capabilities.syncSBOM "enable") }},
       "continuousPostureScan": false,
-      "relevantImageVulnerabilitiesConfiguration": "{{ .Values.capabilities.relevancy }}",
+      "relevantImageVulnerabilitiesConfiguration": "disable",
       "riskAcceptance": {{ eq .Values.capabilities.riskAcceptance "enable" }}
     }

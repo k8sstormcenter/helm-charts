@@ -106,7 +106,6 @@ capabilities:
   nodeSbomGeneration: enable # Warning: When disabled along with enableClusterWideSecretAccess: false, vulnerability scanning capabilities will be limited
   # Instruct Syft to also scan for SBOM files in the filesystem container
   scanEmbeddedSBOMs: disable
-  relevancy: disable
 
   # ====== Runtime related capabilities ======
   #

@@ -29,7 +29,6 @@ tests:
       alertCRD:
         installDefault: true
       capabilities:
-        relevancy: enable
         runtimeObservability: enable
         networkPolicyService: enable
         runtimeDetection: enable
@@ -103,34 +102,6 @@ tests:
       accessKey: f304d73b-d43c-412b-82ea-e4c859493ce6
       clusterName: kind-kind
       server: api.armosec.io
-  - it: relevancy only
-    asserts:
-      - matchSnapshot: {}
-    capabilities:
-      majorVersion: 1
-      minorVersion: 29
-      apiVersions:
-        - batch/v1
-    set:
-      unittest: true
-      configurations.otelUrl: "otelCollector.svc.monitoring:4317"
-      clusterName: kind-kind
-      excludeNamespaces: ""
-      includeNamespaces: ""
-      capabilities:
-        nodeSbomGeneration: disable
-        scanEmbeddedSBOMs: disable
-        relevancy: enable
-        runtimeObservability: disable
-        networkPolicyService: disable
-        networkEventsStreaming: disable
-        runtimeDetection: disable
-        httpDetection: disable
-        malwareDetection: disable
-        nodeProfileService: disable
-        admissionController: disable
-        seccompProfileService: disable
-        manageWorkloads: disable
   - it: default capabilities
     asserts:
       - matchSnapshot: {}
@@ -144,7 +115,6 @@ tests:
       alertCRD:
         installDefault: true
       capabilities:
-        relevancy: enable
         runtimeObservability: enable
         networkPolicyService: enable
         runtimeDetection: disable
@@ -360,7 +330,6 @@ tests:
       alertCRD:
         installDefault: true
       capabilities:
-        relevancy: enable
         runtimeObservability: enable
         networkPolicyService: enable
         runtimeDetection: enable
@@ -447,7 +416,6 @@ tests:
         installDefault: true
       capabilities:
         backend-storage: enable
-        relevancy: enable
         runtimeObservability: enable
         networkPolicyService: enable
         nodeProfileService: enable
@@ -467,7 +435,6 @@ tests:
       server: api.armosec.io
       clusterName: kind-kind
       capabilities:
-        relevancy: enable
         runtimeDetection: enable
       # global fallback for all deployments
       customScheduling:
