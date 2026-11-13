@@ -41,7 +41,6 @@ tests:
         autoUpgrading: enable
         admissionController: enable
         manageWorkloads: enable
-        networkEventsStreaming: enable
         syncSBOM: enable
       excludeLabels:
         foo: [bar, baz]
@@ -340,7 +339,6 @@ tests:
         autoUpgrading: enable
         admissionController: enable
         manageWorkloads: enable
-        networkEventsStreaming: enable
         syncSBOM: enable
       excludeLabels:
         foo: [bar, baz]

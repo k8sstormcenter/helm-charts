@@ -38,7 +38,6 @@ data:
         "hostSensorEnabled": {{ .Values.nodeAgent.config.hostSensor.enabled }},
         "hostSensorInterval": "{{ .Values.nodeAgent.config.hostSensor.interval }}",
         "nodeProfileServiceEnabled": {{ $gates.nodeProfileServiceEnabled }},
-        "networkStreamingEnabled": {{ $gates.networkStreamingEnabled }},
         "maxImageSize": {{ .Values.kubevuln.config.maxImageSize }},
         "maxSBOMSize": {{ .Values.kubevuln.config.maxSBOMSize }},
         "sbomGenerationEnabled": {{ eq .Values.capabilities.nodeSbomGeneration "enable" }},
@@ -49,7 +48,6 @@ data:
         "updateDataPeriod": "{{ .Values.nodeAgent.config.updatePeriod }}",
         "hostProfileUpdateDataPeriod": "{{ .Values.nodeAgent.config.hostProfileUpdatePeriod }}",
         "nodeProfileInterval": "{{ .Values.nodeAgent.config.nodeProfileInterval }}",
-        "networkStreamingInterval": "{{ .Values.nodeAgent.config.networkStreamingInterval }}",
         "maxSniffingTimePerContainer": "{{ .Values.nodeAgent.config.maxLearningPeriod }}",
         {{- if .Values.nodeAgent.bundleTrustPolicy.enabled }}
         "bundleTrustPolicyPath": "/etc/bundle/trust-policy.json",
