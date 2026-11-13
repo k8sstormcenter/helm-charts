@@ -1444,6 +1444,7 @@ all capabilities:
             - applicationprofile
             - context:kubernetes
             - context:host
+            - portability:degraded
         - description: Process path is allowed by profile but argument vector does not match any profile entry's arg pattern (literal or wildcard ⋯/*)
           enabled: true
           expressions:
@@ -1467,6 +1468,7 @@ all capabilities:
             - applicationprofile
             - context:kubernetes
             - context:host
+            - portability:degraded
         - description: Detects unexpected file access that is not in the baseline
           enabled: false
           expressions:
@@ -1490,6 +1492,7 @@ all capabilities:
             - applicationprofile
             - context:kubernetes
             - context:host
+            - portability:generated
         - description: Detects unexpected system calls that are not whitelisted by application profile
           enabled: false
           expressions:
@@ -1512,6 +1515,7 @@ all capabilities:
             - applicationprofile
             - context:kubernetes
             - context:host
+            - portability:generated
         - description: Detects unexpected capabilities that are not whitelisted by application profile
           enabled: true
           expressions:
@@ -1534,6 +1538,7 @@ all capabilities:
             - applicationprofile
             - context:kubernetes
             - context:host
+            - portability:generated
         - description: Detecting unexpected domain requests that are not whitelisted by application profile.
           enabled: true
           expressions:
@@ -1554,6 +1559,7 @@ all capabilities:
             - dns
             - anomaly
             - networkprofile
+            - portability:generated
         - description: Detecting a DNS answer for an allowlisted domain that carries an address outside the addresses the profile lists for that domain.
           enabled: true
           expressions:
@@ -1576,6 +1582,7 @@ all capabilities:
             - dns
             - anomaly
             - networkprofile
+            - portability:generated
         - description: Detecting non-resolving DNS names that carry a long label, the shape of data smuggled in DNS queries.
           enabled: true
           expressions:
@@ -1596,6 +1603,7 @@ all capabilities:
             - dns
             - exfiltration
             - networkprofile
+            - portability:degraded
         - description: Detecting unexpected access to service account token.
           enabled: true
           expressions:
@@ -1616,6 +1624,7 @@ all capabilities:
             - anomaly
             - serviceaccount
             - applicationprofile
+            - portability:generated
         - description: Detecting execution of kubernetes client
           enabled: true
           expressions:
@@ -1639,6 +1648,7 @@ all capabilities:
             - network
             - anomaly
             - applicationprofile
+            - portability:degraded
         - description: Detecting reading environment variables from procfs.
           enabled: true
           expressions:
@@ -1661,6 +1671,7 @@ all capabilities:
             - procfs
             - environment
             - applicationprofile
+            - portability:generated
         - description: Detecting eBPF program load.
           enabled: true
           expressions:
@@ -1681,6 +1692,7 @@ all capabilities:
             - bpf
             - ebpf
             - applicationprofile
+            - portability:degraded
         - description: Detecting access to sensitive files.
           enabled: true
           expressions:
@@ -1701,6 +1713,7 @@ all capabilities:
             - files
             - anomaly
             - applicationprofile
+            - portability:generated
         - description: Detecting unexpected egress network traffic that is not whitelisted by application profile.
           enabled: true
           expressions:
@@ -1722,6 +1735,7 @@ all capabilities:
             - network
             - anomaly
             - networkprofile
+            - portability:generated
         - description: Detecting unexpected ingress network traffic — an inbound connection whose peer is not whitelisted by the application profile ingress.
           enabled: true
           expressions:
@@ -1743,6 +1757,7 @@ all capabilities:
             - network
             - anomaly
             - networkprofile
+            - portability:generated
         - description: 'Detecting exec calls that are from malicious source like: /dev/shm'
           enabled: true
           expressions:
@@ -1764,6 +1779,7 @@ all capabilities:
             - exec
             - signature
             - malicious
+            - portability:degraded
         - description: Detecting exec calls of binaries that are not included in the base image
           enabled: true
           expressions:
@@ -1789,6 +1805,7 @@ all capabilities:
             - binary
             - base image
             - applicationprofile
+            - portability:degraded
         - description: Detecting Kernel Module Load.
           enabled: true
           expressions:
@@ -1810,6 +1827,7 @@ all capabilities:
             - kernel
             - module
             - load
+            - portability:native
         - description: Detecting ssh connection to disallowed port
           enabled: false
           expressions:
@@ -1832,6 +1850,7 @@ all capabilities:
             - port
             - malicious
             - networkprofile
+            - portability:degraded
         - description: Detecting exec calls from mounted paths.
           enabled: true
           expressions:
@@ -1852,6 +1871,7 @@ all capabilities:
             - exec
             - mount
             - applicationprofile
+            - portability:degraded
         - description: Detecting Fileless Execution
           enabled: true
           expressions:
@@ -1872,6 +1892,7 @@ all capabilities:
             - fileless
             - execution
             - malicious
+            - portability:degraded
         - description: Detecting Unshare System Call usage, which can be used to escape container.
           enabled: true
           expressions:
@@ -1894,6 +1915,7 @@ all capabilities:
             - unshare
             - anomaly
             - applicationprofile
+            - portability:generated
         - description: Detecting XMR Crypto Miners by randomx algorithm usage.
           enabled: true
           expressions:
@@ -1914,6 +1936,7 @@ all capabilities:
             - crypto
             - miners
             - malicious
+            - portability:not-applicable
         - description: Detecting Crypto miners communication by domain
           enabled: true
           expressions:
@@ -1936,6 +1959,7 @@ all capabilities:
             - miners
             - malicious
             - dns
+            - portability:native
         - description: Detecting Crypto Miners by suspicious port usage.
           enabled: true
           expressions:
@@ -1958,6 +1982,7 @@ all capabilities:
             - miners
             - malicious
             - networkprofile
+            - portability:generated
         - description: Detects symlink creation over sensitive files
           enabled: true
           expressions:
@@ -1978,6 +2003,7 @@ all capabilities:
             - anomaly
             - symlink
             - applicationprofile
+            - portability:generated
         - description: Detecting ld_preload hook techniques.
           enabled: false
           expressions:
@@ -2000,6 +2026,7 @@ all capabilities:
             - exec
             - malicious
             - applicationprofile
+            - portability:degraded
         - description: Detecting hardlink creation over sensitive files.
           enabled: true
           expressions:
@@ -2020,6 +2047,7 @@ all capabilities:
             - files
             - malicious
             - applicationprofile
+            - portability:generated
         - description: Detecting potentially malicious ptrace usage.
           enabled: true
           expressions:
@@ -2039,6 +2067,7 @@ all capabilities:
           tags:
             - process
             - malicious
+            - portability:not-applicable
         - description: Detects io_uring operations that were not recorded during the initial observation period, indicating potential unauthorized activity.
           enabled: true
           expressions:
@@ -2059,6 +2088,7 @@ all capabilities:
             - syscalls
             - io_uring
             - applicationprofile
+            - portability:degraded
         - description: Detects plaintext exec API calls intercepted from kubelet TLS connections, indicating potential unauthorized command execution via the kubelet API.
           enabled: true
           expressions:
@@ -2080,6 +2110,7 @@ all capabilities:
             - tls
             - exec
             - container_administration_command
+            - portability:not-applicable
         - description: Detects when a previously signed ApplicationProfile or NetworkNeighborhood has been tampered with (signature no longer valid).
           enabled: true
           expressions:
@@ -2098,6 +2129,7 @@ all capabilities:
             - integrity
             - signature
             - tamper
+            - portability:not-applicable
         - description: Detects exec operations on pods via the Kubernetes admission webhook (PodExecOptions CONNECT).
           enabled: true
           expressions:
@@ -2118,6 +2150,7 @@ all capabilities:
             - context:kubernetes
             - admission
             - exec
+            - portability:native
   30: |
     apiVersion: v1
     data:
@@ -14007,6 +14040,7 @@ default capabilities:
             - applicationprofile
             - context:kubernetes
             - context:host
+            - portability:degraded
         - description: Process path is allowed by profile but argument vector does not match any profile entry's arg pattern (literal or wildcard ⋯/*)
           enabled: true
           expressions:
@@ -14030,6 +14064,7 @@ default capabilities:
             - applicationprofile
             - context:kubernetes
             - context:host
+            - portability:degraded
         - description: Detects unexpected file access that is not in the baseline
           enabled: false
           expressions:
@@ -14053,6 +14088,7 @@ default capabilities:
             - applicationprofile
             - context:kubernetes
             - context:host
+            - portability:generated
         - description: Detects unexpected system calls that are not whitelisted by application profile
           enabled: false
           expressions:
@@ -14075,6 +14111,7 @@ default capabilities:
             - applicationprofile
             - context:kubernetes
             - context:host
+            - portability:generated
         - description: Detects unexpected capabilities that are not whitelisted by application profile
           enabled: true
           expressions:
@@ -14097,6 +14134,7 @@ default capabilities:
             - applicationprofile
             - context:kubernetes
             - context:host
+            - portability:generated
         - description: Detecting unexpected domain requests that are not whitelisted by application profile.
           enabled: true
           expressions:
@@ -14117,6 +14155,7 @@ default capabilities:
             - dns
             - anomaly
             - networkprofile
+            - portability:generated
         - description: Detecting a DNS answer for an allowlisted domain that carries an address outside the addresses the profile lists for that domain.
           enabled: true
           expressions:
@@ -14139,6 +14178,7 @@ default capabilities:
             - dns
             - anomaly
             - networkprofile
+            - portability:generated
         - description: Detecting non-resolving DNS names that carry a long label, the shape of data smuggled in DNS queries.
           enabled: true
           expressions:
@@ -14159,6 +14199,7 @@ default capabilities:
             - dns
             - exfiltration
             - networkprofile
+            - portability:degraded
         - description: Detecting unexpected access to service account token.
           enabled: true
           expressions:
@@ -14179,6 +14220,7 @@ default capabilities:
             - anomaly
             - serviceaccount
             - applicationprofile
+            - portability:generated
         - description: Detecting execution of kubernetes client
           enabled: true
           expressions:
@@ -14202,6 +14244,7 @@ default capabilities:
             - network
             - anomaly
             - applicationprofile
+            - portability:degraded
         - description: Detecting reading environment variables from procfs.
           enabled: true
           expressions:
@@ -14224,6 +14267,7 @@ default capabilities:
             - procfs
             - environment
             - applicationprofile
+            - portability:generated
         - description: Detecting eBPF program load.
           enabled: true
           expressions:
@@ -14244,6 +14288,7 @@ default capabilities:
             - bpf
             - ebpf
             - applicationprofile
+            - portability:degraded
         - description: Detecting access to sensitive files.
           enabled: true
           expressions:
@@ -14264,6 +14309,7 @@ default capabilities:
             - files
             - anomaly
             - applicationprofile
+            - portability:generated
         - description: Detecting unexpected egress network traffic that is not whitelisted by application profile.
           enabled: true
           expressions:
@@ -14285,6 +14331,7 @@ default capabilities:
             - network
             - anomaly
             - networkprofile
+            - portability:generated
         - description: Detecting unexpected ingress network traffic — an inbound connection whose peer is not whitelisted by the application profile ingress.
           enabled: true
           expressions:
@@ -14306,6 +14353,7 @@ default capabilities:
             - network
             - anomaly
             - networkprofile
+            - portability:generated
         - description: 'Detecting exec calls that are from malicious source like: /dev/shm'
           enabled: true
           expressions:
@@ -14327,6 +14375,7 @@ default capabilities:
             - exec
             - signature
             - malicious
+            - portability:degraded
         - description: Detecting exec calls of binaries that are not included in the base image
           enabled: true
           expressions:
@@ -14352,6 +14401,7 @@ default capabilities:
             - binary
             - base image
             - applicationprofile
+            - portability:degraded
         - description: Detecting Kernel Module Load.
           enabled: true
           expressions:
@@ -14373,6 +14423,7 @@ default capabilities:
             - kernel
             - module
             - load
+            - portability:native
         - description: Detecting ssh connection to disallowed port
           enabled: false
           expressions:
@@ -14395,6 +14446,7 @@ default capabilities:
             - port
             - malicious
             - networkprofile
+            - portability:degraded
         - description: Detecting exec calls from mounted paths.
           enabled: true
           expressions:
@@ -14415,6 +14467,7 @@ default capabilities:
             - exec
             - mount
             - applicationprofile
+            - portability:degraded
         - description: Detecting Fileless Execution
           enabled: true
           expressions:
@@ -14435,6 +14488,7 @@ default capabilities:
             - fileless
             - execution
             - malicious
+            - portability:degraded
         - description: Detecting Unshare System Call usage, which can be used to escape container.
           enabled: true
           expressions:
@@ -14457,6 +14511,7 @@ default capabilities:
             - unshare
             - anomaly
             - applicationprofile
+            - portability:generated
         - description: Detecting XMR Crypto Miners by randomx algorithm usage.
           enabled: true
           expressions:
@@ -14477,6 +14532,7 @@ default capabilities:
             - crypto
             - miners
             - malicious
+            - portability:not-applicable
         - description: Detecting Crypto miners communication by domain
           enabled: true
           expressions:
@@ -14499,6 +14555,7 @@ default capabilities:
             - miners
             - malicious
             - dns
+            - portability:native
         - description: Detecting Crypto Miners by suspicious port usage.
           enabled: true
           expressions:
@@ -14521,6 +14578,7 @@ default capabilities:
             - miners
             - malicious
             - networkprofile
+            - portability:generated
         - description: Detects symlink creation over sensitive files
           enabled: true
           expressions:
@@ -14541,6 +14599,7 @@ default capabilities:
             - anomaly
             - symlink
             - applicationprofile
+            - portability:generated
         - description: Detecting ld_preload hook techniques.
           enabled: false
           expressions:
@@ -14563,6 +14622,7 @@ default capabilities:
             - exec
             - malicious
             - applicationprofile
+            - portability:degraded
         - description: Detecting hardlink creation over sensitive files.
           enabled: true
           expressions:
@@ -14583,6 +14643,7 @@ default capabilities:
             - files
             - malicious
             - applicationprofile
+            - portability:generated
         - description: Detecting potentially malicious ptrace usage.
           enabled: true
           expressions:
@@ -14602,6 +14663,7 @@ default capabilities:
           tags:
             - process
             - malicious
+            - portability:not-applicable
         - description: Detects io_uring operations that were not recorded during the initial observation period, indicating potential unauthorized activity.
           enabled: true
           expressions:
@@ -14622,6 +14684,7 @@ default capabilities:
             - syscalls
             - io_uring
             - applicationprofile
+            - portability:degraded
         - description: Detects plaintext exec API calls intercepted from kubelet TLS connections, indicating potential unauthorized command execution via the kubelet API.
           enabled: true
           expressions:
@@ -14643,6 +14706,7 @@ default capabilities:
             - tls
             - exec
             - container_administration_command
+            - portability:not-applicable
         - description: Detects when a previously signed ApplicationProfile or NetworkNeighborhood has been tampered with (signature no longer valid).
           enabled: true
           expressions:
@@ -14661,6 +14725,7 @@ default capabilities:
             - integrity
             - signature
             - tamper
+            - portability:not-applicable
         - description: Detects exec operations on pods via the Kubernetes admission webhook (PodExecOptions CONNECT).
           enabled: true
           expressions:
@@ -14681,6 +14746,7 @@ default capabilities:
             - context:kubernetes
             - admission
             - exec
+            - portability:native
   23: |
     apiVersion: v1
     data:
@@ -23651,6 +23717,7 @@ multiple node agents:
             - applicationprofile
             - context:kubernetes
             - context:host
+            - portability:degraded
         - description: Process path is allowed by profile but argument vector does not match any profile entry's arg pattern (literal or wildcard ⋯/*)
           enabled: true
           expressions:
@@ -23674,6 +23741,7 @@ multiple node agents:
             - applicationprofile
             - context:kubernetes
             - context:host
+            - portability:degraded
         - description: Detects unexpected file access that is not in the baseline
           enabled: false
           expressions:
@@ -23697,6 +23765,7 @@ multiple node agents:
             - applicationprofile
             - context:kubernetes
             - context:host
+            - portability:generated
         - description: Detects unexpected system calls that are not whitelisted by application profile
           enabled: false
           expressions:
@@ -23719,6 +23788,7 @@ multiple node agents:
             - applicationprofile
             - context:kubernetes
             - context:host
+            - portability:generated
         - description: Detects unexpected capabilities that are not whitelisted by application profile
           enabled: true
           expressions:
@@ -23741,6 +23811,7 @@ multiple node agents:
             - applicationprofile
             - context:kubernetes
             - context:host
+            - portability:generated
         - description: Detecting unexpected domain requests that are not whitelisted by application profile.
           enabled: true
           expressions:
@@ -23761,6 +23832,7 @@ multiple node agents:
             - dns
             - anomaly
             - networkprofile
+            - portability:generated
         - description: Detecting a DNS answer for an allowlisted domain that carries an address outside the addresses the profile lists for that domain.
           enabled: true
           expressions:
@@ -23783,6 +23855,7 @@ multiple node agents:
             - dns
             - anomaly
             - networkprofile
+            - portability:generated
         - description: Detecting non-resolving DNS names that carry a long label, the shape of data smuggled in DNS queries.
           enabled: true
           expressions:
@@ -23803,6 +23876,7 @@ multiple node agents:
             - dns
             - exfiltration
             - networkprofile
+            - portability:degraded
         - description: Detecting unexpected access to service account token.
           enabled: true
           expressions:
@@ -23823,6 +23897,7 @@ multiple node agents:
             - anomaly
             - serviceaccount
             - applicationprofile
+            - portability:generated
         - description: Detecting execution of kubernetes client
           enabled: true
           expressions:
@@ -23846,6 +23921,7 @@ multiple node agents:
             - network
             - anomaly
             - applicationprofile
+            - portability:degraded
         - description: Detecting reading environment variables from procfs.
           enabled: true
           expressions:
@@ -23868,6 +23944,7 @@ multiple node agents:
             - procfs
             - environment
             - applicationprofile
+            - portability:generated
         - description: Detecting eBPF program load.
           enabled: true
           expressions:
@@ -23888,6 +23965,7 @@ multiple node agents:
             - bpf
             - ebpf
             - applicationprofile
+            - portability:degraded
         - description: Detecting access to sensitive files.
           enabled: true
           expressions:
@@ -23908,6 +23986,7 @@ multiple node agents:
             - files
             - anomaly
             - applicationprofile
+            - portability:generated
         - description: Detecting unexpected egress network traffic that is not whitelisted by application profile.
           enabled: true
           expressions:
@@ -23929,6 +24008,7 @@ multiple node agents:
             - network
             - anomaly
             - networkprofile
+            - portability:generated
         - description: Detecting unexpected ingress network traffic — an inbound connection whose peer is not whitelisted by the application profile ingress.
           enabled: true
           expressions:
@@ -23950,6 +24030,7 @@ multiple node agents:
             - network
             - anomaly
             - networkprofile
+            - portability:generated
         - description: 'Detecting exec calls that are from malicious source like: /dev/shm'
           enabled: true
           expressions:
@@ -23971,6 +24052,7 @@ multiple node agents:
             - exec
             - signature
             - malicious
+            - portability:degraded
         - description: Detecting exec calls of binaries that are not included in the base image
           enabled: true
           expressions:
@@ -23996,6 +24078,7 @@ multiple node agents:
             - binary
             - base image
             - applicationprofile
+            - portability:degraded
         - description: Detecting Kernel Module Load.
           enabled: true
           expressions:
@@ -24017,6 +24100,7 @@ multiple node agents:
             - kernel
             - module
             - load
+            - portability:native
         - description: Detecting ssh connection to disallowed port
           enabled: false
           expressions:
@@ -24039,6 +24123,7 @@ multiple node agents:
             - port
             - malicious
             - networkprofile
+            - portability:degraded
         - description: Detecting exec calls from mounted paths.
           enabled: true
           expressions:
@@ -24059,6 +24144,7 @@ multiple node agents:
             - exec
             - mount
             - applicationprofile
+            - portability:degraded
         - description: Detecting Fileless Execution
           enabled: true
           expressions:
@@ -24079,6 +24165,7 @@ multiple node agents:
             - fileless
             - execution
             - malicious
+            - portability:degraded
         - description: Detecting Unshare System Call usage, which can be used to escape container.
           enabled: true
           expressions:
@@ -24101,6 +24188,7 @@ multiple node agents:
             - unshare
             - anomaly
             - applicationprofile
+            - portability:generated
         - description: Detecting XMR Crypto Miners by randomx algorithm usage.
           enabled: true
           expressions:
@@ -24121,6 +24209,7 @@ multiple node agents:
             - crypto
             - miners
             - malicious
+            - portability:not-applicable
         - description: Detecting Crypto miners communication by domain
           enabled: true
           expressions:
@@ -24143,6 +24232,7 @@ multiple node agents:
             - miners
             - malicious
             - dns
+            - portability:native
         - description: Detecting Crypto Miners by suspicious port usage.
           enabled: true
           expressions:
@@ -24165,6 +24255,7 @@ multiple node agents:
             - miners
             - malicious
             - networkprofile
+            - portability:generated
         - description: Detects symlink creation over sensitive files
           enabled: true
           expressions:
@@ -24185,6 +24276,7 @@ multiple node agents:
             - anomaly
             - symlink
             - applicationprofile
+            - portability:generated
         - description: Detecting ld_preload hook techniques.
           enabled: false
           expressions:
@@ -24207,6 +24299,7 @@ multiple node agents:
             - exec
             - malicious
             - applicationprofile
+            - portability:degraded
         - description: Detecting hardlink creation over sensitive files.
           enabled: true
           expressions:
@@ -24227,6 +24320,7 @@ multiple node agents:
             - files
             - malicious
             - applicationprofile
+            - portability:generated
         - description: Detecting potentially malicious ptrace usage.
           enabled: true
           expressions:
@@ -24246,6 +24340,7 @@ multiple node agents:
           tags:
             - process
             - malicious
+            - portability:not-applicable
         - description: Detects io_uring operations that were not recorded during the initial observation period, indicating potential unauthorized activity.
           enabled: true
           expressions:
@@ -24266,6 +24361,7 @@ multiple node agents:
             - syscalls
             - io_uring
             - applicationprofile
+            - portability:degraded
         - description: Detects plaintext exec API calls intercepted from kubelet TLS connections, indicating potential unauthorized command execution via the kubelet API.
           enabled: true
           expressions:
@@ -24287,6 +24383,7 @@ multiple node agents:
             - tls
             - exec
             - container_administration_command
+            - portability:not-applicable
         - description: Detects when a previously signed ApplicationProfile or NetworkNeighborhood has been tampered with (signature no longer valid).
           enabled: true
           expressions:
@@ -24305,6 +24402,7 @@ multiple node agents:
             - integrity
             - signature
             - tamper
+            - portability:not-applicable
         - description: Detects exec operations on pods via the Kubernetes admission webhook (PodExecOptions CONNECT).
           enabled: true
           expressions:
@@ -24325,6 +24423,7 @@ multiple node agents:
             - context:kubernetes
             - admission
             - exec
+            - portability:native
   31: |
     apiVersion: v1
     data:
