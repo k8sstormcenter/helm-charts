@@ -1,0 +1,110 @@
+suite: Removed values keys are tolerated
+templates:
+  - configs/components-configmap.yaml
+  - configs/cloudapi-configmap.yaml
+  - configs/cloud-secret.yaml
+  - node-agent/configmap.yaml
+  - node-agent/daemonset.yaml
+  - operator/deployment.yaml
+  - operator/admission-webhook/configmap.yaml
+  - operator/configmap.yaml
+  - proxy-support/proxy-secret.yaml
+  - storage/certgen/configmap.yaml
+  - storage/configmap.yaml
+  - storage/deployment.yaml
+set:
+  unittest: true
+  clusterName: kind-kind
+  server: api.example.test
+  account: 9e6c0c2c-6bd0-4919-815b-55030de7c9a0
+  accessKey: f304d73b-d43c-412b-82ea-e4c859493ce6
+  credentials:
+    cloudSecret: existing-secret
+  capabilities:
+    runtimeDetection: enable
+    configurationScan: enable
+    continuousScan: enable
+    nodeScan: enable
+    vulnerabilityScan: enable
+    vexGeneration: enable
+    relevancy: enable
+    malwareDetection: enable
+    networkEventsStreaming: enable
+    nodeProfileService: enable
+    prometheusExporter: enable
+    kubescapeOffline: enable
+    riskAcceptance: enable
+    remediation: enable
+    manageWorkloads: enable
+  nodeAgent:
+    config:
+      malwareScanAllFiles: true
+      hostMalwareSensor: enable
+      nodeProfileInterval: 10m
+      networkStreamingInterval: 2m
+      httpExporterConfig:
+        url: http://synchronizer:8089/apis/v1/kubescape.io
+  kubescape:
+    serviceMonitor:
+      enabled: true
+  kubevuln:
+    config:
+      grypeDbPersistence: true
+  grypeOfflineDB:
+    enabled: true
+tests:
+  - it: node agent config carries none of the removed keys
+    template: node-agent/configmap.yaml
+    asserts:
+      - notMatchRegex:
+          path: data["config.json"]
+          pattern: malwareDetectionEnabled|hostMalwareSensorEnabled|nodeProfileServiceEnabled|nodeProfileInterval|networkStreamingEnabled|networkStreamingInterval|httpExporterConfig|backendStorageEnabled
+      - matchRegex:
+          path: data["config.json"]
+          pattern: '"runtimeDetectionEnabled": true'
+  - it: node agent daemon set renders one container and no backend environment
+    template: node-agent/daemonset.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - lengthEqual:
+          path: spec.template.spec.containers
+          count: 1
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          any: true
+          content:
+            name: API_URL
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          any: true
+          content:
+            name: CLAMAV_SOCKET
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: cloud-secret
+            secret:
+              secretName: cloud-secret
+  - it: cluster data reports every removed feature as disabled
+    template: configs/cloudapi-configmap.yaml
+    asserts:
+      - matchRegex:
+          path: data.clusterData
+          pattern: '"serviceDiscovery": false'
+      - matchRegex:
+          path: data.clusterData
+          pattern: '"imageVulnerabilitiesScanningEnabled": false'
+      - matchRegex:
+          path: data.clusterData
+          pattern: '"postureScanEnabled": false'
+      - matchRegex:
+          path: data.clusterData
+          pattern: '"continuousPostureScan": false'
+  - it: storage and operator still render
+    templates:
+      - storage/deployment.yaml
+      - operator/deployment.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
