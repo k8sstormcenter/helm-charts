@@ -19,7 +19,6 @@ data:
       "excludeNamespaces": "{{ .Values.excludeNamespaces }}",
         {{- end }}
       "namespace": "{{ .Values.ksNamespace }}",
-      "podScanGuardTime": "{{ .Values.operator.podScanGuardTime }}",
       "excludeJsonPaths": {{- .Values.configurations.excludeJsonPaths | toJson }},
         {{- if .Values.operator.rulesUpdateConfig }}
       "rulesUpdateConfig": {
@@ -55,15 +54,5 @@ data:
         "seLinuxType": {{ .Values.nodeAgent.seLinuxType | default "spc_t" | quote }},
         "bottlerocketAutoDetect": {{ .Values.nodeAgent.autoscaler.bottlerocketAutoDetect }}
       }
-        {{- $creds := ((.Values.imageScanning).privateRegistries).credentials }}
-        {{- if $creds }}
-        {{- $cred := index $creds 0 }}
-        {{- if $cred.skipTlsVerify }},
-      "registryScanningSkipTlsVerify": {{ $cred.skipTlsVerify }}
-        {{- end }}
-        {{- if $cred.insecure }},
-      "registryScanningInsecure": {{ $cred.insecure }}
-        {{- end }}
-        {{- end }}
     }
 {{- end }}

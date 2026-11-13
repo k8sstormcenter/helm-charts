@@ -27,7 +27,7 @@ rules:
     resources: ["deployments", "daemonsets", "statefulsets", "replicasets"]
     verbs: ["get", "watch", "list"]
   - apiGroups: ["spdx.softwarecomposition.kubescape.io"]
-    resources: ["vulnerabilitymanifests", "vulnerabilitymanifestsummaries", "openvulnerabilityexchangecontainers", "containerprofiles", "sbomsyfts"]
+    resources: ["containerprofiles", "sbomsyfts"]
     verbs: ["get", "watch", "list", "delete"]
   - apiGroups: ["kubescape.io"]
     resources: ["runtimerulealertbindings", "rules"]

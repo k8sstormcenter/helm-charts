@@ -4,7 +4,7 @@
     {{- if $api_server_service -}}
       {{ $api_server_ip = $api_server_service.spec.clusterIP }}
     {{- end -}}
-    {{ .Values.kubevuln.name }},{{ .Values.nodeAgent.name }},{{ .Values.operator.name }},kubernetes.default.svc.*,{{ $api_server_ip }}
+    {{ .Values.nodeAgent.name }},{{ .Values.operator.name }},kubernetes.default.svc.*,{{ $api_server_ip }}
     {{- if ne .Values.global.noProxy "" -}}
         ,{{- .Values.global.noProxy -}}
     {{- end -}}

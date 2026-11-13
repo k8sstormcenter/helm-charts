@@ -1,14 +1,4 @@
 {{- $components := fromYaml (include "components" .)  }}
-{{- $cveMatchingModeRaw := .Values.kubevuln.config.cveMatchingMode }}
-{{- $cveMatchingMode := "" }}
-{{- if kindIs "bool" $cveMatchingModeRaw }}
-  {{- /* Unquoted off/on/yes/no/true/false in YAML are parsed as booleans (the "Norway problem"); normalize back to the intended mode instead of silently misreading it. */}}
-  {{- $cveMatchingMode = ternary "on" "off" $cveMatchingModeRaw }}
-{{- else if $cveMatchingModeRaw }}
-  {{- $cveMatchingMode = $cveMatchingModeRaw }}
-{{- end }}
-{{- if not $cveMatchingMode }}{{- $cveMatchingMode = ternary "off" "adaptive" .Values.kubevuln.config.useDefaultMatchers }}{{- end }}
-{{- if not (has $cveMatchingMode (list "off" "on" "adaptive")) }}{{- fail (printf "kubevuln.config.cveMatchingMode must be one of off|on|adaptive, got %q" $cveMatchingMode) }}{{- end }}
 kind: ConfigMap
 apiVersion: v1
 metadata:
@@ -24,38 +14,26 @@ data:
   clusterData: |
     {
       "serviceDiscovery": {{ $components.serviceDiscovery.enabled }},
-      "vulnScanURL": "{{ .Values.kubevuln.name }}:{{ .Values.kubevuln.service.port }}",
-      "kubevulnURL": "{{ .Values.kubevuln.name }}:{{ .Values.kubevuln.service.port }}",
+      "vulnScanURL": "kubevuln:8080",
+      "kubevulnURL": "kubevuln:8080",
       "kubescapeURL": "kubescape:8080",
       "clusterName": "{{ regexReplaceAll "\\W+" .Values.clusterName "-" }}",
       "storage": {{ $components.storage.enabled }},
       "relevantImageVulnerabilitiesEnabled": {{ eq .Values.capabilities.relevancy "enable" }},
       "namespace": "{{ .Values.ksNamespace }}",
-      "imageVulnerabilitiesScanningEnabled": {{ $components.kubevuln.enabled }},
+      "imageVulnerabilitiesScanningEnabled": false,
       "postureScanEnabled": false,
       "nodeAgent": "{{ $components.nodeAgent.enabled }}",
       "maxImageSize": {{ .Values.kubevuln.config.maxImageSize }},
       "maxSBOMSize": {{ .Values.kubevuln.config.maxSBOMSize }},
       "keepLocal": {{ not $components.serviceDiscovery.enabled }},
-      "scanTimeout": "{{ .Values.kubevuln.config.scanTimeout }}",
+      "scanTimeout": "5m",
       "scanEmbeddedSBOMs": {{ eq .Values.capabilities.scanEmbeddedSBOMs "enable" }},
-      "vexGeneration": {{ eq .Values.capabilities.vexGeneration "enable" }},
-      "cveMatchingMode": "{{ $cveMatchingMode }}",
-      "useDefaultMatchers": {{ eq $cveMatchingMode "off" }},
-{{- if .Values.kubevuln.config.trustedVendors }}
-      "trustedVendors": {{ .Values.kubevuln.config.trustedVendors | toJson }},
-{{- end }}
+      "vexGeneration": false,
+      "cveMatchingMode": "adaptive",
+      "useDefaultMatchers": false,
       "storeFilteredSbom": {{ or .Values.kubevuln.config.storeFilteredSboms (eq .Values.capabilities.syncSBOM "enable") }},
       "continuousPostureScan": false,
-{{- if not (empty .Values.kubevuln.config.grypeDbListingURL) }}
-      "listingURL": "{{ .Values.kubevuln.config.grypeDbListingURL }}",
-{{- end }}
-{{- if .Values.grypeOfflineDB.enabled }}
-      "listingURL": "http://{{ .Values.grypeOfflineDB.name }}:80/databases",
-{{- end }}
       "relevantImageVulnerabilitiesConfiguration": "{{ .Values.capabilities.relevancy }}",
       "riskAcceptance": {{ eq .Values.capabilities.riskAcceptance "enable" }}
-      {{- if .Values.kubevuln.config.proxyRegistryMap }},
-      "proxyRegistryMap": {{ toJson .Values.kubevuln.config.proxyRegistryMap }}
-      {{- end }}
     }

@@ -41,11 +41,6 @@ submit: {{ $submit }}
 
 {{- define "components" -}}
 {{- $configurations := fromYaml (include "configurations" .) }}
-{{- $vulnerabilityScanEnabled := eq .Values.capabilities.vulnerabilityScan "enable" }}
-kubevuln:
-  enabled: {{ $vulnerabilityScanEnabled }}
-kubevulnScheduler:
-  enabled: {{ $vulnerabilityScanEnabled }}
 nodeAgent:
   enabled: {{ or
    (eq .Values.capabilities.relevancy "enable")
@@ -107,7 +102,6 @@ effectiveCapabilities:
   nodeProfileService: {{ if $nodeProfileService }}enable{{ else }}disable{{ end }}
   networkEventsStreaming: {{ if $networkStreaming }}enable{{ else }}disable{{ end }}
   httpDetection: {{ if $httpDetection }}enable{{ else }}disable{{ end }}
-  vulnerabilityScan: {{ if and (eq $c.vulnerabilityScan "enable") $backendStorage }}backend{{ else }}{{ $c.vulnerabilityScan }}{{ end }}
 warnings:
 {{- if and (eq $c.nodeProfileService "enable") (not $nodeProfileService) }}
 - "capabilities.nodeProfileService=enable but the backend is not configured (.Values.server is empty / submit is disabled). This capability requires the synchronizer, which is only enabled when connected to a backend, so nodeProfileServiceEnabled renders as FALSE in the node-agent configmap and node profiles will NOT be generated. To use it, set .Values.server (requires account and accessKey, or an existing credentials.cloudSecret)."

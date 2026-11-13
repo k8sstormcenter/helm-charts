@@ -29,9 +29,7 @@ tests:
       alertCRD:
         installDefault: true
       capabilities:
-        vulnerabilityScan: enable
         relevancy: enable
-        vexGeneration: enable
         runtimeObservability: enable
         networkPolicyService: enable
         runtimeDetection: enable
@@ -75,20 +73,9 @@ tests:
           scc:
             enabled: true
       imagePullSecrets: [foo, bar]
-      grypeOfflineDB:
-        enabled: true
-        image:
-          tag: "latest"
-        podAnnotations:
-          foo: bar
-        podLabels:
-          bar: baz
       nodeAgent.gke.allowlist:
         enabled: true
         name: armo-kubescape-node-agent-1.27
-      kubevuln.config.grypeDbPersistence: true
-      kubevuln.config.useDefaultMatchers: true
-      kubevulnScheduler.scanSchedule: "1 2 3 4 5"
       nodeAgent.config.skipKernelVersionCheck: true
       storage.forceVirtualCrds: true
       storage.mtls.enabled: false
@@ -104,7 +91,6 @@ tests:
       clusterName: kind-kind
       excludeNamespaces: ""
       includeNamespaces: ""
-      kubevulnScheduler.scanSchedule: "1 2 3 4 5"
   - it: disable otel
     asserts:
       - matchSnapshot: {}
@@ -116,7 +102,6 @@ tests:
       account: 9e6c0c2c-6bd0-4919-815b-55030de7c9a0
       accessKey: f304d73b-d43c-412b-82ea-e4c859493ce6
       clusterName: kind-kind
-      kubevulnScheduler.scanSchedule: "1 2 3 4 5"
       server: api.armosec.io
   - it: relevancy only
     asserts:
@@ -132,13 +117,10 @@ tests:
       clusterName: kind-kind
       excludeNamespaces: ""
       includeNamespaces: ""
-      kubevulnScheduler.scanSchedule: "1 2 3 4 5"
       capabilities:
         nodeSbomGeneration: disable
         scanEmbeddedSBOMs: disable
-        vulnerabilityScan: enable
         relevancy: enable
-        vexGeneration: disable
         runtimeObservability: disable
         networkPolicyService: disable
         networkEventsStreaming: disable
@@ -162,9 +144,7 @@ tests:
       alertCRD:
         installDefault: true
       capabilities:
-        vulnerabilityScan: enable
         relevancy: enable
-        vexGeneration: disable
         runtimeObservability: enable
         networkPolicyService: enable
         runtimeDetection: disable
@@ -186,8 +166,6 @@ tests:
           apiServerIP: "192.168.49.2"
           apiServerPort: 8443
         proxySecretFile: foo
-      grypeOfflineDB.enabled: true
-      kubevulnScheduler.scanSchedule: "1 2 3 4 5"
   - it: storage service configuration
     template: storage/service.yaml
     documentSelector:
@@ -306,52 +284,6 @@ tests:
             mountPath: /etc/ssl/certs/cert2.pem
             subPath: cert2.pem
             readOnly: true
-  - it: kubevuln sbom scanner sidecar mounts custom, extra and proxy CA certificates
-    template: kubevuln/deployment.yaml
-    capabilities:
-      apiVersions:
-        - batch/v1
-    set:
-      unittest: true
-      clusterName: kind-kind
-      capabilities.vulnerabilityScan: enable
-      kubevuln.sbomScanner.enabled: true
-      global:
-        proxySecretFile: foo
-        overrideDefaultCaCertificates:
-          enabled: true
-        extraCaCertificates:
-          enabled: true
-          secretName: "extra-certificates"
-    asserts:
-      # containers[0] is the main kubevuln container, containers[1] is the sbom-scanner sidecar
-      - equal:
-          path: spec.template.spec.containers[1].name
-          value: sbom-scanner
-      - contains:
-          path: spec.template.spec.containers[1].volumeMounts
-          content:
-            name: proxy-secret
-            mountPath: /etc/ssl/certs/proxy.crt
-            subPath: proxy.crt
-      - contains:
-          path: spec.template.spec.containers[1].volumeMounts
-          content:
-            name: custom-ca-certificates
-            mountPath: /etc/ssl/certs/ca-certificates.crt
-            subPath: ca-certificates.crt
-      - contains:
-          path: spec.template.spec.containers[1].volumeMounts
-          content:
-            name: extra-ca-certificates
-            mountPath: /etc/ssl/certs/cert1.pem
-            subPath: cert1.pem
-      - contains:
-          path: spec.template.spec.containers[1].volumeMounts
-          content:
-            name: extra-ca-certificates
-            mountPath: /etc/ssl/certs/cert2.pem
-            subPath: cert2.pem
   - it: node-agent egress allows OTLP ports when otelUrl is set
     template: node-agent/networkpolicy.yaml
     capabilities:
@@ -393,57 +325,6 @@ tests:
                 protocol: TCP
               - port: 4318
                 protocol: TCP
-  - it: with single private registry credentials
-    template: configs/private-registries-creds-secret.yaml
-    documentSelector:
-      path: metadata.name
-      value: kubescape-registry-scan-secrets
-    asserts:
-      - equal:
-          path: metadata.name
-          value: kubescape-registry-scan-secrets
-      - matchSnapshot: {}
-    capabilities:
-      apiVersions:
-        - batch/v1
-    set:
-      unittest: true
-      configurations.otelUrl: "otelCollector.svc.monitoring:4317"
-      clusterName: kind-kind
-      imageScanning:
-        privateRegistries:
-          credentials:
-            - registry: foo.example.com
-              username: bar
-              password: baz
-  - it: with multiple private registry credentials
-    template: configs/private-registries-creds-secret.yaml
-    documentSelector:
-      path: metadata.name
-      value: kubescape-registry-scan-secrets
-    asserts:
-      - equal:
-          path: metadata.name
-          value: kubescape-registry-scan-secrets
-      - matchSnapshot: {}
-    capabilities:
-      apiVersions:
-        - batch/v1
-    set:
-      unittest: true
-      configurations.otelUrl: "otelCollector.svc.monitoring:4317"
-      clusterName: kind-kind
-      imageScanning:
-        privateRegistries:
-          credentials:
-            - registry: foo.example.com
-              username: bar
-              password: baz
-              skipTlsVerify: true
-            - registry: test.example.com
-              username: xxx
-              password: yyy
-              insecure: true
   - it: with image pull secret generated
     template: configs/image-pull-secret.yaml
     documentSelector:
@@ -479,9 +360,7 @@ tests:
       alertCRD:
         installDefault: true
       capabilities:
-        vulnerabilityScan: enable
         relevancy: enable
-        vexGeneration: enable
         runtimeObservability: enable
         networkPolicyService: enable
         runtimeDetection: enable
@@ -525,14 +404,6 @@ tests:
           scc:
             enabled: true
       imagePullSecrets: [foo, bar]
-      grypeOfflineDB:
-        enabled: true
-        image:
-          tag: "latest"
-        podAnnotations:
-          foo: bar
-        podLabels:
-          bar: baz
       nodeAgent.gke.allowlist:
         enabled: true
         name: armo-kubescape-node-agent-1.27
@@ -559,9 +430,6 @@ tests:
               limits:
                 cpu: 200m
                 memory: 512Mi
-      kubevuln.config.grypeDbPersistence: true
-      kubevuln.config.useDefaultMatchers: true
-      kubevulnScheduler.scanSchedule: "1 2 3 4 5"
       nodeAgent.config.skipKernelVersionCheck: true
       storage.forceVirtualCrds: true
       storage.mtls.enabled: false
@@ -579,7 +447,6 @@ tests:
         installDefault: true
       capabilities:
         backend-storage: enable
-        vulnerabilityScan: enable
         relevancy: enable
         runtimeObservability: enable
         networkPolicyService: enable
@@ -599,9 +466,7 @@ tests:
       accessKey: f304d73b-d43c-412b-82ea-e4c859493ce6
       server: api.armosec.io
       clusterName: kind-kind
-      kubevulnScheduler.scanSchedule: "1 2 3 4 5"
       capabilities:
-        vulnerabilityScan: enable
         relevancy: enable
         runtimeDetection: enable
       # global fallback for all deployments
@@ -831,9 +696,7 @@ tests:
       accessKey: f304d73b-d43c-412b-82ea-e4c859493ce6
       server: api.armosec.io
       clusterName: kind-kind
-      kubevulnScheduler.scanSchedule: "1 2 3 4 5"
       capabilities:
-        vulnerabilityScan: enable
         runtimeDetection: enable
         nodeSbomGeneration: enable
       nodeAgent:
@@ -855,9 +718,7 @@ tests:
       accessKey: f304d73b-d43c-412b-82ea-e4c859493ce6
       server: api.armosec.io
       clusterName: kind-kind
-      kubevulnScheduler.scanSchedule: "1 2 3 4 5"
       capabilities:
-        vulnerabilityScan: enable
         runtimeDetection: enable
         nodeSbomGeneration: enable
       nodeAgent:
