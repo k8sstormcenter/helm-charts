@@ -9,7 +9,6 @@ templates:
   - configs/components-configmap.yaml
   - configs/cloudapi-configmap.yaml
   - configs/cloud-secret.yaml
-  - configs/matchingRules-configmap.yaml
   - proxy-support/proxy-secret.yaml
   - node-agent/configmap.yaml
   - operator/configmap.yaml
@@ -27,7 +26,6 @@ set:
     runtimeObservability: enable
     runtimeDetection: enable
     vulnerabilityScan: enable
-    continuousScan: enable
   grypeOfflineDB:
     enabled: true
 capabilities:

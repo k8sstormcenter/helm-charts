@@ -101,11 +101,6 @@ capabilities:
   # ====== Base operator ======
   operator: enable
 
-  # ====== configuration scanning related capabilities ======
-  #
-  # Continuous Scanning continuously evaluates the security posture of your cluster.
-  continuousScan: disable
-
   # ====== Image vulnerabilities scanning related capabilities ======
   #
   nodeSbomGeneration: enable # Warning: When disabled along with enableClusterWideSecretAccess: false, vulnerability scanning capabilities will be limited
@@ -1079,22 +1074,3 @@ registryScanScheduler:
 
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 1
-
-# -----------------------------------------------------------------------------------------
-# ------------------------- Configurations ------------------------------------------------
-# -----------------------------------------------------------------------------------------
-
-# Continuous scanning configurations
-continuousScanning:
-  configMapName: cs-matching-rules
-
-  # Matching rules for the monitored resources.
-  # Kubescape will watch resources of every provided GVR across the provided
-  # namespaces.
-  matchingRules:
-    match:
-      - apiGroups: ["apps"]
-        apiVersions: ["v1"]
-        resources: ["deployments"]
-    namespaces:
-      - default

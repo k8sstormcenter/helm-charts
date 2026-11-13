@@ -7,7 +7,6 @@
 capabilitiesConfig: {{ include (printf "%s/%s/%s" $.Template.BasePath $.Values.global.configMapsDirectory "components-configmap.yaml") . | replace .Chart.AppVersion "" | replace .Chart.Version "" | sha256sum }}
 cloudConfig: {{ include (printf "%s/%s/%s" $.Template.BasePath $.Values.global.configMapsDirectory "cloudapi-configmap.yaml") . | replace .Chart.AppVersion "" | replace .Chart.Version "" | sha256sum }}
 cloudSecret: {{ include (printf "%s/%s/%s" $.Template.BasePath $.Values.global.configMapsDirectory "cloud-secret.yaml" ) . | replace .Chart.AppVersion "" | replace .Chart.Version "" | sha256sum }}
-matchingRulesConfig: {{ include (printf "%s/%s/%s" $.Template.BasePath $.Values.global.configMapsDirectory "matchingRules-configmap.yaml") . | replace .Chart.AppVersion "" | replace .Chart.Version "" | sha256sum }}
 nodeAgentConfig: {{ include (printf "%s/node-agent/configmap.yaml" $.Template.BasePath) . | replace .Chart.AppVersion "" | replace .Chart.Version "" | sha256sum }}
 operatorConfig: {{ include (printf "%s/operator/configmap.yaml" $.Template.BasePath) . | replace .Chart.AppVersion "" | replace .Chart.Version "" | sha256sum }}
 proxySecret: {{ include (printf "%s/%s/%s" $.Template.BasePath $.Values.global.proxySecretDirectory "proxy-secret.yaml") . | replace .Chart.AppVersion "" | replace .Chart.Version "" | sha256sum }}
@@ -22,7 +21,6 @@ storageCertgenScripts: {{ include (printf "%s/storage/certgen/configmap.yaml" $.
 {{- $createCloudSecret := (empty .Values.credentials.cloudSecret) -}}
 {{- $submit := not (empty .Values.server) -}}
 {{- $virtualCrds := not (empty .Values.storage.forceVirtualCrds) -}}
-continuousScan: {{ and (eq .Values.capabilities.continuousScan "enable") (not $submit) }}
 createCloudSecret: {{ $createCloudSecret }}
 runtimeObservability: {{ eq .Values.capabilities.runtimeObservability "enable" }}
 backendStorageEnabled: {{ eq (index .Values.capabilities "backend-storage" | default "") "enable" }}

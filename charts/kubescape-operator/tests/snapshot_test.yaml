@@ -29,7 +29,6 @@ tests:
       alertCRD:
         installDefault: true
       capabilities:
-        continuousScan: enable
         vulnerabilityScan: enable
         relevancy: enable
         vexGeneration: enable
@@ -480,7 +479,6 @@ tests:
       alertCRD:
         installDefault: true
       capabilities:
-        continuousScan: enable
         vulnerabilityScan: enable
         relevancy: enable
         vexGeneration: enable

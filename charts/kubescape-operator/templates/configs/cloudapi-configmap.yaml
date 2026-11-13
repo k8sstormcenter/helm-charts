@@ -1,5 +1,4 @@
 {{- $components := fromYaml (include "components" .)  }}
-{{- $configurations := fromYaml (include "configurations" .)  }}
 {{- $cveMatchingModeRaw := .Values.kubevuln.config.cveMatchingMode }}
 {{- $cveMatchingMode := "" }}
 {{- if kindIs "bool" $cveMatchingModeRaw }}
@@ -47,7 +46,7 @@ data:
       "trustedVendors": {{ .Values.kubevuln.config.trustedVendors | toJson }},
 {{- end }}
       "storeFilteredSbom": {{ or .Values.kubevuln.config.storeFilteredSboms (eq .Values.capabilities.syncSBOM "enable") }},
-      "continuousPostureScan": {{ $configurations.continuousScan }},
+      "continuousPostureScan": false,
 {{- if not (empty .Values.kubevuln.config.grypeDbListingURL) }}
       "listingURL": "{{ .Values.kubevuln.config.grypeDbListingURL }}",
 {{- end }}
