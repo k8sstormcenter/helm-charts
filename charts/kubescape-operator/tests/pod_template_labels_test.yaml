@@ -3,7 +3,6 @@ templates:
   - kubescape/deployment.yaml
   - kubevuln/deployment.yaml
   - synchronizer/deployment.yaml
-  - prometheus-exporter/deployment.yaml
   - grype-offline-db/deployment.yaml
   - storage/deployment.yaml
   - operator/deployment.yaml
@@ -26,7 +25,6 @@ set:
   account: 9e6c0c2c-6bd0-4919-815b-55030de7c9a0
   accessKey: f304d73b-d43c-412b-82ea-e4c859493ce6
   capabilities:
-    prometheusExporter: enable
     runtimeObservability: enable
     runtimeDetection: enable
     vulnerabilityScan: enable
@@ -59,13 +57,6 @@ tests:
     asserts:
       - exists:
           path: spec.template.metadata.labels["app.kubernetes.io/instance"]
-      - notExists:
-          path: spec.template.metadata.labels["helm.sh/chart"]
-      - notExists:
-          path: spec.template.metadata.labels["app.kubernetes.io/version"]
-  - it: prometheus exporter pod template carries no chart or app version label
-    template: prometheus-exporter/deployment.yaml
-    asserts:
       - notExists:
           path: spec.template.metadata.labels["helm.sh/chart"]
       - notExists:

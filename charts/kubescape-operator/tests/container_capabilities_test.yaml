@@ -42,21 +42,6 @@ tests:
           value:
             - ALL
 
-  - it: drops all capabilities on the prometheus exporter container
-    template: prometheus-exporter/deployment.yaml
-    capabilities:
-      apiVersions:
-        - batch/v1
-    set:
-      unittest: true
-      clusterName: kind-kind
-      capabilities.prometheusExporter: enable
-    asserts:
-      - equal:
-          path: spec.template.spec.containers[0].securityContext.capabilities.drop
-          value:
-            - ALL
-
   - it: drops all capabilities on the kubescape scheduler container
     template: kubescape-scheduler/cronjob.yaml
     capabilities:

@@ -185,7 +185,6 @@ capabilities:
   # matching docs before enabling.
   autoUpgrading: disable
   kubescapeOffline: disable
-  prometheusExporter: disable
   # seccompGenerator: disable
 
   testing:
@@ -1043,47 +1042,6 @@ grypeOfflineDB:
       limits:
         cpu: 100m
         memory: 50Mi
-
-# +++++++++++++++++++++++++++++ Prometheus exporter ++++++++++++++++++++++++++++++++++++++++++++++++
-
-# Prometheus exporter
-prometheusExporter:
-  name: "prometheus-exporter"
-  image:
-    repository: quay.io/kubescape/prometheus-exporter
-    tag: v0.2.22
-    pullPolicy: IfNotPresent
-
-  nodeSelector:
-    kubernetes.io/os: linux
-  priorityClassName: ""
-
-  podAnnotations: {}
-  podLabels: {}
-  resources:
-    requests:
-      cpu: 10m
-      memory: 10Mi
-    limits:
-      cpu: 50m
-      memory: 100Mi
-
-  service:
-    port: 8080
-    targetPort: 8080
-    protocol: TCP
-
-  serviceMonitor:
-    # -- enable/disable service monitor for prometheus-exporter integration
-    enabled: false
-
-  enableWorkloadMetrics: false
-
-  # Additional volumes to be mounted on the prometheus exporter
-  volumes: []
-
-  # Additional volumeMounts to be mounted on the prometheus exporter
-  volumeMounts: []
 
 # +++++++++++++++++++++++++++++ Upgrader ++++++++++++++++++++++++++++++++++++++++++++++++
 
