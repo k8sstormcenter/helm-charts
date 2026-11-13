@@ -406,10 +406,6 @@ nodeAgent:
     # Scrape it with nodeAgent.serviceMonitor.enabled=true where a Prometheus
     # operator is installed, or with the pod annotations of your own scraper.
     prometheusExporter: enable
-    httpExporterConfig:
-      url: http://synchronizer:8089/apis/v1/kubescape.io
-      maxAlertsPerMinute: 1000
-      method: POST
     alertManagerExporterUrls: []
     stdoutExporter: true
     syslogExporterURL: ""

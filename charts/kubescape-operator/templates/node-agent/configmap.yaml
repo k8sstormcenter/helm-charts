@@ -57,9 +57,6 @@ data:
         {{- end }}
         "excludeLabels": {{- .Values.excludeLabels | toJson }},
         "exporters": {
-          {{- if $components.synchronizer.enabled }}
-          "httpExporterConfig": {{- .Values.nodeAgent.config.httpExporterConfig | toJson }},
-          {{- end }}
           "alertManagerExporterUrls": {{- .Values.nodeAgent.config.alertManagerExporterUrls | toJson }},
           "stdoutExporter": {{- .Values.nodeAgent.config.stdoutExporter }},
           "syslogExporterURL": "{{- .Values.nodeAgent.config.syslogExporterURL }}"

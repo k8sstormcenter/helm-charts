@@ -1028,7 +1028,6 @@ all capabilities:
             "includeNamespaces": "my-namespace",
             "excludeLabels":{"baz":["qux"],"foo":["bar","baz"]},
             "exporters": {
-              "httpExporterConfig":{"maxAlertsPerMinute":1000,"method":"POST","url":"http://synchronizer:8089/apis/v1/kubescape.io"},
               "alertManagerExporterUrls":[],
               "stdoutExporter":true,
               "syslogExporterURL": ""
@@ -1130,7 +1129,7 @@ all capabilities:
           annotations:
             checksum/cloud-config: fb19e17ed09e8ff88e13d0af9b1fc8b4b5218310dc1700820b2a85aff3c64432
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
-            checksum/node-agent-config: 8c6b56f816d390cd7cf7e0b33ca6cff1066531457c39319f38b546ad59963b22
+            checksum/node-agent-config: c36a8ee82cac28d8d39d620e1a6691125a7cf2ceab72f126369adfeaedbf01c5
             checksum/proxy-config: c03b6781aa61faaacfa84a96809236591dde0cbd43a204e05d5ba3044bb9d5d8
           labels:
             app: node-agent
@@ -2846,7 +2845,6 @@ all capabilities:
           "includeNamespaces": "my-namespace",
           "namespace": "kubescape",
           "excludeJsonPaths":[".containers[*].env[?(@.name==\"KUBECONFIG\")]"],
-          "httpExporterConfig":{"maxAlertsPerMinute":1000,"method":"POST","url":"http://synchronizer:8089/apis/v1/kubescape.io"},
           "nodeAgentAutoscaler": {
             "enabled": false,
             "nodeGroupLabel": "node.kubernetes.io/instance-type",
@@ -2927,7 +2925,7 @@ all capabilities:
             checksum/capabilities-config: 6cb14cfcd5b9d261895c7257698ca095726a2e7f009862604e3e9d559e12b0e1
             checksum/cloud-config: fb19e17ed09e8ff88e13d0af9b1fc8b4b5218310dc1700820b2a85aff3c64432
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
-            checksum/operator-config: 02dd603eb05df8c1f17ddda15da5952dfa5f6df29c328c12e6a1c9da94d467ea
+            checksum/operator-config: c43a824ccd8dd824e7e77a95c7c197514e1a3a2e4d2b7cf77ff4518f2195d697
             checksum/proxy-config: c03b6781aa61faaacfa84a96809236591dde0cbd43a204e05d5ba3044bb9d5d8
           labels:
             app: operator
@@ -5830,7 +5828,6 @@ autoscaler mode with sbom sidecar:
             "excludeNamespaces": "kube-system,kube-public,kube-node-lease,kubeconfig,gmp-system,gmp-public",
             "excludeLabels":null,
             "exporters": {
-              "httpExporterConfig":{"maxAlertsPerMinute":1000,"method":"POST","url":"http://synchronizer:8089/apis/v1/kubescape.io"},
               "alertManagerExporterUrls":[],
               "stdoutExporter":true,
               "syslogExporterURL": ""
@@ -6156,7 +6153,7 @@ autoscaler mode with sbom sidecar:
   29: |
     apiVersion: v1
     data:
-      daemonset-template.yaml: "apiVersion: apps/v1\nkind: DaemonSet\nmetadata:\n  name: \"{{ .Name }}\"\n  namespace: kubescape\n  annotations:\n    \n  labels:\n    helm.sh/chart: kubescape-operator-1.41.0-duckling141\n    app.kubernetes.io/name: kubescape-operator\n    app.kubernetes.io/instance: RELEASE-NAME\n    app.kubernetes.io/component: node-agent\n    app.kubernetes.io/version: \"v0.1.0-subtract-ecde94cd\"\n    app.kubernetes.io/managed-by: Helm\n    app.kubernetes.io/part-of: kubescape\n    app: node-agent\n    tier: ks-control-plane\n    kubescape.io/ignore: \"true\"\n    kubescape.io/tier: \"core\"\n    kubescape.io/managed-by: operator-autoscaler\n    kubescape.io/node-group: \"{{ .NodeGroupLabel }}\"\nspec:\n  selector:\n    matchLabels:\n      app.kubernetes.io/name: kubescape-operator\n      app.kubernetes.io/instance: RELEASE-NAME\n      app.kubernetes.io/component: node-agent\n      kubescape.io/node-group: \"{{ .NodeGroupLabel }}\"\n  template:\n    metadata:\n      annotations:\n        \n        checksum/node-agent-config: 6e77dfea094085a67f8b0c3c8553bc1cca3a8c8eb9897fce0b6e640d5f1b58ac\n        checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424\n        checksum/cloud-config: 578b4012d93ca58623ff3ce97387526497ea876e78ac083aaa49c8da82595bc0\n      labels:\n        app.kubernetes.io/name: kubescape-operator\n        app.kubernetes.io/instance: RELEASE-NAME\n        app.kubernetes.io/component: node-agent\n        app.kubernetes.io/managed-by: Helm\n        app.kubernetes.io/part-of: kubescape\n        app: node-agent\n        tier: ks-control-plane\n        kubescape.io/ignore: \"true\"\n        kubescape.io/tier: \"core\"\n        kubescape.io/node-group: \"{{ .NodeGroupLabel }}\"\n    spec:\n      securityContext:\n        appArmorProfile:\n          type: Unconfined\n      priorityClassName: kubescape-critical\n      serviceAccountName: node-agent\n      automountServiceAccountToken: true\n      hostPID: true\n      volumes:\n      \n      - hostPath:\n          path: /\n        name: host\n      - hostPath:\n          path: /var/lib/kubelet\n        name: kubeletdir\n      - hostPath:\n          path: /run\n        name: run\n      - hostPath:\n          path: /var\n        name: var\n      - hostPath:\n          path: /sys/fs/cgroup\n        name: cgroup\n      - hostPath:\n          path: /lib/modules\n        name: modules\n      - hostPath:\n          path: /sys/fs/bpf\n        name: bpffs\n      - hostPath:\n          path: /sys/kernel/debug\n        name: debugfs\n      - hostPath:\n          path: /boot\n        name: boot\n      - emptyDir: null\n        name: data\n      - emptyDir: null\n        name: profiles\n      - hostPath:\n          path: /\n          type: Directory\n        name: host-filesystem\n      - name: direct-jwt\n        secret:\n          secretName: node-agent-direct-jwt-pub\n      - emptyDir: {}\n        name: clamdb\n      - emptyDir: {}\n        name: clamrun\n      - configMap:\n          items:\n          - key: clamd.conf\n            path: clamd.conf\n          - key: freshclam.conf\n            path: freshclam.conf\n          name: clamav\n        name: etc\n      - emptyDir:\n          medium: Memory\n          sizeLimit: 10Mi\n        name: sbom-comm\n      - emptyDir: {}\n        name: sbom-scanner-tmp\n      - name: cloud-secret\n        secret:\n          secretName: cloud-secret\n      - name: ks-cloud-config\n        configMap:\n          name: ks-cloud-config\n          items:\n            - key: \"clusterData\"\n              path: \"clusterData.json\"\n      - name: config\n        configMap:\n          name: node-agent\n          items:\n            - key: \"config.json\"\n              path: \"config.json\"\n      - name: bundle-policy\n        configMap:\n          name: node-agent-bundle-policy\n      containers:\n      \n      - name: sbom-scanner\n        image: \"quay.io/kubescape/node-agent:v0.1.0-m3-0f2f7afe\"\n        imagePullPolicy: IfNotPresent\n        command: \n          - /usr/bin/sbom-scanner\n        securityContext:\n          runAsUser: 0\n          readOnlyRootFilesystem: true\n          capabilities:\n            drop: [\"ALL\"]\n        resources:\n          limits:\n            cpu: 1000m\n            memory: 4Gi\n          requests:\n            cpu: 50m\n            memory: 256Mi\n        env:\n          - name: GOMEMLIMIT\n            value: \"3276MiB\"\n          - name: SOCKET_PATH\n            value: \"/sbom-comm/scanner.sock\"\n          - name: HOST_ROOT\n            value: \"/host\"\n          - name: NODE_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: spec.nodeName\n          - name: POD_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: metadata.name\n          - name: NAMESPACE\n            valueFrom:\n              fieldRef:\n                fieldPath: metadata.namespace\n          - name: CLUSTER_NAME\n            value: \"kind-kind\"\n        volumeMounts:\n          - mountPath: /sbom-comm\n            name: sbom-comm\n          - mountPath: /host\n            name: host\n            readOnly: true\n          - mountPath: /tmp\n            name: sbom-scanner-tmp\n      \n      - name: node-agent\n        image: \"docker.io/entlein/duckling:v0.1.0-m3-0f2f7afe@sha256:125e2882f0322051a53a0f201c640db00f370563c99b8ac9456624f98710670e\"\n        imagePullPolicy: IfNotPresent\n        ports:\n          - name: direct-alerts\n            containerPort: 50405\n            hostPort: 50405\n            protocol: TCP\n        livenessProbe:\n          httpGet:\n            path: /livez\n            port: 7888\n          periodSeconds: 10\n          timeoutSeconds: 5\n          failureThreshold: 3\n        readinessProbe:\n          httpGet:\n            path: /readyz\n            port: 7888\n          periodSeconds: 10\n          timeoutSeconds: 5\n          failureThreshold: 3\n        startupProbe:\n          httpGet:\n            path: /readyz\n            port: 7888\n          periodSeconds: 10\n          failureThreshold: 30\n          timeoutSeconds: 5\n        resources:\n          \n          requests:\n            cpu: \"{{ .Resources.Requests.CPU }}\"\n            memory: \"{{ .Resources.Requests.Memory }}\"\n          limits:\n            cpu: \"{{ .Resources.Limits.CPU }}\"\n            memory: \"{{ .Resources.Limits.Memory }}\"\n        env:\n          \n          - name: GOMEMLIMIT\n            value: \"{{ .GoMemLimit }}\"\n          - name: HOST_ROOT\n            value: \"/host\"\n          - name: KS_LOGGER_LEVEL\n            value: \"info\"\n          - name: KS_LOGGER_NAME\n            value: \"zap\"\n          - name: SBOM_SCANNER_SOCKET\n            value: \"/sbom-comm/scanner.sock\"\n          - name: SCANNER_MEMORY_LIMIT\n            value: \"4Gi\"\n          - name: NODE_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: spec.nodeName\n          - name: POD_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: metadata.name\n          - name: NAMESPACE_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: metadata.namespace\n          - name: KUBELET_ROOT\n            value: \"/var/lib/kubelet\"\n          - name: AGENT_VERSION\n            value: \"v0.1.0-m3-0f2f7afe\"\n          - name: API_URL\n            value: \"https://api.armosec.io\"\n          - name: NodeName\n            valueFrom:\n              fieldRef:\n                fieldPath: spec.nodeName\n        securityContext:\n          runAsUser: 0\n          privileged: false\n          capabilities:\n            add:\n              - SYS_ADMIN\n              - SYS_PTRACE\n              - NET_ADMIN\n              - SYSLOG\n              - SYS_RESOURCE\n              - IPC_LOCK\n              - NET_RAW\n          seLinuxOptions:\n            type: \"{{ .SELinuxType }}\"\n        volumeMounts:\n          \n          - name: direct-jwt\n            mountPath: /etc/node-agent-direct\n            readOnly: true\n          - mountPath: /host\n            name: host\n            readOnly: true\n          - mountPath: /var/lib/kubelet\n            name: kubeletdir\n          - mountPath: /run\n            name: run\n          - mountPath: /var\n            name: var\n            readOnly: true\n          - mountPath: /lib/modules\n            name: modules\n            readOnly: true\n          - mountPath: /sys/kernel/debug\n            name: debugfs\n          - mountPath: /sys/fs/cgroup\n            name: cgroup\n            readOnly: true\n          - mountPath: /sys/fs/bpf\n            name: bpffs\n          - mountPath: /data\n            name: data\n          - mountPath: /profiles\n            name: profiles\n          - mountPath: /boot\n            name: boot\n            readOnly: true\n          - mountPath: /clamav\n            name: clamrun\n          - name: sbom-comm\n            mountPath: /sbom-comm\n          - name: cloud-secret\n            mountPath: /etc/credentials\n            readOnly: true\n          - name: ks-cloud-config\n            mountPath: /etc/config/clusterData.json\n            readOnly: true\n            subPath: \"clusterData.json\"\n          - name: config\n            mountPath: /etc/config/config.json\n            readOnly: true\n            subPath: \"config.json\"\n          - name: bundle-policy\n            mountPath: /etc/bundle\n            readOnly: true\n      nodeSelector:\n        kubernetes.io/os: linux\n      {{- if not .IsDefaultGroup }}\n        {{ .NodeGroupLabelKey }}: \"{{ .NodeGroupLabel }}\"\n      {{- end }}\n      affinity:\n      {{- if .IsDefaultGroup }}\n        nodeAffinity:\n          requiredDuringSchedulingIgnoredDuringExecution:\n            nodeSelectorTerms:\n            - matchExpressions:\n              - key: {{ .NodeGroupLabelKey }}\n                operator: DoesNotExist\n      {{- else }}\n      \n        nodeAffinity:\n          requiredDuringSchedulingIgnoredDuringExecution:\n            nodeSelectorTerms:\n            - matchExpressions:\n              - key: kubernetes.io/os\n                operator: In\n                values:\n                - linux\n      {{- end }}\n      tolerations:\n"
+      daemonset-template.yaml: "apiVersion: apps/v1\nkind: DaemonSet\nmetadata:\n  name: \"{{ .Name }}\"\n  namespace: kubescape\n  annotations:\n    \n  labels:\n    helm.sh/chart: kubescape-operator-1.41.0-duckling141\n    app.kubernetes.io/name: kubescape-operator\n    app.kubernetes.io/instance: RELEASE-NAME\n    app.kubernetes.io/component: node-agent\n    app.kubernetes.io/version: \"v0.1.0-subtract-ecde94cd\"\n    app.kubernetes.io/managed-by: Helm\n    app.kubernetes.io/part-of: kubescape\n    app: node-agent\n    tier: ks-control-plane\n    kubescape.io/ignore: \"true\"\n    kubescape.io/tier: \"core\"\n    kubescape.io/managed-by: operator-autoscaler\n    kubescape.io/node-group: \"{{ .NodeGroupLabel }}\"\nspec:\n  selector:\n    matchLabels:\n      app.kubernetes.io/name: kubescape-operator\n      app.kubernetes.io/instance: RELEASE-NAME\n      app.kubernetes.io/component: node-agent\n      kubescape.io/node-group: \"{{ .NodeGroupLabel }}\"\n  template:\n    metadata:\n      annotations:\n        \n        checksum/node-agent-config: 472feef2d80cd9cefc02135eae624bbea17992427f73eb6c96cb138d25cb5963\n        checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424\n        checksum/cloud-config: 578b4012d93ca58623ff3ce97387526497ea876e78ac083aaa49c8da82595bc0\n      labels:\n        app.kubernetes.io/name: kubescape-operator\n        app.kubernetes.io/instance: RELEASE-NAME\n        app.kubernetes.io/component: node-agent\n        app.kubernetes.io/managed-by: Helm\n        app.kubernetes.io/part-of: kubescape\n        app: node-agent\n        tier: ks-control-plane\n        kubescape.io/ignore: \"true\"\n        kubescape.io/tier: \"core\"\n        kubescape.io/node-group: \"{{ .NodeGroupLabel }}\"\n    spec:\n      securityContext:\n        appArmorProfile:\n          type: Unconfined\n      priorityClassName: kubescape-critical\n      serviceAccountName: node-agent\n      automountServiceAccountToken: true\n      hostPID: true\n      volumes:\n      \n      - hostPath:\n          path: /\n        name: host\n      - hostPath:\n          path: /var/lib/kubelet\n        name: kubeletdir\n      - hostPath:\n          path: /run\n        name: run\n      - hostPath:\n          path: /var\n        name: var\n      - hostPath:\n          path: /sys/fs/cgroup\n        name: cgroup\n      - hostPath:\n          path: /lib/modules\n        name: modules\n      - hostPath:\n          path: /sys/fs/bpf\n        name: bpffs\n      - hostPath:\n          path: /sys/kernel/debug\n        name: debugfs\n      - hostPath:\n          path: /boot\n        name: boot\n      - emptyDir: null\n        name: data\n      - emptyDir: null\n        name: profiles\n      - hostPath:\n          path: /\n          type: Directory\n        name: host-filesystem\n      - name: direct-jwt\n        secret:\n          secretName: node-agent-direct-jwt-pub\n      - emptyDir: {}\n        name: clamdb\n      - emptyDir: {}\n        name: clamrun\n      - configMap:\n          items:\n          - key: clamd.conf\n            path: clamd.conf\n          - key: freshclam.conf\n            path: freshclam.conf\n          name: clamav\n        name: etc\n      - emptyDir:\n          medium: Memory\n          sizeLimit: 10Mi\n        name: sbom-comm\n      - emptyDir: {}\n        name: sbom-scanner-tmp\n      - name: cloud-secret\n        secret:\n          secretName: cloud-secret\n      - name: ks-cloud-config\n        configMap:\n          name: ks-cloud-config\n          items:\n            - key: \"clusterData\"\n              path: \"clusterData.json\"\n      - name: config\n        configMap:\n          name: node-agent\n          items:\n            - key: \"config.json\"\n              path: \"config.json\"\n      - name: bundle-policy\n        configMap:\n          name: node-agent-bundle-policy\n      containers:\n      \n      - name: sbom-scanner\n        image: \"quay.io/kubescape/node-agent:v0.1.0-m3-0f2f7afe\"\n        imagePullPolicy: IfNotPresent\n        command: \n          - /usr/bin/sbom-scanner\n        securityContext:\n          runAsUser: 0\n          readOnlyRootFilesystem: true\n          capabilities:\n            drop: [\"ALL\"]\n        resources:\n          limits:\n            cpu: 1000m\n            memory: 4Gi\n          requests:\n            cpu: 50m\n            memory: 256Mi\n        env:\n          - name: GOMEMLIMIT\n            value: \"3276MiB\"\n          - name: SOCKET_PATH\n            value: \"/sbom-comm/scanner.sock\"\n          - name: HOST_ROOT\n            value: \"/host\"\n          - name: NODE_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: spec.nodeName\n          - name: POD_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: metadata.name\n          - name: NAMESPACE\n            valueFrom:\n              fieldRef:\n                fieldPath: metadata.namespace\n          - name: CLUSTER_NAME\n            value: \"kind-kind\"\n        volumeMounts:\n          - mountPath: /sbom-comm\n            name: sbom-comm\n          - mountPath: /host\n            name: host\n            readOnly: true\n          - mountPath: /tmp\n            name: sbom-scanner-tmp\n      \n      - name: node-agent\n        image: \"docker.io/entlein/duckling:v0.1.0-m3-0f2f7afe@sha256:125e2882f0322051a53a0f201c640db00f370563c99b8ac9456624f98710670e\"\n        imagePullPolicy: IfNotPresent\n        ports:\n          - name: direct-alerts\n            containerPort: 50405\n            hostPort: 50405\n            protocol: TCP\n        livenessProbe:\n          httpGet:\n            path: /livez\n            port: 7888\n          periodSeconds: 10\n          timeoutSeconds: 5\n          failureThreshold: 3\n        readinessProbe:\n          httpGet:\n            path: /readyz\n            port: 7888\n          periodSeconds: 10\n          timeoutSeconds: 5\n          failureThreshold: 3\n        startupProbe:\n          httpGet:\n            path: /readyz\n            port: 7888\n          periodSeconds: 10\n          failureThreshold: 30\n          timeoutSeconds: 5\n        resources:\n          \n          requests:\n            cpu: \"{{ .Resources.Requests.CPU }}\"\n            memory: \"{{ .Resources.Requests.Memory }}\"\n          limits:\n            cpu: \"{{ .Resources.Limits.CPU }}\"\n            memory: \"{{ .Resources.Limits.Memory }}\"\n        env:\n          \n          - name: GOMEMLIMIT\n            value: \"{{ .GoMemLimit }}\"\n          - name: HOST_ROOT\n            value: \"/host\"\n          - name: KS_LOGGER_LEVEL\n            value: \"info\"\n          - name: KS_LOGGER_NAME\n            value: \"zap\"\n          - name: SBOM_SCANNER_SOCKET\n            value: \"/sbom-comm/scanner.sock\"\n          - name: SCANNER_MEMORY_LIMIT\n            value: \"4Gi\"\n          - name: NODE_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: spec.nodeName\n          - name: POD_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: metadata.name\n          - name: NAMESPACE_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: metadata.namespace\n          - name: KUBELET_ROOT\n            value: \"/var/lib/kubelet\"\n          - name: AGENT_VERSION\n            value: \"v0.1.0-m3-0f2f7afe\"\n          - name: API_URL\n            value: \"https://api.armosec.io\"\n          - name: NodeName\n            valueFrom:\n              fieldRef:\n                fieldPath: spec.nodeName\n        securityContext:\n          runAsUser: 0\n          privileged: false\n          capabilities:\n            add:\n              - SYS_ADMIN\n              - SYS_PTRACE\n              - NET_ADMIN\n              - SYSLOG\n              - SYS_RESOURCE\n              - IPC_LOCK\n              - NET_RAW\n          seLinuxOptions:\n            type: \"{{ .SELinuxType }}\"\n        volumeMounts:\n          \n          - name: direct-jwt\n            mountPath: /etc/node-agent-direct\n            readOnly: true\n          - mountPath: /host\n            name: host\n            readOnly: true\n          - mountPath: /var/lib/kubelet\n            name: kubeletdir\n          - mountPath: /run\n            name: run\n          - mountPath: /var\n            name: var\n            readOnly: true\n          - mountPath: /lib/modules\n            name: modules\n            readOnly: true\n          - mountPath: /sys/kernel/debug\n            name: debugfs\n          - mountPath: /sys/fs/cgroup\n            name: cgroup\n            readOnly: true\n          - mountPath: /sys/fs/bpf\n            name: bpffs\n          - mountPath: /data\n            name: data\n          - mountPath: /profiles\n            name: profiles\n          - mountPath: /boot\n            name: boot\n            readOnly: true\n          - mountPath: /clamav\n            name: clamrun\n          - name: sbom-comm\n            mountPath: /sbom-comm\n          - name: cloud-secret\n            mountPath: /etc/credentials\n            readOnly: true\n          - name: ks-cloud-config\n            mountPath: /etc/config/clusterData.json\n            readOnly: true\n            subPath: \"clusterData.json\"\n          - name: config\n            mountPath: /etc/config/config.json\n            readOnly: true\n            subPath: \"config.json\"\n          - name: bundle-policy\n            mountPath: /etc/bundle\n            readOnly: true\n      nodeSelector:\n        kubernetes.io/os: linux\n      {{- if not .IsDefaultGroup }}\n        {{ .NodeGroupLabelKey }}: \"{{ .NodeGroupLabel }}\"\n      {{- end }}\n      affinity:\n      {{- if .IsDefaultGroup }}\n        nodeAffinity:\n          requiredDuringSchedulingIgnoredDuringExecution:\n            nodeSelectorTerms:\n            - matchExpressions:\n              - key: {{ .NodeGroupLabelKey }}\n                operator: DoesNotExist\n      {{- else }}\n      \n        nodeAffinity:\n          requiredDuringSchedulingIgnoredDuringExecution:\n            nodeSelectorTerms:\n            - matchExpressions:\n              - key: kubernetes.io/os\n                operator: In\n                values:\n                - linux\n      {{- end }}\n      tolerations:\n"
     kind: ConfigMap
     metadata:
       annotations: null
@@ -6458,7 +6455,6 @@ autoscaler mode with sbom sidecar:
           "excludeNamespaces": "kube-system,kube-public,kube-node-lease,kubeconfig,gmp-system,gmp-public",
           "namespace": "kubescape",
           "excludeJsonPaths":null,
-          "httpExporterConfig":{"maxAlertsPerMinute":1000,"method":"POST","url":"http://synchronizer:8089/apis/v1/kubescape.io"},
           "nodeAgentAutoscaler": {
             "enabled": true,
             "nodeGroupLabel": "node.kubernetes.io/instance-type",
@@ -6539,7 +6535,7 @@ autoscaler mode with sbom sidecar:
             checksum/capabilities-config: 81e542701de24c4a0795e1eda8bb2a150bb2382deb4f738a0954d13fea3b1ef0
             checksum/cloud-config: 578b4012d93ca58623ff3ce97387526497ea876e78ac083aaa49c8da82595bc0
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
-            checksum/operator-config: 4dad8d5a04b29e4a897531f5f5e445edee95cb3e3f45714451141a3748c94e2a
+            checksum/operator-config: fbb95770bcfa9ba537802af219eac01d5be63de5f952f3ca254472fb9553c4c2
           labels:
             app: operator
             app.kubernetes.io/component: operator
@@ -9089,7 +9085,6 @@ autoscaler mode without sbom sidecar:
             "excludeNamespaces": "kube-system,kube-public,kube-node-lease,kubeconfig,gmp-system,gmp-public",
             "excludeLabels":null,
             "exporters": {
-              "httpExporterConfig":{"maxAlertsPerMinute":1000,"method":"POST","url":"http://synchronizer:8089/apis/v1/kubescape.io"},
               "alertManagerExporterUrls":[],
               "stdoutExporter":true,
               "syslogExporterURL": ""
@@ -9415,7 +9410,7 @@ autoscaler mode without sbom sidecar:
   29: |
     apiVersion: v1
     data:
-      daemonset-template.yaml: "apiVersion: apps/v1\nkind: DaemonSet\nmetadata:\n  name: \"{{ .Name }}\"\n  namespace: kubescape\n  annotations:\n    \n  labels:\n    helm.sh/chart: kubescape-operator-1.41.0-duckling141\n    app.kubernetes.io/name: kubescape-operator\n    app.kubernetes.io/instance: RELEASE-NAME\n    app.kubernetes.io/component: node-agent\n    app.kubernetes.io/version: \"v0.1.0-subtract-ecde94cd\"\n    app.kubernetes.io/managed-by: Helm\n    app.kubernetes.io/part-of: kubescape\n    app: node-agent\n    tier: ks-control-plane\n    kubescape.io/ignore: \"true\"\n    kubescape.io/tier: \"core\"\n    kubescape.io/managed-by: operator-autoscaler\n    kubescape.io/node-group: \"{{ .NodeGroupLabel }}\"\nspec:\n  selector:\n    matchLabels:\n      app.kubernetes.io/name: kubescape-operator\n      app.kubernetes.io/instance: RELEASE-NAME\n      app.kubernetes.io/component: node-agent\n      kubescape.io/node-group: \"{{ .NodeGroupLabel }}\"\n  template:\n    metadata:\n      annotations:\n        \n        checksum/node-agent-config: 6e77dfea094085a67f8b0c3c8553bc1cca3a8c8eb9897fce0b6e640d5f1b58ac\n        checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424\n        checksum/cloud-config: 578b4012d93ca58623ff3ce97387526497ea876e78ac083aaa49c8da82595bc0\n      labels:\n        app.kubernetes.io/name: kubescape-operator\n        app.kubernetes.io/instance: RELEASE-NAME\n        app.kubernetes.io/component: node-agent\n        app.kubernetes.io/managed-by: Helm\n        app.kubernetes.io/part-of: kubescape\n        app: node-agent\n        tier: ks-control-plane\n        kubescape.io/ignore: \"true\"\n        kubescape.io/tier: \"core\"\n        kubescape.io/node-group: \"{{ .NodeGroupLabel }}\"\n    spec:\n      securityContext:\n        appArmorProfile:\n          type: Unconfined\n      priorityClassName: kubescape-critical\n      serviceAccountName: node-agent\n      automountServiceAccountToken: true\n      hostPID: true\n      volumes:\n      \n      - hostPath:\n          path: /\n        name: host\n      - hostPath:\n          path: /var/lib/kubelet\n        name: kubeletdir\n      - hostPath:\n          path: /run\n        name: run\n      - hostPath:\n          path: /var\n        name: var\n      - hostPath:\n          path: /sys/fs/cgroup\n        name: cgroup\n      - hostPath:\n          path: /lib/modules\n        name: modules\n      - hostPath:\n          path: /sys/fs/bpf\n        name: bpffs\n      - hostPath:\n          path: /sys/kernel/debug\n        name: debugfs\n      - hostPath:\n          path: /boot\n        name: boot\n      - emptyDir: null\n        name: data\n      - emptyDir: null\n        name: profiles\n      - hostPath:\n          path: /\n          type: Directory\n        name: host-filesystem\n      - name: direct-jwt\n        secret:\n          secretName: node-agent-direct-jwt-pub\n      - emptyDir: {}\n        name: clamdb\n      - emptyDir: {}\n        name: clamrun\n      - configMap:\n          items:\n          - key: clamd.conf\n            path: clamd.conf\n          - key: freshclam.conf\n            path: freshclam.conf\n          name: clamav\n        name: etc\n      - name: cloud-secret\n        secret:\n          secretName: cloud-secret\n      - name: ks-cloud-config\n        configMap:\n          name: ks-cloud-config\n          items:\n            - key: \"clusterData\"\n              path: \"clusterData.json\"\n      - name: config\n        configMap:\n          name: node-agent\n          items:\n            - key: \"config.json\"\n              path: \"config.json\"\n      - name: bundle-policy\n        configMap:\n          name: node-agent-bundle-policy\n      containers:\n      \n      - name: node-agent\n        image: \"docker.io/entlein/duckling:v0.1.0-m3-0f2f7afe@sha256:125e2882f0322051a53a0f201c640db00f370563c99b8ac9456624f98710670e\"\n        imagePullPolicy: IfNotPresent\n        ports:\n          - name: direct-alerts\n            containerPort: 50405\n            hostPort: 50405\n            protocol: TCP\n        livenessProbe:\n          httpGet:\n            path: /livez\n            port: 7888\n          periodSeconds: 10\n          timeoutSeconds: 5\n          failureThreshold: 3\n        readinessProbe:\n          httpGet:\n            path: /readyz\n            port: 7888\n          periodSeconds: 10\n          timeoutSeconds: 5\n          failureThreshold: 3\n        startupProbe:\n          httpGet:\n            path: /readyz\n            port: 7888\n          periodSeconds: 10\n          failureThreshold: 30\n          timeoutSeconds: 5\n        resources:\n          \n          requests:\n            cpu: \"{{ .Resources.Requests.CPU }}\"\n            memory: \"{{ .Resources.Requests.Memory }}\"\n          limits:\n            cpu: \"{{ .Resources.Limits.CPU }}\"\n            memory: \"{{ .Resources.Limits.Memory }}\"\n        env:\n          \n          - name: GOMEMLIMIT\n            value: \"{{ .GoMemLimit }}\"\n          - name: HOST_ROOT\n            value: \"/host\"\n          - name: KS_LOGGER_LEVEL\n            value: \"info\"\n          - name: KS_LOGGER_NAME\n            value: \"zap\"\n          - name: NODE_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: spec.nodeName\n          - name: POD_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: metadata.name\n          - name: NAMESPACE_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: metadata.namespace\n          - name: KUBELET_ROOT\n            value: \"/var/lib/kubelet\"\n          - name: AGENT_VERSION\n            value: \"v0.1.0-m3-0f2f7afe\"\n          - name: API_URL\n            value: \"https://api.armosec.io\"\n          - name: NodeName\n            valueFrom:\n              fieldRef:\n                fieldPath: spec.nodeName\n        securityContext:\n          runAsUser: 0\n          privileged: false\n          capabilities:\n            add:\n              - SYS_ADMIN\n              - SYS_PTRACE\n              - NET_ADMIN\n              - SYSLOG\n              - SYS_RESOURCE\n              - IPC_LOCK\n              - NET_RAW\n          seLinuxOptions:\n            type: \"{{ .SELinuxType }}\"\n        volumeMounts:\n          \n          - name: direct-jwt\n            mountPath: /etc/node-agent-direct\n            readOnly: true\n          - mountPath: /host\n            name: host\n            readOnly: true\n          - mountPath: /var/lib/kubelet\n            name: kubeletdir\n          - mountPath: /run\n            name: run\n          - mountPath: /var\n            name: var\n            readOnly: true\n          - mountPath: /lib/modules\n            name: modules\n            readOnly: true\n          - mountPath: /sys/kernel/debug\n            name: debugfs\n          - mountPath: /sys/fs/cgroup\n            name: cgroup\n            readOnly: true\n          - mountPath: /sys/fs/bpf\n            name: bpffs\n          - mountPath: /data\n            name: data\n          - mountPath: /profiles\n            name: profiles\n          - mountPath: /boot\n            name: boot\n            readOnly: true\n          - mountPath: /clamav\n            name: clamrun\n          - name: cloud-secret\n            mountPath: /etc/credentials\n            readOnly: true\n          - name: ks-cloud-config\n            mountPath: /etc/config/clusterData.json\n            readOnly: true\n            subPath: \"clusterData.json\"\n          - name: config\n            mountPath: /etc/config/config.json\n            readOnly: true\n            subPath: \"config.json\"\n          - name: bundle-policy\n            mountPath: /etc/bundle\n            readOnly: true\n      nodeSelector:\n        kubernetes.io/os: linux\n      {{- if not .IsDefaultGroup }}\n        {{ .NodeGroupLabelKey }}: \"{{ .NodeGroupLabel }}\"\n      {{- end }}\n      affinity:\n      {{- if .IsDefaultGroup }}\n        nodeAffinity:\n          requiredDuringSchedulingIgnoredDuringExecution:\n            nodeSelectorTerms:\n            - matchExpressions:\n              - key: {{ .NodeGroupLabelKey }}\n                operator: DoesNotExist\n      {{- else }}\n      \n        nodeAffinity:\n          requiredDuringSchedulingIgnoredDuringExecution:\n            nodeSelectorTerms:\n            - matchExpressions:\n              - key: kubernetes.io/os\n                operator: In\n                values:\n                - linux\n      {{- end }}\n      tolerations:\n"
+      daemonset-template.yaml: "apiVersion: apps/v1\nkind: DaemonSet\nmetadata:\n  name: \"{{ .Name }}\"\n  namespace: kubescape\n  annotations:\n    \n  labels:\n    helm.sh/chart: kubescape-operator-1.41.0-duckling141\n    app.kubernetes.io/name: kubescape-operator\n    app.kubernetes.io/instance: RELEASE-NAME\n    app.kubernetes.io/component: node-agent\n    app.kubernetes.io/version: \"v0.1.0-subtract-ecde94cd\"\n    app.kubernetes.io/managed-by: Helm\n    app.kubernetes.io/part-of: kubescape\n    app: node-agent\n    tier: ks-control-plane\n    kubescape.io/ignore: \"true\"\n    kubescape.io/tier: \"core\"\n    kubescape.io/managed-by: operator-autoscaler\n    kubescape.io/node-group: \"{{ .NodeGroupLabel }}\"\nspec:\n  selector:\n    matchLabels:\n      app.kubernetes.io/name: kubescape-operator\n      app.kubernetes.io/instance: RELEASE-NAME\n      app.kubernetes.io/component: node-agent\n      kubescape.io/node-group: \"{{ .NodeGroupLabel }}\"\n  template:\n    metadata:\n      annotations:\n        \n        checksum/node-agent-config: 472feef2d80cd9cefc02135eae624bbea17992427f73eb6c96cb138d25cb5963\n        checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424\n        checksum/cloud-config: 578b4012d93ca58623ff3ce97387526497ea876e78ac083aaa49c8da82595bc0\n      labels:\n        app.kubernetes.io/name: kubescape-operator\n        app.kubernetes.io/instance: RELEASE-NAME\n        app.kubernetes.io/component: node-agent\n        app.kubernetes.io/managed-by: Helm\n        app.kubernetes.io/part-of: kubescape\n        app: node-agent\n        tier: ks-control-plane\n        kubescape.io/ignore: \"true\"\n        kubescape.io/tier: \"core\"\n        kubescape.io/node-group: \"{{ .NodeGroupLabel }}\"\n    spec:\n      securityContext:\n        appArmorProfile:\n          type: Unconfined\n      priorityClassName: kubescape-critical\n      serviceAccountName: node-agent\n      automountServiceAccountToken: true\n      hostPID: true\n      volumes:\n      \n      - hostPath:\n          path: /\n        name: host\n      - hostPath:\n          path: /var/lib/kubelet\n        name: kubeletdir\n      - hostPath:\n          path: /run\n        name: run\n      - hostPath:\n          path: /var\n        name: var\n      - hostPath:\n          path: /sys/fs/cgroup\n        name: cgroup\n      - hostPath:\n          path: /lib/modules\n        name: modules\n      - hostPath:\n          path: /sys/fs/bpf\n        name: bpffs\n      - hostPath:\n          path: /sys/kernel/debug\n        name: debugfs\n      - hostPath:\n          path: /boot\n        name: boot\n      - emptyDir: null\n        name: data\n      - emptyDir: null\n        name: profiles\n      - hostPath:\n          path: /\n          type: Directory\n        name: host-filesystem\n      - name: direct-jwt\n        secret:\n          secretName: node-agent-direct-jwt-pub\n      - emptyDir: {}\n        name: clamdb\n      - emptyDir: {}\n        name: clamrun\n      - configMap:\n          items:\n          - key: clamd.conf\n            path: clamd.conf\n          - key: freshclam.conf\n            path: freshclam.conf\n          name: clamav\n        name: etc\n      - name: cloud-secret\n        secret:\n          secretName: cloud-secret\n      - name: ks-cloud-config\n        configMap:\n          name: ks-cloud-config\n          items:\n            - key: \"clusterData\"\n              path: \"clusterData.json\"\n      - name: config\n        configMap:\n          name: node-agent\n          items:\n            - key: \"config.json\"\n              path: \"config.json\"\n      - name: bundle-policy\n        configMap:\n          name: node-agent-bundle-policy\n      containers:\n      \n      - name: node-agent\n        image: \"docker.io/entlein/duckling:v0.1.0-m3-0f2f7afe@sha256:125e2882f0322051a53a0f201c640db00f370563c99b8ac9456624f98710670e\"\n        imagePullPolicy: IfNotPresent\n        ports:\n          - name: direct-alerts\n            containerPort: 50405\n            hostPort: 50405\n            protocol: TCP\n        livenessProbe:\n          httpGet:\n            path: /livez\n            port: 7888\n          periodSeconds: 10\n          timeoutSeconds: 5\n          failureThreshold: 3\n        readinessProbe:\n          httpGet:\n            path: /readyz\n            port: 7888\n          periodSeconds: 10\n          timeoutSeconds: 5\n          failureThreshold: 3\n        startupProbe:\n          httpGet:\n            path: /readyz\n            port: 7888\n          periodSeconds: 10\n          failureThreshold: 30\n          timeoutSeconds: 5\n        resources:\n          \n          requests:\n            cpu: \"{{ .Resources.Requests.CPU }}\"\n            memory: \"{{ .Resources.Requests.Memory }}\"\n          limits:\n            cpu: \"{{ .Resources.Limits.CPU }}\"\n            memory: \"{{ .Resources.Limits.Memory }}\"\n        env:\n          \n          - name: GOMEMLIMIT\n            value: \"{{ .GoMemLimit }}\"\n          - name: HOST_ROOT\n            value: \"/host\"\n          - name: KS_LOGGER_LEVEL\n            value: \"info\"\n          - name: KS_LOGGER_NAME\n            value: \"zap\"\n          - name: NODE_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: spec.nodeName\n          - name: POD_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: metadata.name\n          - name: NAMESPACE_NAME\n            valueFrom:\n              fieldRef:\n                fieldPath: metadata.namespace\n          - name: KUBELET_ROOT\n            value: \"/var/lib/kubelet\"\n          - name: AGENT_VERSION\n            value: \"v0.1.0-m3-0f2f7afe\"\n          - name: API_URL\n            value: \"https://api.armosec.io\"\n          - name: NodeName\n            valueFrom:\n              fieldRef:\n                fieldPath: spec.nodeName\n        securityContext:\n          runAsUser: 0\n          privileged: false\n          capabilities:\n            add:\n              - SYS_ADMIN\n              - SYS_PTRACE\n              - NET_ADMIN\n              - SYSLOG\n              - SYS_RESOURCE\n              - IPC_LOCK\n              - NET_RAW\n          seLinuxOptions:\n            type: \"{{ .SELinuxType }}\"\n        volumeMounts:\n          \n          - name: direct-jwt\n            mountPath: /etc/node-agent-direct\n            readOnly: true\n          - mountPath: /host\n            name: host\n            readOnly: true\n          - mountPath: /var/lib/kubelet\n            name: kubeletdir\n          - mountPath: /run\n            name: run\n          - mountPath: /var\n            name: var\n            readOnly: true\n          - mountPath: /lib/modules\n            name: modules\n            readOnly: true\n          - mountPath: /sys/kernel/debug\n            name: debugfs\n          - mountPath: /sys/fs/cgroup\n            name: cgroup\n            readOnly: true\n          - mountPath: /sys/fs/bpf\n            name: bpffs\n          - mountPath: /data\n            name: data\n          - mountPath: /profiles\n            name: profiles\n          - mountPath: /boot\n            name: boot\n            readOnly: true\n          - mountPath: /clamav\n            name: clamrun\n          - name: cloud-secret\n            mountPath: /etc/credentials\n            readOnly: true\n          - name: ks-cloud-config\n            mountPath: /etc/config/clusterData.json\n            readOnly: true\n            subPath: \"clusterData.json\"\n          - name: config\n            mountPath: /etc/config/config.json\n            readOnly: true\n            subPath: \"config.json\"\n          - name: bundle-policy\n            mountPath: /etc/bundle\n            readOnly: true\n      nodeSelector:\n        kubernetes.io/os: linux\n      {{- if not .IsDefaultGroup }}\n        {{ .NodeGroupLabelKey }}: \"{{ .NodeGroupLabel }}\"\n      {{- end }}\n      affinity:\n      {{- if .IsDefaultGroup }}\n        nodeAffinity:\n          requiredDuringSchedulingIgnoredDuringExecution:\n            nodeSelectorTerms:\n            - matchExpressions:\n              - key: {{ .NodeGroupLabelKey }}\n                operator: DoesNotExist\n      {{- else }}\n      \n        nodeAffinity:\n          requiredDuringSchedulingIgnoredDuringExecution:\n            nodeSelectorTerms:\n            - matchExpressions:\n              - key: kubernetes.io/os\n                operator: In\n                values:\n                - linux\n      {{- end }}\n      tolerations:\n"
     kind: ConfigMap
     metadata:
       annotations: null
@@ -9717,7 +9712,6 @@ autoscaler mode without sbom sidecar:
           "excludeNamespaces": "kube-system,kube-public,kube-node-lease,kubeconfig,gmp-system,gmp-public",
           "namespace": "kubescape",
           "excludeJsonPaths":null,
-          "httpExporterConfig":{"maxAlertsPerMinute":1000,"method":"POST","url":"http://synchronizer:8089/apis/v1/kubescape.io"},
           "nodeAgentAutoscaler": {
             "enabled": true,
             "nodeGroupLabel": "node.kubernetes.io/instance-type",
@@ -9798,7 +9792,7 @@ autoscaler mode without sbom sidecar:
             checksum/capabilities-config: 291b8abe7acecdc95f6a91e7360ff9944d671687106c72409e73f99782cff6c8
             checksum/cloud-config: 578b4012d93ca58623ff3ce97387526497ea876e78ac083aaa49c8da82595bc0
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
-            checksum/operator-config: e3e529667959cffa5c542b0129e662f6bb0dde656cf07ecac7dec1834d65b385
+            checksum/operator-config: 756903143c21aed66ef494a530ee4611754a9373729fd9063ba7a5aa9644de49
           labels:
             app: operator
             app.kubernetes.io/component: operator
@@ -12350,7 +12344,6 @@ backend-storage enabled allows scanning capabilities:
             "excludeNamespaces": "kubescape,kube-system,kube-public,kube-node-lease",
             "excludeLabels":null,
             "exporters": {
-              "httpExporterConfig":{"maxAlertsPerMinute":1000,"method":"POST","url":"http://synchronizer:8089/apis/v1/kubescape.io"},
               "alertManagerExporterUrls":[],
               "stdoutExporter":true,
               "syslogExporterURL": ""
@@ -12415,7 +12408,7 @@ backend-storage enabled allows scanning capabilities:
           annotations:
             checksum/cloud-config: 578b4012d93ca58623ff3ce97387526497ea876e78ac083aaa49c8da82595bc0
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
-            checksum/node-agent-config: 846488eaa04135e04cb9a0bf342dc8ba67b21bff7879c0668157105828630350
+            checksum/node-agent-config: 5a0dc624c66b14b56cae112a6127b441831c1d828198e83e3d428f1faf1a3868
           labels:
             app: node-agent
             app.kubernetes.io/component: node-agent
@@ -13993,7 +13986,6 @@ backend-storage enabled allows scanning capabilities:
           "excludeNamespaces": "kubescape,kube-system,kube-public,kube-node-lease",
           "namespace": "kubescape",
           "excludeJsonPaths":null,
-          "httpExporterConfig":{"maxAlertsPerMinute":1000,"method":"POST","url":"http://synchronizer:8089/apis/v1/kubescape.io"},
           "nodeAgentAutoscaler": {
             "enabled": false,
             "nodeGroupLabel": "node.kubernetes.io/instance-type",
@@ -14074,7 +14066,7 @@ backend-storage enabled allows scanning capabilities:
             checksum/capabilities-config: e192a60e7c8a311b6deed322ce8bdb3e815d1a920b269a9092236e2c6cec889d
             checksum/cloud-config: 578b4012d93ca58623ff3ce97387526497ea876e78ac083aaa49c8da82595bc0
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
-            checksum/operator-config: 2b5a3dd2a1c7e5fbd21638ae2f52b77f65177e1f287fc7207407eadfc2812b5a
+            checksum/operator-config: 2f42bf5adb0dec408a6cba8cb6864e6055aac76c9d761fff8408e8a85e853c08
           labels:
             app: operator
             app.kubernetes.io/component: operator
@@ -20282,7 +20274,6 @@ default capabilities:
             "excludeNamespaces": "kubescape,kube-system,kube-public,kube-node-lease,kubeconfig,gmp-system,gmp-public",
             "excludeLabels":null,
             "exporters": {
-              "httpExporterConfig":{"maxAlertsPerMinute":1000,"method":"POST","url":"http://synchronizer:8089/apis/v1/kubescape.io"},
               "alertManagerExporterUrls":[],
               "stdoutExporter":true,
               "syslogExporterURL": ""
@@ -20347,7 +20338,7 @@ default capabilities:
           annotations:
             checksum/cloud-config: 578b4012d93ca58623ff3ce97387526497ea876e78ac083aaa49c8da82595bc0
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
-            checksum/node-agent-config: 519d31a3daa3b9ef2207cd435dc2b662bb63ff8578d680335880e223b7e0241a
+            checksum/node-agent-config: 34cdd968e0a6732640655569d7fa17a34743edca52e8da3ace779e773fa51deb
             checksum/proxy-config: c03b6781aa61faaacfa84a96809236591dde0cbd43a204e05d5ba3044bb9d5d8
           labels:
             app: node-agent
@@ -21860,7 +21851,6 @@ default capabilities:
           "excludeNamespaces": "kubescape,kube-system,kube-public,kube-node-lease,kubeconfig,gmp-system,gmp-public",
           "namespace": "kubescape",
           "excludeJsonPaths":null,
-          "httpExporterConfig":{"maxAlertsPerMinute":1000,"method":"POST","url":"http://synchronizer:8089/apis/v1/kubescape.io"},
           "nodeAgentAutoscaler": {
             "enabled": false,
             "nodeGroupLabel": "node.kubernetes.io/instance-type",
@@ -21941,7 +21931,7 @@ default capabilities:
             checksum/capabilities-config: ea790e483aa70ec775ad37044d4c02cef35b52a2152ce3b1666b67a15b36e5be
             checksum/cloud-config: 578b4012d93ca58623ff3ce97387526497ea876e78ac083aaa49c8da82595bc0
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
-            checksum/operator-config: f8a67a3bc2c38d9567bc2cd334a01848d20da0329f76b8e414930289a1bd766f
+            checksum/operator-config: c207204a2ba2165e4f17b41bcde5e8d5be1ba85ce81d705efe97c524b23b836d
             checksum/proxy-config: c03b6781aa61faaacfa84a96809236591dde0cbd43a204e05d5ba3044bb9d5d8
           labels:
             app: operator
@@ -24684,7 +24674,6 @@ disable otel:
             "excludeNamespaces": "kube-system,kube-public,kube-node-lease,kubeconfig,gmp-system,gmp-public",
             "excludeLabels":null,
             "exporters": {
-              "httpExporterConfig":{"maxAlertsPerMinute":1000,"method":"POST","url":"http://synchronizer:8089/apis/v1/kubescape.io"},
               "alertManagerExporterUrls":[],
               "stdoutExporter":true,
               "syslogExporterURL": ""
@@ -24749,7 +24738,7 @@ disable otel:
           annotations:
             checksum/cloud-config: 578b4012d93ca58623ff3ce97387526497ea876e78ac083aaa49c8da82595bc0
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
-            checksum/node-agent-config: cf1286d72cf3d02095aae39df2e5fce21c8c4a81d55101bfe4560c8b3d49dd00
+            checksum/node-agent-config: 002cb247148b3bad9987e1a593b265d2ca606b8e60359de01e6ebbe56d2dcec5
           labels:
             app: node-agent
             app.kubernetes.io/component: node-agent
@@ -25550,7 +25539,6 @@ disable otel:
           "excludeNamespaces": "kube-system,kube-public,kube-node-lease,kubeconfig,gmp-system,gmp-public",
           "namespace": "kubescape",
           "excludeJsonPaths":null,
-          "httpExporterConfig":{"maxAlertsPerMinute":1000,"method":"POST","url":"http://synchronizer:8089/apis/v1/kubescape.io"},
           "nodeAgentAutoscaler": {
             "enabled": false,
             "nodeGroupLabel": "node.kubernetes.io/instance-type",
@@ -25631,7 +25619,7 @@ disable otel:
             checksum/capabilities-config: 0a2b7c5fa6dceabd34d4bab69f2a51103a61323de2922fea5ba6ca454438c8a4
             checksum/cloud-config: 578b4012d93ca58623ff3ce97387526497ea876e78ac083aaa49c8da82595bc0
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
-            checksum/operator-config: 510d33bb3ddb82d81e4e871ba80dff8e74dbe57e41ad9416e3f9c87a7369e924
+            checksum/operator-config: cd23d39043d711d4710b7c31c571b44149b466fe9b587e4bbf5fbcbd88ea453b
           labels:
             app: operator
             app.kubernetes.io/component: operator
@@ -31160,7 +31148,6 @@ multiple node agents:
             "includeNamespaces": "my-namespace",
             "excludeLabels":{"baz":["qux"],"foo":["bar","baz"]},
             "exporters": {
-              "httpExporterConfig":{"maxAlertsPerMinute":1000,"method":"POST","url":"http://synchronizer:8089/apis/v1/kubescape.io"},
               "alertManagerExporterUrls":[],
               "stdoutExporter":true,
               "syslogExporterURL": ""
@@ -31262,7 +31249,7 @@ multiple node agents:
           annotations:
             checksum/cloud-config: fb19e17ed09e8ff88e13d0af9b1fc8b4b5218310dc1700820b2a85aff3c64432
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
-            checksum/node-agent-config: 8c6b56f816d390cd7cf7e0b33ca6cff1066531457c39319f38b546ad59963b22
+            checksum/node-agent-config: c36a8ee82cac28d8d39d620e1a6691125a7cf2ceab72f126369adfeaedbf01c5
             checksum/proxy-config: c03b6781aa61faaacfa84a96809236591dde0cbd43a204e05d5ba3044bb9d5d8
           labels:
             app: node-agent
@@ -31575,7 +31562,7 @@ multiple node agents:
           annotations:
             checksum/cloud-config: fb19e17ed09e8ff88e13d0af9b1fc8b4b5218310dc1700820b2a85aff3c64432
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
-            checksum/node-agent-config: 8c6b56f816d390cd7cf7e0b33ca6cff1066531457c39319f38b546ad59963b22
+            checksum/node-agent-config: c36a8ee82cac28d8d39d620e1a6691125a7cf2ceab72f126369adfeaedbf01c5
             checksum/proxy-config: c03b6781aa61faaacfa84a96809236591dde0cbd43a204e05d5ba3044bb9d5d8
           labels:
             app: node-agent
@@ -33292,7 +33279,6 @@ multiple node agents:
           "includeNamespaces": "my-namespace",
           "namespace": "kubescape",
           "excludeJsonPaths":[".containers[*].env[?(@.name==\"KUBECONFIG\")]"],
-          "httpExporterConfig":{"maxAlertsPerMinute":1000,"method":"POST","url":"http://synchronizer:8089/apis/v1/kubescape.io"},
           "nodeAgentAutoscaler": {
             "enabled": false,
             "nodeGroupLabel": "node.kubernetes.io/instance-type",
@@ -33373,7 +33359,7 @@ multiple node agents:
             checksum/capabilities-config: 6cb14cfcd5b9d261895c7257698ca095726a2e7f009862604e3e9d559e12b0e1
             checksum/cloud-config: fb19e17ed09e8ff88e13d0af9b1fc8b4b5218310dc1700820b2a85aff3c64432
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
-            checksum/operator-config: 02dd603eb05df8c1f17ddda15da5952dfa5f6df29c328c12e6a1c9da94d467ea
+            checksum/operator-config: c43a824ccd8dd824e7e77a95c7c197514e1a3a2e4d2b7cf77ff4518f2195d697
             checksum/proxy-config: c03b6781aa61faaacfa84a96809236591dde0cbd43a204e05d5ba3044bb9d5d8
           labels:
             app: operator
@@ -36276,7 +36262,6 @@ priority class scheduling:
             "excludeNamespaces": "kube-system,kube-public,kube-node-lease,kubeconfig,gmp-system,gmp-public",
             "excludeLabels":null,
             "exporters": {
-              "httpExporterConfig":{"maxAlertsPerMinute":1000,"method":"POST","url":"http://synchronizer:8089/apis/v1/kubescape.io"},
               "alertManagerExporterUrls":[],
               "stdoutExporter":true,
               "syslogExporterURL": ""
@@ -36341,7 +36326,7 @@ priority class scheduling:
           annotations:
             checksum/cloud-config: 578b4012d93ca58623ff3ce97387526497ea876e78ac083aaa49c8da82595bc0
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
-            checksum/node-agent-config: 6e77dfea094085a67f8b0c3c8553bc1cca3a8c8eb9897fce0b6e640d5f1b58ac
+            checksum/node-agent-config: 472feef2d80cd9cefc02135eae624bbea17992427f73eb6c96cb138d25cb5963
           labels:
             app: node-agent
             app.kubernetes.io/component: node-agent
@@ -37142,7 +37127,6 @@ priority class scheduling:
           "excludeNamespaces": "kube-system,kube-public,kube-node-lease,kubeconfig,gmp-system,gmp-public",
           "namespace": "kubescape",
           "excludeJsonPaths":null,
-          "httpExporterConfig":{"maxAlertsPerMinute":1000,"method":"POST","url":"http://synchronizer:8089/apis/v1/kubescape.io"},
           "nodeAgentAutoscaler": {
             "enabled": false,
             "nodeGroupLabel": "node.kubernetes.io/instance-type",
@@ -37223,7 +37207,7 @@ priority class scheduling:
             checksum/capabilities-config: 291b8abe7acecdc95f6a91e7360ff9944d671687106c72409e73f99782cff6c8
             checksum/cloud-config: 578b4012d93ca58623ff3ce97387526497ea876e78ac083aaa49c8da82595bc0
             checksum/cloud-secret: 435193bc039d949c849ba4b141adeb4836e4d0fdcc4bf0b9588d0e36de86c424
-            checksum/operator-config: 510d33bb3ddb82d81e4e871ba80dff8e74dbe57e41ad9416e3f9c87a7369e924
+            checksum/operator-config: cd23d39043d711d4710b7c31c571b44149b466fe9b587e4bbf5fbcbd88ea453b
           labels:
             app: operator
             app.kubernetes.io/component: operator
