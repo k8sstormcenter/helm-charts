@@ -302,8 +302,8 @@ storage:
   # -- source code: https://github.com/kubescape/storage
   image:
     repository: ghcr.io/k8sstormcenter/storage
-    tag: m3-bb2abce3
-    digest: sha256:cc219249a078d335516f4492f1b9ac85a92d0ef95ffb50b78da408c0a3b60872
+    tag: m3-829751ec
+    digest: sha256:b24e991a4c0fd3533cd7efdddf00647241f22231b0c6bfd9a7ede69cc41fe589
     pullPolicy: IfNotPresent
 
   nodeSelector:
