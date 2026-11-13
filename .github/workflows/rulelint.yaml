@@ -1,0 +1,37 @@
+name: rulelint
+on:
+  pull_request:
+    paths:
+      - 'charts/kubescape-operator/templates/node-agent/default-rules.yaml'
+      - 'hack/rulelint/**'
+  push:
+    branches:
+      - 'pin/**'
+      - main
+    paths:
+      - 'charts/kubescape-operator/templates/node-agent/default-rules.yaml'
+      - 'hack/rulelint/**'
+
+permissions:
+  contents: read
+
+jobs:
+  rulelint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Install Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: hack/rulelint/go.mod
+          cache-dependency-path: hack/rulelint/go.sum
+
+      - name: Test the linter
+        run: go -C hack/rulelint test ./...
+
+      - name: Lint the default rules
+        run: go -C hack/rulelint run . ../../charts/kubescape-operator/templates/node-agent/default-rules.yaml
