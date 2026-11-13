@@ -12,7 +12,7 @@ metadata:
 data:
   capabilities: |
     {
-      "capabilities": {{- .Values.capabilities | toJson }},
+      "capabilities": {{- omit .Values.capabilities "agentRuntimePosture" "backend-storage" "configurationScan" "continuousScan" "kubescapeOffline" "malwareDetection" "manageWorkloads" "networkEventsStreaming" "nodeProfileService" "nodeScan" "prometheusExporter" "relevancy" "remediation" "riskAcceptance" "vexGeneration" "vulnerabilityScan" | toJson }},
       "effectiveCapabilities": {{- $gates.effectiveCapabilities | toJson }},
       "capabilityWarnings": {{- $gates.warnings | default list | toJson }},
       "components": {{- include "components" . | fromYaml | toJson }},

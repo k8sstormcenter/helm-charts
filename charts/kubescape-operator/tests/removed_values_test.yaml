@@ -101,6 +101,15 @@ tests:
       - matchRegex:
           path: data.clusterData
           pattern: '"continuousPostureScan": false'
+  - it: removed capability flags are not handed to the operator
+    template: configs/components-configmap.yaml
+    asserts:
+      - notMatchRegex:
+          path: data.capabilities
+          pattern: configurationScan|continuousScan|nodeScan|vulnerabilityScan|vexGeneration|relevancy|malwareDetection|networkEventsStreaming|nodeProfileService|prometheusExporter|kubescapeOffline|riskAcceptance|remediation|manageWorkloads
+      - matchRegex:
+          path: data.capabilities
+          pattern: '"runtimeDetection":"enable"'
   - it: storage and operator still render
     templates:
       - storage/deployment.yaml
