@@ -559,8 +559,8 @@ storage:
   # -- source code: https://github.com/kubescape/storage
   image:
     repository: ghcr.io/k8sstormcenter/storage
-    tag: m1-phase4-5054258b
-    digest: sha256:864024f87fe536a98ebce6e67aa1f9b6d280875f3af372e186b3d61030cf10cd
+    tag: m3-acd5fefd
+    digest: sha256:61fb57fcefbce088a818f45801b19137b6f12763906f2b48cd3d0e0fb4a11e8e
     pullPolicy: IfNotPresent
 
   nodeSelector:
@@ -593,10 +593,6 @@ storage:
       queueLength: 50
       workerCount: 2
       maxObjectSize: 2500000
-    openvulnerabilityexchangecontainers:
-      queueLength: 50
-      workerCount: 1
-      maxObjectSize: 500000
     sbomsyftfiltereds:
       queueLength: 50
       workerCount: 1
@@ -605,10 +601,6 @@ storage:
       queueLength: 50
       workerCount: 1
       maxObjectSize: 100000000
-    vulnerabilitymanifests:
-      queueLength: 50
-      workerCount: 1
-      maxObjectSize: 50000000
 
 # +++++++++++++++++++++++++++++ Node-agent ++++++++++++++++++++++++++++++++++++++++++++++++
 
