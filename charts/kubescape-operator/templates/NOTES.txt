@@ -2,15 +2,6 @@ Thank you for installing {{ .Chart.Name }} version {{ .Chart.Version }}.
 {{ $components := fromYaml (include "components" .) -}}
 {{ $configurations := fromYaml (include "configurations" .) -}}
 {{ $gates := fromYaml (include "capabilities.gates" .) -}}
-{{ if $components.kubescapeScheduler.enabled -}}
-
-View your cluster's configuration scanning schedule:
-> kubectl -n {{ .Values.ksNamespace }} get cj {{ .Values.kubescapeScheduler.name }} -o=jsonpath='{.metadata.name}{"\t"}{.spec.schedule}{"\n"}'
-
-To change the schedule, set `.spec.schedule`:
-> kubectl -n {{ .Values.ksNamespace }} edit cj {{ .Values.kubescapeScheduler.name }}
-
-{{- end }}
 {{ if $components.kubevulnScheduler.enabled -}}
 
 View your cluster's image scanning schedule:

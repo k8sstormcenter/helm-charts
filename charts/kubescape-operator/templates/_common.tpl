@@ -41,35 +41,9 @@ submit: {{ $submit }}
   {{- end -}}
 {{- end -}}
 
-{{- define "kubescape.schedulerRequestBody" -}}
-{{- $requestBody := deepCopy (.Values.kubescapeScheduler.requestBody | default (dict)) -}}
-{{- if eq .Values.capabilities.kubescapeOffline "enable" -}}
-  {{- $commands := list -}}
-  {{- range $command := ($requestBody.commands | default (list)) -}}
-    {{- $renderedCommand := deepCopy $command -}}
-    {{- $args := $renderedCommand.args | default (dict) -}}
-    {{- if hasKey $args "scanV1" -}}
-      {{- $scanV1 := $args.scanV1 | default (dict) -}}
-      {{- $_ := set $scanV1 "keepLocal" true -}}
-      {{- $_ := set $args "scanV1" $scanV1 -}}
-      {{- $_ := set $renderedCommand "args" $args -}}
-    {{- end -}}
-    {{- $commands = append $commands $renderedCommand -}}
-  {{- end -}}
-  {{- $_ := set $requestBody "commands" $commands -}}
-{{- end -}}
-{{- $requestBody | toJson -}}
-{{- end -}}
-
 {{- define "components" -}}
 {{- $configurations := fromYaml (include "configurations" .) }}
-{{- $nodeScanEnabled := eq .Values.capabilities.nodeScan "enable" }}
-{{- $configurationScanEnabled := eq .Values.capabilities.configurationScan "enable" }}
 {{- $vulnerabilityScanEnabled := eq .Values.capabilities.vulnerabilityScan "enable" }}
-kubescape:
-  enabled: {{ $configurationScanEnabled }}
-kubescapeScheduler:
-  enabled: {{ $configurationScanEnabled }}
 kubevuln:
   enabled: {{ $vulnerabilityScanEnabled }}
 kubevulnScheduler:
@@ -135,8 +109,6 @@ effectiveCapabilities:
   nodeProfileService: {{ if $nodeProfileService }}enable{{ else }}disable{{ end }}
   networkEventsStreaming: {{ if $networkStreaming }}enable{{ else }}disable{{ end }}
   httpDetection: {{ if $httpDetection }}enable{{ else }}disable{{ end }}
-  nodeScan: {{ if and (eq $c.nodeScan "enable") $backendStorage }}backend{{ else }}{{ $c.nodeScan }}{{ end }}
-  configurationScan: {{ if and (eq $c.configurationScan "enable") $backendStorage }}backend{{ else }}{{ $c.configurationScan }}{{ end }}
   vulnerabilityScan: {{ if and (eq $c.vulnerabilityScan "enable") $backendStorage }}backend{{ else }}{{ $c.vulnerabilityScan }}{{ end }}
 warnings:
 {{- if and (eq $c.nodeProfileService "enable") (not $nodeProfileService) }}

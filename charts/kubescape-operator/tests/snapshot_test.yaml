@@ -28,18 +28,8 @@ tests:
       accessKey: f304d73b-d43c-412b-82ea-e4c859493ce6
       alertCRD:
         installDefault: true
-      cloudProviderMetadata:
-        secretRef:
-          name: kubescape-secret
-          subscriptionIdKey: aksSubscriptionID
-          clientIdKey: aksClientID
-          clientSecretKey: aksClientSecret
-          tenantIdKey: aksTenantID
-          resourceGroupKey: aksResourceGroup
       capabilities:
-        configurationScan: enable
         continuousScan: enable
-        nodeScan: enable
         vulnerabilityScan: enable
         relevancy: enable
         vexGeneration: enable
@@ -97,8 +87,6 @@ tests:
       nodeAgent.gke.allowlist:
         enabled: true
         name: armo-kubescape-node-agent-1.27
-      kubescape.serviceMonitor.enabled: true
-      kubescapeScheduler.scanSchedule: "1 2 3 4 5"
       kubevuln.config.grypeDbPersistence: true
       kubevuln.config.useDefaultMatchers: true
       kubevulnScheduler.scanSchedule: "1 2 3 4 5"
@@ -117,7 +105,6 @@ tests:
       clusterName: kind-kind
       excludeNamespaces: ""
       includeNamespaces: ""
-      kubescapeScheduler.scanSchedule: "1 2 3 4 5"
       kubevulnScheduler.scanSchedule: "1 2 3 4 5"
   - it: disable otel
     asserts:
@@ -130,7 +117,6 @@ tests:
       account: 9e6c0c2c-6bd0-4919-815b-55030de7c9a0
       accessKey: f304d73b-d43c-412b-82ea-e4c859493ce6
       clusterName: kind-kind
-      kubescapeScheduler.scanSchedule: "1 2 3 4 5"
       kubevulnScheduler.scanSchedule: "1 2 3 4 5"
       server: api.armosec.io
   - it: relevancy only
@@ -147,11 +133,8 @@ tests:
       clusterName: kind-kind
       excludeNamespaces: ""
       includeNamespaces: ""
-      kubescapeScheduler.scanSchedule: "1 2 3 4 5"
       kubevulnScheduler.scanSchedule: "1 2 3 4 5"
       capabilities:
-        configurationScan: enable
-        nodeScan: enable
         nodeSbomGeneration: disable
         scanEmbeddedSBOMs: disable
         vulnerabilityScan: enable
@@ -180,8 +163,6 @@ tests:
       alertCRD:
         installDefault: true
       capabilities:
-        configurationScan: enable
-        nodeScan: enable
         vulnerabilityScan: enable
         relevancy: enable
         vexGeneration: disable
@@ -207,8 +188,6 @@ tests:
           apiServerPort: 8443
         proxySecretFile: foo
       grypeOfflineDB.enabled: true
-      kubescape.serviceMonitor.enabled: true
-      kubescapeScheduler.scanSchedule: "1 2 3 4 5"
       kubevulnScheduler.scanSchedule: "1 2 3 4 5"
   - it: storage service configuration
     template: storage/service.yaml
@@ -500,18 +479,8 @@ tests:
       accessKey: f304d73b-d43c-412b-82ea-e4c859493ce6
       alertCRD:
         installDefault: true
-      cloudProviderMetadata:
-        secretRef:
-          name: kubescape-secret
-          subscriptionIdKey: aksSubscriptionID
-          clientIdKey: aksClientID
-          clientSecretKey: aksClientSecret
-          tenantIdKey: aksTenantID
-          resourceGroupKey: aksResourceGroup
       capabilities:
-        configurationScan: enable
         continuousScan: enable
-        nodeScan: enable
         vulnerabilityScan: enable
         relevancy: enable
         vexGeneration: enable
@@ -592,8 +561,6 @@ tests:
               limits:
                 cpu: 200m
                 memory: 512Mi
-      kubescape.serviceMonitor.enabled: true
-      kubescapeScheduler.scanSchedule: "1 2 3 4 5"
       kubevuln.config.grypeDbPersistence: true
       kubevuln.config.useDefaultMatchers: true
       kubevulnScheduler.scanSchedule: "1 2 3 4 5"
@@ -614,8 +581,6 @@ tests:
         installDefault: true
       capabilities:
         backend-storage: enable
-        configurationScan: enable
-        nodeScan: enable
         vulnerabilityScan: enable
         relevancy: enable
         runtimeObservability: enable
@@ -624,96 +589,6 @@ tests:
       server: api.armosec.io
       clusterName: kind-kind
       excludeNamespaces: "kubescape,kube-system,kube-public,kube-node-lease"
-  - it: skipPersistence enabled
-    asserts:
-      - matchSnapshot: {}
-    capabilities:
-      apiVersions:
-        - batch/v1
-    set:
-      unittest: true
-      account: 9e6c0c2c-6bd0-4919-815b-55030de7c9a0
-      accessKey: f304d73b-d43c-412b-82ea-e4c859493ce6
-      alertCRD:
-        installDefault: true
-      cloudProviderMetadata:
-        secretRef:
-          name: kubescape-secret
-          subscriptionIdKey: aksSubscriptionID
-          clientIdKey: aksClientID
-          clientSecretKey: aksClientSecret
-          tenantIdKey: aksTenantID
-          resourceGroupKey: aksResourceGroup
-      capabilities:
-        configurationScan: enable
-        continuousScan: enable
-        nodeScan: enable
-        vulnerabilityScan: enable
-        relevancy: enable
-        vexGeneration: enable
-        runtimeObservability: enable
-        networkPolicyService: enable
-        runtimeDetection: enable
-        httpDetection: enable
-        malwareDetection: enable
-        nodeProfileService: enable
-        nodeSbomGeneration: enable
-        scanEmbeddedSBOMs: enable
-        seccompProfileService: enable
-        autoUpgrading: enable
-        admissionController: enable
-        manageWorkloads: enable
-        networkEventsStreaming: enable
-        syncSBOM: enable
-        riskAcceptance: enable
-        remediation: enable
-      excludeLabels:
-        foo: [bar, baz]
-        baz: [qux]
-      server: api.armosec.io
-      configurations:
-        otelUrl: "otelCollector.svc.monitoring:4317"
-        excludeJsonPaths:
-          - '.containers[*].env[?(@.name=="KUBECONFIG")]'
-      clusterName: kind-kind
-      includeNamespaces: "my-namespace"
-      global:
-        httpsProxy: "https://foo:bar@baz:1234"
-        noProxy: "*.foo,bar.baz"
-        networkPolicy:
-          createEgressRules: true
-          enabled: true
-          apiServerPort: 443
-          httpsProxyIP: 1.1.1.1
-          httpsProxyPort: 1234
-        proxySecretFile: foo
-        overrideDefaultCaCertificates:
-          enabled: true
-          caCertificates: "foo"
-        openshift:
-          scc:
-            enabled: true
-      imagePullSecrets: [foo, bar]
-      grypeOfflineDB:
-        enabled: true
-        image:
-          tag: "latest"
-        podAnnotations:
-          foo: bar
-        podLabels:
-          bar: baz
-      nodeAgent.gke.allowlist:
-        enabled: true
-        name: armo-kubescape-node-agent-1.27
-      kubescape.serviceMonitor.enabled: true
-      kubescape.serviceMonitor.skipPersistence: true
-      kubescapeScheduler.scanSchedule: "1 2 3 4 5"
-      kubevuln.config.grypeDbPersistence: true
-      kubevuln.config.useDefaultMatchers: true
-      kubevulnScheduler.scanSchedule: "1 2 3 4 5"
-      nodeAgent.config.skipKernelVersionCheck: true
-      storage.forceVirtualCrds: true
-      storage.mtls.enabled: false
   - it: priority class scheduling
     asserts:
       - matchSnapshot: {}
@@ -726,20 +601,14 @@ tests:
       accessKey: f304d73b-d43c-412b-82ea-e4c859493ce6
       server: api.armosec.io
       clusterName: kind-kind
-      kubescapeScheduler.scanSchedule: "1 2 3 4 5"
       kubevulnScheduler.scanSchedule: "1 2 3 4 5"
       capabilities:
-        configurationScan: enable
-        nodeScan: enable
         vulnerabilityScan: enable
         relevancy: enable
         runtimeDetection: enable
       # global fallback for all deployments
       customScheduling:
         priorityClassName: "global-priority"
-      # per-component override takes precedence over global
-      kubescape:
-        priorityClassName: "kubescape-priority"
       # node-agent override takes precedence over configurations.priorityClass (kubescape-critical)
       nodeAgent:
         priorityClassName: "node-agent-priority"
@@ -964,11 +833,9 @@ tests:
       accessKey: f304d73b-d43c-412b-82ea-e4c859493ce6
       server: api.armosec.io
       clusterName: kind-kind
-      kubescapeScheduler.scanSchedule: "1 2 3 4 5"
       kubevulnScheduler.scanSchedule: "1 2 3 4 5"
       capabilities:
         vulnerabilityScan: enable
-        nodeScan: enable
         runtimeDetection: enable
         nodeSbomGeneration: enable
       nodeAgent:
@@ -990,11 +857,9 @@ tests:
       accessKey: f304d73b-d43c-412b-82ea-e4c859493ce6
       server: api.armosec.io
       clusterName: kind-kind
-      kubescapeScheduler.scanSchedule: "1 2 3 4 5"
       kubevulnScheduler.scanSchedule: "1 2 3 4 5"
       capabilities:
         vulnerabilityScan: enable
-        nodeScan: enable
         runtimeDetection: enable
         nodeSbomGeneration: enable
       nodeAgent:

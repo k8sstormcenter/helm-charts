@@ -19,7 +19,6 @@ data:
       "excludeNamespaces": "{{ .Values.excludeNamespaces }}",
         {{- end }}
       "namespace": "{{ .Values.ksNamespace }}",
-      "triggersecurityframework": {{ .Values.operator.triggerSecurityFramework }},
       "podScanGuardTime": "{{ .Values.operator.podScanGuardTime }}",
       "excludeJsonPaths": {{- .Values.configurations.excludeJsonPaths | toJson }},
         {{- if .Values.operator.rulesUpdateConfig }}

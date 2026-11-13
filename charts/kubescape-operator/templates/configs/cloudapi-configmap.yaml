@@ -27,17 +27,17 @@ data:
       "serviceDiscovery": {{ $components.serviceDiscovery.enabled }},
       "vulnScanURL": "{{ .Values.kubevuln.name }}:{{ .Values.kubevuln.service.port }}",
       "kubevulnURL": "{{ .Values.kubevuln.name }}:{{ .Values.kubevuln.service.port }}",
-      "kubescapeURL": "{{ .Values.kubescape.name }}:{{ .Values.kubescape.service.port }}",
+      "kubescapeURL": "kubescape:8080",
       "clusterName": "{{ regexReplaceAll "\\W+" .Values.clusterName "-" }}",
       "storage": {{ $components.storage.enabled }},
       "relevantImageVulnerabilitiesEnabled": {{ eq .Values.capabilities.relevancy "enable" }},
       "namespace": "{{ .Values.ksNamespace }}",
       "imageVulnerabilitiesScanningEnabled": {{ $components.kubevuln.enabled }},
-      "postureScanEnabled": {{ $components.kubescape.enabled }},
+      "postureScanEnabled": false,
       "nodeAgent": "{{ $components.nodeAgent.enabled }}",
       "maxImageSize": {{ .Values.kubevuln.config.maxImageSize }},
       "maxSBOMSize": {{ .Values.kubevuln.config.maxSBOMSize }},
-      "keepLocal": {{ or (eq .Values.capabilities.kubescapeOffline "enable") (not $components.serviceDiscovery.enabled) }},
+      "keepLocal": {{ not $components.serviceDiscovery.enabled }},
       "scanTimeout": "{{ .Values.kubevuln.config.scanTimeout }}",
       "scanEmbeddedSBOMs": {{ eq .Values.capabilities.scanEmbeddedSBOMs "enable" }},
       "vexGeneration": {{ eq .Values.capabilities.vexGeneration "enable" }},
@@ -56,24 +56,6 @@ data:
 {{- end }}
       "relevantImageVulnerabilitiesConfiguration": "{{ .Values.capabilities.relevancy }}",
       "riskAcceptance": {{ eq .Values.capabilities.riskAcceptance "enable" }}
-{{- if not (kindIs "invalid" .Values.defaultFrameworks) }}
-{{- if not (kindIs "slice" .Values.defaultFrameworks) }}
-{{- fail (printf "defaultFrameworks must be a list of framework names, got %s (use --set 'defaultFrameworks={nsa,mitre}')" (kindOf .Values.defaultFrameworks)) }}
-{{- end }}
-{{- $frameworks := list }}
-{{- range .Values.defaultFrameworks }}
-{{- if not (kindIs "string" .) }}
-{{- fail (printf "defaultFrameworks entries must be strings, got %s" (kindOf .)) }}
-{{- end }}
-{{- $name := trim . }}
-{{- if ne $name "" }}
-{{- $frameworks = append $frameworks $name }}
-{{- end }}
-{{- end }}
-{{- if $frameworks }},
-      "defaultFrameworks": {{ $frameworks | toJson }}
-{{- end }}
-{{- end }}
       {{- if .Values.kubevuln.config.proxyRegistryMap }},
       "proxyRegistryMap": {{ toJson .Values.kubevuln.config.proxyRegistryMap }}
       {{- end }}
