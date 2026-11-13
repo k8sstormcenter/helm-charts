@@ -41,11 +41,6 @@ rules:
   - apiGroups: ["kubescape.io"]
     resources: ["operatorcommands/status"]
     verbs: ["get", "watch", "list", "update", "patch"]
-  {{- if eq .Values.capabilities.riskAcceptance "enable" }}
-  - apiGroups: ["kubescape.io"]
-    resources: ["securityexceptions", "clustersecurityexceptions"]
-    verbs: ["get", "list", "watch"]
-  {{- end }}
   {{- if eq .Values.capabilities.remediation "enable" }}
   # Post-scan remediation (opt-in). These mutating verbs are granted only when
   # capabilities.remediation is enabled; the default install stays read-only.

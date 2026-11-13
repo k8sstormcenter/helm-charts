@@ -43,7 +43,6 @@ tests:
         manageWorkloads: enable
         networkEventsStreaming: enable
         syncSBOM: enable
-        riskAcceptance: enable
         remediation: enable
       excludeLabels:
         foo: [bar, baz]
@@ -344,7 +343,6 @@ tests:
         manageWorkloads: enable
         networkEventsStreaming: enable
         syncSBOM: enable
-        riskAcceptance: enable
         remediation: enable
       excludeLabels:
         foo: [bar, baz]

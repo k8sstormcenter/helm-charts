@@ -35,5 +35,5 @@ data:
       "storeFilteredSbom": {{ or .Values.kubevuln.config.storeFilteredSboms (eq .Values.capabilities.syncSBOM "enable") }},
       "continuousPostureScan": false,
       "relevantImageVulnerabilitiesConfiguration": "disable",
-      "riskAcceptance": {{ eq .Values.capabilities.riskAcceptance "enable" }}
+      "riskAcceptance": false
     }
