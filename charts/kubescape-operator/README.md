@@ -24,26 +24,25 @@ Verify that the installation was successful:
 
 ```shell
 $ kubectl get pods -n kubescape
-kubescape     kubescape-548d6b4577-qshb5                          1/1     Running   0               60m
-kubescape     kubevuln-6779c9d74b-wfgqf                           1/1     Running   0               60m
 kubescape     operator-5d745b5b84-ts7zq                           1/1     Running   0               60m
 kubescape     storage-59567854fd-hg8n8                            1/1     Running   0               60m
 ```
 
 ## View results
 
-The scanning results will be available gradually as the scans are completed.
+The node agent records the runtime behaviour of each container and stores it through the storage API.
 
-View your configuration scan reports:
-
-```
-kubectl get workloadconfigurationscans -A
-```
-
-View your image vulnerabilities:
+View the recorded profiles:
 
 ```
-kubectl get vulnerabilitymanifests -A
+kubectl get applicationprofiles -A
+kubectl get networkneighborhoods -A
+```
+
+View the suggested network policies:
+
+```
+kubectl get generatednetworkpolicies -A
 ```
 
 ## Uninstall
@@ -60,49 +59,12 @@ Then, delete the kubescape namespace:
 kubectl delete ns kubescape
 ```
 
-### Adjusting Resource Usage for Your Cluster
-
-By default, Kubescape is configured for small- to medium-sized clusters.
-If you have a larger cluster and you experience slowdowns or see Kubernetes evicting components, please revise the amount of resources allocated for the troubled component.
-
-Taking Kubescape for example, we found that our defaults of 500 MiB of memory and 500m CPU work well for clusters up to 1250 total resources.
-If you have more total resources or experience resource pressure already, first check out how many resources are in your cluster by running the following command:
-
-```
-kubectl get all -A --no-headers | wc -l
-```
-
-The command should print an approximate count of resources in your cluster.
-Then, based on the number you see, allocate 100 MiB of memory for every 200 resources in your cluster over the count of 1250, but no less than 128 MiB total.
-The formula for memory is as follows:
-
-```
-MemoryLimit := max(128, 0.4 * YOUR_AMOUNT_OF_RESOURCES)
-```
-
-For example, if your cluster has 500 resources, a sensible memory limit would be:
-
-```
-kubescape:
-  resources:
-    limits:
-      memory: 200Mi  # max(128, 0.4 * 500) == 200
-```
-
-If your cluster has 50 resources, we still recommend allocating at least 128 MiB of memory.
-
-Regarding CPU, the more you allocate, the faster Kubescape will scan your cluster.
-This is especially true for clusters that have a large amount of resources.
-However, we recommend that you give Kubescape no less than 500m CPU no matter the size of your cluster so it can scan a relatively large amount of resources fast ;)
-
 ## Chart support
 
 ### Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| defaultFrameworks | list | `[]` | Install-time posture frameworks when a scan omits `targetNames`. Empty = operator legacy fallbacks. Clear with `--set defaultFrameworks=null`. |
-| capabilities.agentRuntimePosture | string | `"disable"` | Grant the Kubescape scanner read-only access to Agent Sandbox and Agent Substrate CRDs currently covered by the scan contract. |
 | global.networkPolicy.enabled | bool | `false` | Create NetworkPolicies for all components |
 | global.networkPolicy.createEgressRules | bool | `false` | Create common Egress rules for NetworkPolicies |
 | global.kubescapePsp.enabled | bool | `false` | Enable all privileges in Pod Security Policies for Kubescape namespace |
@@ -118,44 +80,6 @@ However, we recommend that you give Kubescape no less than 500m CPU no matter th
 | customScheduling.nodeSelector | yaml | | Configure `nodeSelector` rules under the nodeSelector sub-section that will apply to all of the workloads managed by the kubescape-operator |
 | customScheduling.tolerations | yaml | | Define `tolerations` in the tolerations sub-section that will apply to all of the workloads managed by the kubescape-operator |
 | global.overrideRuntimePath | string | `""` | Override the runtime path for node-agent |
-| credentials.cloudSecret | string | `""` | Leave it blank for the default secret. If you have an existing secret, override with the existing secret name to avoid Helm creating a default one |
-| kubescape.affinity | object | `{}` | Assign custom [affinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/) rules to the deployment |
-| kubescape.podLabels| object | `{}` | Optional labels to add to the pods |
-| kubescape.podAnnotations| object | `{}` | optional map of annotations to be applied to the Pods |
-| kubescape.downloadArtifacts | bool | `true` | download policies every scan, we recommend it should remain true, you should change to 'false' when running in an air-gapped environment or when scanning with high frequency (when running with Prometheus). When 'false', the policy library baked into the image is used, so the controls are those of the image tag and do not change until the image does |
-| kubescape.enableHostScan | bool | `true` | enable [host scanner feature](https://kubescape.io/docs/components/host-sensor/) |
-| kubescape.image.repository | string | `"quay.io/kubescape/kubescape"` | [source code](https://github.com/kubescape/kubescape/tree/master/httphandler) (public repo) |
-| kubescape.nodeSelector | object | `{}` | [Node selector](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/) |
-| kubescape.serviceMonitor.enabled | bool | `false` | enable/disable service monitor for prometheus (operator) integration |
-| kubescape.skipUpdateCheck | bool | `false` | skip check for a newer version |
-| kubescape.labels | `[]` | adds labels to the kubescape microservice |
-| kubescape.volumes | object | `[]` | Additional volumes for Kubescape |
-| kubescape.volumeMounts | object | `[]` | Additional volumeMounts for Kubescape |
-| kubescapeScheduler.enabled | bool | `true` | enable/disable a kubescape scheduled scan using a CronJob |
-| kubescapeScheuler.podLabels| object | `{}` | Optional labels to add to the pods |
-| kubescapeScheuler.podAnnotations| object | `{}` | optional map of annotations to be applied to the Pods |
-| kubescapeScheduler.image.repository | string | `"quay.io/kubescape/http_request"` | [source code](https://github.com/kubescape/http-request) (public repo) |
-| kubescapeScheduler.scanSchedule | string | `"0 0 * * *"` | scan schedule frequency |
-| kubescapeScheduler.volumes | object | `[]` | Additional volumes for scan scheduler |
-| kubescapeScheduler.volumeMounts | object | `[]` | Additional volumeMounts for scan scheduler |
-| kubevuln.affinity | object | `{}` | Assign custom [affinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/) rules to the deployment |
-| kubevuln.podLabels| object | `{}` | Optional labels to add to the pods |
-| kubevuln.podAnnotations| object | `{}` | optional map of annotations to be applied to the Pods |
-| kubevuln.image.repository | string | `"quay.io/kubescape/kubevuln"` | [source code](https://github.com/kubescape/kubevuln) |
-| kubevuln.nodeSelector | object | `{}` | [Node selector](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/) |
-| kubevuln.volumes | object | `[]` | Additional volumes for the image vulnerability scanning |
-| kubevuln.volumeMounts | object | `[]` | Additional volumeMounts for the image vulnerability scanning |
-| kubevuln.config.grypeDbListingURL | string | `""` | Parameter to override the default Grype vulnerability database URL (listings.json format) |
-| kubevuln.config.proxyRegistryMap | object | `{}` | Map of source registry address to mirror registry address. When set, kubevuln rewrites image pull references accordingly (useful for air-gapped or offline registry mirrors) |
-| kubevuln.config.cveMatchingMode | string | `""` | CVE matching mode: "off" (Grype defaults), "on" (CPE matching everywhere), or "adaptive" (CPE matching everywhere except trusted-vendor images, which rely on the vendor's authoritative feed). Empty derives the mode from useDefaultMatchers for backward compatibility (true -> "off", false -> "adaptive"). |
-| kubevuln.config.trustedVendors | list | `[]` | Distro identifiers treated as trusted vendors in adaptive mode. Empty uses kubevuln's built-in default set (echo, chainguard, wolfi, minimos). |
-| kubevulnScheduler.enabled | bool | `true` | enable/disable an image vulnerability scheduled scan using a CronJob |
-| kubevulnScheduler.podLabels| object | `{}` | Optional labels to add to the pods |
-| kubevulnScheduler.podAnnotations| object | `{}` | optional map of annotations to be applied to the Pods |
-| kubevulnScheduler.image.repository | string | `"quay.io/kubescape/http_request"` | [source code](https://github.com/kubescape/http-request) (public repo) |
-| kubevulnScheduler.scanSchedule | string | `"0 0 * * *"` | scan schedule frequency |
-| kubevulnScheduler.volumes | object | `[]` | Additional volumes for scan scheduler |
-| kubevulnScheduler.volumeMounts | object | `[]` | Additional volumeMounts for scan scheduler |
 | operator.affinity | object | `{}` | Assign custom [affinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/) rules to the deployment |
 | operator.podLabels| object | `{}` | Optional labels to add to the pods |
 | operator.podAnnotations| object | `{}` | optional map of annotations to be applied to the Pods |
@@ -166,25 +90,27 @@ However, we recommend that you give Kubescape no less than 500m CPU no matter th
 | storage.hostNetwork | bool | `false` | Bind the storage APIServer to the host network. Required when using a custom CNI where the control plane cannot reach pod IPs |
 | nodeAgent.autoscaler.bottlerocketAutoDetect | bool | `true` | When the autoscaler is enabled, auto-detect AWS Bottlerocket nodes and set `seLinuxType: super_t` on the node-agent DaemonSet rendered for that node group, so you don't need to `--set nodeAgent.seLinuxType=super_t` manually |
 | awsIamRoleArn | string | `nil` | AWS IAM arn role |
-| cloudProviderMetadata.secretRef.name | string | `nil` | secret name to define values for the provider's metadata |
-| cloudProviderMetadata.cloudRegion | string or through `cloudProviderMetadata.secretRef.cloudRegionKey` if `cloudProviderMetadata.secretRef.name` is set | `nil` | cloud region |
-| cloudProviderMetadata.gkeProject | string or through `cloudProviderMetadata.secretRef.gkeProjectKey` if `cloudProviderMetadata.secretRef.name` is set | `nil` | GKE project |
 | cloudProviderMetadata.gkeServiceAccount | string | `nil` | GKE service account |
-| cloudProviderMetadata.aksSubscriptionID | string or through `cloudProviderMetadata.secretRef.subscriptionIdKey` if `cloudProviderMetadata.secretRef.name` is set | `nil` | AKS subscription ID |
-| cloudProviderMetadata.aksResourceGroup | string or through `cloudProviderMetadata.secretRef.resourceGroupKey` if `cloudProviderMetadata.secretRef.name` is set | `nil` | AKS resource group |
-| cloudProviderMetadata.aksClientID | string or through `cloudProviderMetadata.secretRef.clientIdKey` if `cloudProviderMetadata.secretRef.name` is set | `nil` | AKS client ID |
-| cloudProviderMetadata.aksClientSecret | string or through `cloudProviderMetadata.secretRef.clientSecretKey` if `cloudProviderMetadata.secretRef.name` is set | `nil` | AKS client secret |
-| cloudProviderMetadata.aksTenantID | string or through `cloudProviderMetadata.secretRef.tenantIdKey` if `cloudProviderMetadata.secretRef.name` is set | `nil` | AKS tenant ID |
 | volumes | object | `[]` | Additional volumes for all containers |
 | volumeMounts | object | `[]` | Additional volumeMounts for all containers |
-| imageScanning.privateRegistries.credentials | object | `[]` | Credentials for scanning images pulled from private container registries. This configuration is not needed when using `imagePullSecrets`|
-| imageScanning.privateRegistries.credentials.registry | string | `nil` | URL of the private container registry.|
-| imageScanning.privateRegistries.credentials.username | string | `nil` | Username/Client ID for authentication.|
-| imageScanning.privateRegistries.credentials.password | string | `nil` | Password/Token/Client Secret for authentication.|
-| imageScanning.privateRegistries.credentials.skipTlsVerify | bool | `false` | Skip TLS certificate verification |
-| imageScanning.privateRegistries.credentials.insecure | bool | `false` | Use HTTP instead of HTTPS |
 | configurations.priorityClass.enabled | bool | `true` | Add priority class to the installed components |
 | configurations.priorityClass.daemonset | int | 100000100 | PriorityClass of the DaemonSet, this should be higher than the other components so the DaemonSet will schedule on all nodes |
+
+### Removed values
+
+Configuration scanning, vulnerability scanning, the Prometheus exporter for scan results, malware detection and the connection to a remote backend are no longer part of this chart. The following values no longer exist. Values files that still set them render without error and the settings have no effect:
+
+* `server`, `account`, `accessKey`, `credentials.cloudSecret`
+* `defaultFrameworks`, `kubescape.*`, `kubescapeScheduler.*`, `continuousScanning.*`
+* `kubevuln.*` except `kubevuln.config.maxImageSize`, `kubevuln.config.maxSBOMSize` and `kubevuln.config.storeFilteredSboms`
+* `kubevulnScheduler.*`, `registryScanScheduler.*`, `grypeOfflineDB.*`, `imageScanning.*`, `persistence.size.kubevuln`
+* `prometheusExporter.*`, `synchronizer.*`
+* `clamav.*` except `clamav.volumes`
+* `cloudProviderMetadata.cloudRegion`, `cloudProviderMetadata.gkeProject`, `cloudProviderMetadata.secretRef`
+* `operator.triggerSecurityFramework`, `operator.podScanGuardTime`
+* `storage.forceVirtualCrds`
+* `nodeAgent.config.httpExporterConfig`, `nodeAgent.config.malwareScanAllFiles`, `nodeAgent.config.hostMalwareSensor`, `nodeAgent.config.nodeProfileInterval`, `nodeAgent.config.networkStreamingInterval`
+* `capabilities.configurationScan`, `capabilities.continuousScan`, `capabilities.nodeScan`, `capabilities.vulnerabilityScan`, `capabilities.vexGeneration`, `capabilities.relevancy`, `capabilities.malwareDetection`, `capabilities.networkEventsStreaming`, `capabilities.nodeProfileService`, `capabilities.prometheusExporter`, `capabilities.kubescapeOffline`, `capabilities.agentRuntimePosture`, `capabilities.riskAcceptance`, `capabilities.remediation`, `capabilities.manageWorkloads`, `capabilities.backend-storage`
 
 # In-cluster components overview
 
@@ -198,89 +124,20 @@ Follow the repository link for in-depth information on a specific component.
 ```mermaid
 graph TB
 
-  client([client]) .-> dashboard
-  masterSync .- sync
-  sync --- store
-
   subgraph Cluster
     agent@{shape: procs, label: "Node Agent"}
-    sync(Synchronizer)
     operator(Operator)
     k8sApi(Kubernetes API);
-    kubevuln(Kubevuln)
-    ks(Kubescape)
     store(Storage)
-    store --- agent
-    store --- operator
-    operator -->|scan cluster| ks
-    operator -->|scan images| kubevuln
+    agent --- k8sApi
     operator --- k8sApi
-    ks --> k8sApi
-  end;
-
-subgraph Backend
-    er(CloudEndpoint)
-    dashboard(Dashboard) --> bus(Event Bus) --> masterSync("Master Synchronizer")
-    ks --> er
-    kubevuln --> er
+    k8sApi --- store
   end;
 
   classDef k8s fill:#326ce5,stroke:#fff,stroke-width:1px,color:#fff;
   classDef plain fill:#ddd,stroke:#fff,stroke-width:1px,color:#000;
   class k8sApi k8s
-  class agent,ks,operator,sync,masterSync,kollector,kubevuln,er,dashboard,store,bus plain
-```
-
----
-
-## [Synchronizer](https://github.com/kubescape/synchronizer)
-
-* **Resource Kind:** `Deployment`
-* **Communication:** gRPC, REST API, Websocket
-* **Responsibility:** This component is an optional part of the Kubescape Operator. It enables users to replicate the Kubernetes objects in the cluster (somewhat like `rsync`) to a remote service. It is used for collecting the Kubescape Operator objects by central services monitoring multiple clusters.
-
-In our architecture, the Synchronizer acts both as a server and a client, depending on its running configuration:
-
-* Master Synchronizer: Refers to the instance running in the backend.
-* In-cluster Synchronizer: Refers to the instance running in the cluster.
-  Registered to the Master Synchronizer using a websocket; Synchronizes Kubernetes objects and virtual objects,
-  this enables executing actions in runtime.
-
-A Master Synchronizer communicates with multiple in-cluster Synchronizers.
-
-```mermaid
-graph TB
-  subgraph Backend
-    dashboard(Dashboard)
-    event(Event Bus)
-    masterSync("Synchronizer (Master)")
-  end
-   subgraph Cluster N
-    sync3("Synchronizer (In-cluster)")
-    store3(Storage)
-  end;
-  subgraph Cluster 2
-    sync2("Synchronizer (In-cluster)")
-    store2(Storage)
-  end;
-  subgraph Cluster 1
-    sync1("Synchronizer (In-cluster)")
-    store1(Storage)
-  end;
-
-  dashboard --> event --> masterSync
-  masterSync .- sync1
-  masterSync .- sync2
-  masterSync .- sync3
-  sync1 --- store1
-  sync2 --- store2
-  sync3 --- store3
-
-
-  classDef k8s fill:#326ce5,stroke:#fff,stroke-width:1px,color:#fff;
-  classDef plain fill:#ddd,stroke:#fff,stroke-width:1px,color:#000;
-  class k8sApi k8s
-  class event,ks,store1,dashboard,store2,store3 plain
+  class agent,operator,store plain
 ```
 
 ---
@@ -302,13 +159,11 @@ subgraph Cluster
   file(Files)
   sqlite(SQLite)
   store(Storage)
-  sync(Synchronizer)
 end;
 
   agent .->|Store results| k8sApi --- store <--> file
   store <--> sqlite
   k8sApi <--> etcd
-  sync .->|Synchronize| k8sApi
   kubectl .- k8sApi
   k9s .- k8sApi
   Lens .- k8sApi
@@ -317,7 +172,7 @@ end;
 classDef k8s fill:#326ce5,stroke:#fff,stroke-width:1px,color:#fff;
 classDef plain fill:#ddd,stroke:#fff,stroke-width:1px,color:#000;
 class k8sApi k8s
-class agent,kubectl,Lens,Headlamp,sync,etcd,file,k9s,sqlite plain
+class agent,kubectl,Lens,Headlamp,etcd,file,k9s,sqlite plain
 ```
 
 ---
@@ -326,129 +181,26 @@ class agent,kubectl,Lens,Headlamp,sync,etcd,file,k9s,sqlite plain
 
 * **Resource Kind:** `Deployment`
 * **Communication:** gRPC, REST API
-* **Responsibility:** This component is in charge of command and control of the scans in the cluster. There are multiple configuration options when and what to scan in the cluster. This component is in charge of orchestrating these activities by triggering the *Kubescape* and the *KubeVuln* components.
+* **Responsibility:** This component hosts the admission controller (`capabilities.admissionController`), which evaluates admission requests against the rules and rule bindings of the cluster. When `nodeAgent.autoscaler.enabled` is set it also creates and sizes one node agent DaemonSet per node group.
 
 ```mermaid
 graph TB
   subgraph Cluster
     store(Storage)
-    sync(Synchronizer)
     operator(Operator)
     k8sApi(Kubernetes API);
-    kubevuln(Kubevuln)
-    ks(Kubescape)
-    urlCm{{ConfigMap<br>URLs }}
-    recurringTempCm{{ConfigMap<br>Recur. Scan Template }}
-    recurringScanCj{{CronJob<br>Recurring Scan }}
+    webhook{{ValidatingWebhookConfiguration}}
+    template{{ConfigMap<br>DaemonSet Template }}
   end;
-    masterSync(Master Synchronizer) .- sync --- store
-    store ---> operator
-    recurringScanCj ---> operator
-    operator -->|scan cluster| ks
-    operator -->|scan images| kubevuln
+    k8sApi --> webhook --> operator
     operator --> k8sApi
-    operator --- urlCm
-    operator --- recurringTempCm
+    k8sApi --- store
+    operator --- template
 
   classDef k8s fill:#326ce5,stroke:#fff,stroke-width:1px,color:#fff;
   classDef plain fill:#ddd,stroke:#fff,stroke-width:1px,color:#000;
   class k8sApi k8s
-  class ks,store,masterSync,kollector,urlCm,recurringScanCj,recurringTempCm,kubevuln,er,dashboard,sync plain
-```
-
----
-
-## [Kubevuln](https://github.com/kubescape/kubevuln/)
-
-* **Resource Kind:** `Deployment`
-* **Communication:** gRPC, REST API
-* **Responsibility:** This component is in charge of the image vulnerability scanning. It can either produce SBOM object in the *Storage* and match the SBOM entries with vulnerabilities, or relies on the *Node agent* to generate SBOM objects on the nodes and then produce vulnerability manfiests and VEX. All the results are stored in the *Storage* component via the Kubernetes API and optionally sent to external API endpoints.
-
-```mermaid
-graph TB
-
-subgraph Cluster
-    kubevuln(Kubevuln)
-    k8sApi(Kubernetes API)
-    operator(Operator)
-    store(Storage)
-    sync(Synchronizer)
-    urlCm{{ConfigMap<br>URLs }}
-    recurringScanCj{{CronJob<br>Recurring Scan }}
-    recurringScanCm{{ConfigMap<br>Recurring Scan }}
-    recurringTempCm{{ConfigMap<br>Recurring Scan Template }}
-
-end
-
-masterSync .- sync
-sync .- store .-|Scan Notification| operator
-operator -->|Collect NS, Images|k8sApi
-operator -->|Start Scan| kubevuln
-operator --- urlCm
-urlCm --- kubevuln
-recurringTempCm --- operator
-recurringScanCj -->|Scan Notification| operator
-recurringScanCm --- recurringScanCj
-
-subgraph Backend
-    er(CloudEndpoint)
-    masterSync("Master Synchronizer")
-    kubevuln -->|Scan Results| er
-end;
-
-classDef k8s fill:#326ce5,stroke:#fff,stroke-width:1px,color:#fff;
-classDef plain fill:#ddd,stroke:#fff,stroke-width:1px,color:#000
-
-class k8sApi k8s
-class urlCm,recurringScanCm,operator,er,sync,masterSync,recurringScanCj,recurringTempCm,store plain
-
-
-```
-
----
-
-## [Kubescape](https://github.com/kubescape/kubescape/tree/master/httphandler)
-
-* **Resource Kind:** `Deployment`
-* **Communication:** gRPC, REST API
-* **Responsibility:** This component is in charge of configuration and host scanning. It is, like the CLI, uses [OPA engine](https://github.com/open-policy-agent/opa) to run the project's own Rego library of rules. It also scans the Kubernetes host to validate their configurations. The output of the scans are stored in the *Storage* component via the Kubernetes API and optionally sent to external API endpoints.
-
-```mermaid
-graph TB
-
-subgraph Cluster
-    ks(Kubescape)
-    k8sApi(Kubernetes API)
-    operator(Operator)
-    store(Storage)
-    sync(Synchronizer)
-    ksCm{{ConfigMap<br>Kubescape }}
-    recurringScanCj{{CronJob<br>Recurring Scan }}
-    recurringScanCm{{ConfigMap<br>Recurring Scan }}
-    recurringTempCm{{ConfigMap<br>Recurring Scan Template }}
-end
-
-masterSync .- sync
-sync .- store .-|Scan Notification| operator
-operator -->|Start Scan| ks
-ks-->|Collect Cluster Info|k8sApi
-ksCm --- ks
-recurringTempCm --- operator
-recurringScanCj -->|Scan Notification| operator
-recurringScanCm --- recurringScanCj
-subgraph Backend
-    er(CloudEndpoint)
-    masterSync("Master Synchronizer")
-    ks -->|Scan Results| er
-end;
-
-classDef k8s fill:#326ce5,stroke:#fff,stroke-width:1px,color:#fff;
-classDef plain fill:#ddd,stroke:#fff,stroke-width:1px,color:#000
-
-class k8sApi k8s
-class ksCm,recurringScanCm,operator,er,store,masterSync,recurringScanCj,recurringTempCm,sync plain
-
-
+  class store,webhook,template plain
 ```
 
 ---
@@ -458,10 +210,10 @@ class ksCm,recurringScanCm,operator,er,store,masterSync,recurringScanCj,recurrin
 * **Resource Kind:** `Daemonset`
 * **Communication:** gRPC, REST API
 * **Responsibility:** This component has multiple purposes all bound to information available on Kubernetes nodes:
-  * Produces SBOMs from the images avialable on the node (used by *KubeVuln*)
-  * Produces information from the configurations of the Linux host of the Kubernetes node (used by *Kubescape*)
+  * Produces SBOMs from the images avialable on the node
+  * Produces information from the configurations of the Linux host of the Kubernetes node
   * Creates *ContainerProfile* objects using [Inspektor Gadget](https://inspektor-gadget.io) and eBPF. These profiles log the behavior of each container on the node (file access, processes launched, capabilities used, system calls done) together with its network activity, stored in the *Storage* component via the Kubernetes API and optionally sent to external API endpoints.
-  * Monitors container activity via eBPF and evaluates them using its own rule engine that combines static detection rules and anomaly detection to produce alerts that can be exported to AlertManager, Syslog, HTTP endpoints, STDOUT stream and other.
+  * Monitors container activity via eBPF and evaluates them using its own rule engine that combines static detection rules and anomaly detection to produce alerts that can be exported to AlertManager, Syslog, the STDOUT stream and the direct alert stream.
 
 ```mermaid
 graph TD
@@ -500,30 +252,19 @@ class container11,container12,container21,container22,container31,container32,li
 
 ## Kubernetes API
 
-Some in-cluster components communicate with the Kubernetes API server for different purposes:
+The in-cluster components communicate with the Kubernetes API server for different purposes:
+
+* Node Agent
+
+  Watches pods, workloads, rules and rule bindings, and stores container profiles through the storage API.
 
 * Operator
 
-  Creates/updates/deletes resources for recurring scan purposes (CronJobs, ConfigMaps). Collects required information (NS, image names/tags) for Kubevuln's image scanning.
+  Watches rules and rule bindings for the admission controller. With the node agent autoscaler enabled it also watches nodes and manages the node agent DaemonSets.
 
-* Kubescape
+* Storage
 
-  Collects namespaces, workloads, RBAC etc. required for cluster scans.
-
----
-
-## Backend components
-
-The backend components are running in [Kubescape's SaaS offering](https://cloud.armosec.io/).
-
-### Dashboard
-
-* REST API service
-
-### CloudEndpoint
-
-* **Responsibility:** Receive and process Kubescape & Kubevuln scan results.
-* **Communication:** REST API
+  Serves the `spdx.softwarecomposition.kubescape.io` API group as an aggregated API server.
 
 ---
 
@@ -553,22 +294,6 @@ Use `kubectl delete` to remove the Pod when you're finished (there is no other w
 ```bash
 kubectl -n kubescape delete pod <pod-name>
 ```
-
----
-
-## Recurring scans
-
-3 types of recurring scans are supported:
-
-  1. Cluster configuration scanning (Kubescape)
-  2. Vulnerability scanning for container images (Kubevuln)
-  3. Container registry scanning (Kubevuln)
-
-When creating a recurring scan, the Operator component will create a `ConfigMap` and a `CronJob` from a recurring template ConfigMap. Each scan type comes with a template.
-
-The CronJob itself does not run the scan directly. When a CronJob is ready to run, it will send a REST API request to the Operator component, which will then trigger the relevant scan.
-
-The scan results are then sent by each relevant component to the CloudEndpoint.
 
 ---
 
