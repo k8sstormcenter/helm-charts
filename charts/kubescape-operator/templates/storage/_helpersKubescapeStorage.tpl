@@ -18,3 +18,7 @@ Create the name of the Kubescape Storage Auth Reader RoleBinding to use
 {{- define "storage.apiServiceName" -}}
 v1beta1.spdx.softwarecomposition.kubescape.io
 {{- end }}
+
+{{- define "storage.profilesApiServiceName" -}}
+v1beta1.profiles.sbob
+{{- end }}

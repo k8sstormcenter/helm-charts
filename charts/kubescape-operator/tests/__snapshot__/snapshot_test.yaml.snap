@@ -886,6 +886,18 @@ all capabilities:
           - patch
           - delete
       - apiGroups:
+          - profiles.sbob
+        resources:
+          - runtimeprofiles
+        verbs:
+          - create
+          - get
+          - update
+          - watch
+          - list
+          - patch
+          - delete
+      - apiGroups:
           - spdx.softwarecomposition.kubescape.io
         resources:
           - sbomsyfts
@@ -2737,6 +2749,15 @@ all capabilities:
           - list
           - delete
       - apiGroups:
+          - profiles.sbob
+        resources:
+          - runtimeprofiles
+        verbs:
+          - get
+          - watch
+          - list
+          - delete
+      - apiGroups:
           - kubescape.io
         resources:
           - runtimerulealertbindings
@@ -3300,6 +3321,32 @@ all capabilities:
       version: v1beta1
       versionPriority: 15
   57: |
+    apiVersion: apiregistration.k8s.io/v1
+    kind: APIService
+    metadata:
+      annotations: null
+      labels:
+        app: storage
+        app.kubernetes.io/component: storage
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: kubescape-operator
+        app.kubernetes.io/part-of: kubescape
+        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
+        helm.sh/chart: kubescape-operator-1.41.0-duckling142
+        kubescape.io/ignore: "true"
+        tier: ks-control-plane
+      name: v1beta1.profiles.sbob
+    spec:
+      group: profiles.sbob
+      groupPriorityMinimum: 1000
+      insecureSkipTLSVerify: true
+      service:
+        name: storage
+        namespace: kubescape
+      version: v1beta1
+      versionPriority: 15
+  58: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
@@ -3372,7 +3419,7 @@ all capabilities:
           - get
           - watch
           - list
-  58: |
+  59: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -3397,7 +3444,7 @@ all capabilities:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  59: |
+  60: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -3422,7 +3469,7 @@ all capabilities:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  60: |
+  61: |
     apiVersion: v1
     data:
       config.json: |
@@ -3455,7 +3502,7 @@ all capabilities:
         tier: ks-control-plane
       name: storage
       namespace: kubescape
-  61: |
+  62: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -3577,7 +3624,7 @@ all capabilities:
                     path: config.json
                 name: storage
               name: config
-  62: |
+  63: |
     apiVersion: networking.k8s.io/v1
     kind: NetworkPolicy
     metadata:
@@ -3636,7 +3683,7 @@ all capabilities:
       policyTypes:
         - Ingress
         - Egress
-  63: |
+  64: |
     apiVersion: v1
     kind: PersistentVolumeClaim
     metadata:
@@ -3660,7 +3707,7 @@ all capabilities:
       resources:
         requests:
           storage: 5Gi
-  64: |
+  65: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
@@ -3686,7 +3733,7 @@ all capabilities:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  65: |
+  66: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
@@ -3712,7 +3759,7 @@ all capabilities:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  66: |
+  67: |
     apiVersion: apiextensions.k8s.io/v1
     kind: CustomResourceDefinition
     metadata:
@@ -4036,7 +4083,7 @@ all capabilities:
           storage: true
           subresources:
             status: {}
-  67: |
+  68: |
     apiVersion: v1
     kind: Service
     metadata:
@@ -4065,7 +4112,7 @@ all capabilities:
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/name: kubescape-operator
       type: ClusterIP
-  68: |
+  69: |
     apiVersion: v1
     kind: ServiceAccount
     metadata:
@@ -4726,6 +4773,18 @@ autoscaler mode with sbom sidecar:
           - spdx.softwarecomposition.kubescape.io
         resources:
           - containerprofiles
+        verbs:
+          - create
+          - get
+          - update
+          - watch
+          - list
+          - patch
+          - delete
+      - apiGroups:
+          - profiles.sbob
+        resources:
+          - runtimeprofiles
         verbs:
           - create
           - get
@@ -5427,6 +5486,15 @@ autoscaler mode with sbom sidecar:
           - list
           - delete
       - apiGroups:
+          - profiles.sbob
+        resources:
+          - runtimeprofiles
+        verbs:
+          - get
+          - watch
+          - list
+          - delete
+      - apiGroups:
           - kubescape.io
         resources:
           - runtimerulealertbindings
@@ -5870,6 +5938,32 @@ autoscaler mode with sbom sidecar:
       version: v1beta1
       versionPriority: 15
   43: |
+    apiVersion: apiregistration.k8s.io/v1
+    kind: APIService
+    metadata:
+      annotations: null
+      labels:
+        app: storage
+        app.kubernetes.io/component: storage
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: kubescape-operator
+        app.kubernetes.io/part-of: kubescape
+        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
+        helm.sh/chart: kubescape-operator-1.41.0-duckling142
+        kubescape.io/ignore: "true"
+        tier: ks-control-plane
+      name: v1beta1.profiles.sbob
+    spec:
+      caBundle: bW9jay1jYS1jZXJ0
+      group: profiles.sbob
+      groupPriorityMinimum: 1000
+      service:
+        name: storage
+        namespace: kubescape
+      version: v1beta1
+      versionPriority: 15
+  44: |
     apiVersion: v1
     data:
       tls.crt: bW9jay1jYS1jZXJ0
@@ -5892,7 +5986,7 @@ autoscaler mode with sbom sidecar:
       name: storage-tls-ca
       namespace: kubescape
     type: kubernetes.io/tls
-  44: |
+  45: |
     apiVersion: v1
     data:
       ca.crt: bW9jay1jYS1jZXJ0
@@ -5915,7 +6009,7 @@ autoscaler mode with sbom sidecar:
       name: storage-tls
       namespace: kubescape
     type: kubernetes.io/tls
-  45: |
+  46: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
@@ -5988,7 +6082,7 @@ autoscaler mode with sbom sidecar:
           - get
           - watch
           - list
-  46: |
+  47: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -6013,7 +6107,7 @@ autoscaler mode with sbom sidecar:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  47: |
+  48: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -6038,7 +6132,7 @@ autoscaler mode with sbom sidecar:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  48: |
+  49: |
     apiVersion: v1
     data:
       config.json: |
@@ -6074,7 +6168,7 @@ autoscaler mode with sbom sidecar:
         tier: ks-control-plane
       name: storage
       namespace: kubescape
-  49: |
+  50: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -6199,7 +6293,7 @@ autoscaler mode with sbom sidecar:
             - name: ca-certificates
               secret:
                 secretName: storage-tls
-  50: |
+  51: |
     apiVersion: v1
     kind: PersistentVolumeClaim
     metadata:
@@ -6223,7 +6317,7 @@ autoscaler mode with sbom sidecar:
       resources:
         requests:
           storage: 5Gi
-  51: |
+  52: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
@@ -6249,7 +6343,7 @@ autoscaler mode with sbom sidecar:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  52: |
+  53: |
     apiVersion: apiextensions.k8s.io/v1
     kind: CustomResourceDefinition
     metadata:
@@ -6573,7 +6667,7 @@ autoscaler mode with sbom sidecar:
           storage: true
           subresources:
             status: {}
-  53: |
+  54: |
     apiVersion: v1
     kind: Service
     metadata:
@@ -6602,7 +6696,7 @@ autoscaler mode with sbom sidecar:
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/name: kubescape-operator
       type: ClusterIP
-  54: |
+  55: |
     apiVersion: v1
     kind: ServiceAccount
     metadata:
@@ -7263,6 +7357,18 @@ autoscaler mode without sbom sidecar:
           - spdx.softwarecomposition.kubescape.io
         resources:
           - containerprofiles
+        verbs:
+          - create
+          - get
+          - update
+          - watch
+          - list
+          - patch
+          - delete
+      - apiGroups:
+          - profiles.sbob
+        resources:
+          - runtimeprofiles
         verbs:
           - create
           - get
@@ -7964,6 +8070,15 @@ autoscaler mode without sbom sidecar:
           - list
           - delete
       - apiGroups:
+          - profiles.sbob
+        resources:
+          - runtimeprofiles
+        verbs:
+          - get
+          - watch
+          - list
+          - delete
+      - apiGroups:
           - kubescape.io
         resources:
           - runtimerulealertbindings
@@ -8407,6 +8522,32 @@ autoscaler mode without sbom sidecar:
       version: v1beta1
       versionPriority: 15
   43: |
+    apiVersion: apiregistration.k8s.io/v1
+    kind: APIService
+    metadata:
+      annotations: null
+      labels:
+        app: storage
+        app.kubernetes.io/component: storage
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: kubescape-operator
+        app.kubernetes.io/part-of: kubescape
+        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
+        helm.sh/chart: kubescape-operator-1.41.0-duckling142
+        kubescape.io/ignore: "true"
+        tier: ks-control-plane
+      name: v1beta1.profiles.sbob
+    spec:
+      caBundle: bW9jay1jYS1jZXJ0
+      group: profiles.sbob
+      groupPriorityMinimum: 1000
+      service:
+        name: storage
+        namespace: kubescape
+      version: v1beta1
+      versionPriority: 15
+  44: |
     apiVersion: v1
     data:
       tls.crt: bW9jay1jYS1jZXJ0
@@ -8429,7 +8570,7 @@ autoscaler mode without sbom sidecar:
       name: storage-tls-ca
       namespace: kubescape
     type: kubernetes.io/tls
-  44: |
+  45: |
     apiVersion: v1
     data:
       ca.crt: bW9jay1jYS1jZXJ0
@@ -8452,7 +8593,7 @@ autoscaler mode without sbom sidecar:
       name: storage-tls
       namespace: kubescape
     type: kubernetes.io/tls
-  45: |
+  46: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
@@ -8525,7 +8666,7 @@ autoscaler mode without sbom sidecar:
           - get
           - watch
           - list
-  46: |
+  47: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -8550,7 +8691,7 @@ autoscaler mode without sbom sidecar:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  47: |
+  48: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -8575,7 +8716,7 @@ autoscaler mode without sbom sidecar:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  48: |
+  49: |
     apiVersion: v1
     data:
       config.json: |
@@ -8611,7 +8752,7 @@ autoscaler mode without sbom sidecar:
         tier: ks-control-plane
       name: storage
       namespace: kubescape
-  49: |
+  50: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -8736,7 +8877,7 @@ autoscaler mode without sbom sidecar:
             - name: ca-certificates
               secret:
                 secretName: storage-tls
-  50: |
+  51: |
     apiVersion: v1
     kind: PersistentVolumeClaim
     metadata:
@@ -8760,7 +8901,7 @@ autoscaler mode without sbom sidecar:
       resources:
         requests:
           storage: 5Gi
-  51: |
+  52: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
@@ -8786,7 +8927,7 @@ autoscaler mode without sbom sidecar:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  52: |
+  53: |
     apiVersion: apiextensions.k8s.io/v1
     kind: CustomResourceDefinition
     metadata:
@@ -9110,7 +9251,7 @@ autoscaler mode without sbom sidecar:
           storage: true
           subresources:
             status: {}
-  53: |
+  54: |
     apiVersion: v1
     kind: Service
     metadata:
@@ -9139,7 +9280,7 @@ autoscaler mode without sbom sidecar:
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/name: kubescape-operator
       type: ClusterIP
-  54: |
+  55: |
     apiVersion: v1
     kind: ServiceAccount
     metadata:
@@ -9341,6 +9482,32 @@ cert strategy initContainer, admission disabled, mtls disabled:
       version: v1beta1
       versionPriority: 15
   3: |
+    apiVersion: apiregistration.k8s.io/v1
+    kind: APIService
+    metadata:
+      annotations: null
+      labels:
+        app: storage
+        app.kubernetes.io/component: storage
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: kubescape-operator
+        app.kubernetes.io/part-of: kubescape
+        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
+        helm.sh/chart: kubescape-operator-1.41.0-duckling142
+        kubescape.io/ignore: "true"
+        tier: ks-control-plane
+      name: v1beta1.profiles.sbob
+    spec:
+      group: profiles.sbob
+      groupPriorityMinimum: 1000
+      insecureSkipTLSVerify: true
+      service:
+        name: storage
+        namespace: kubescape
+      version: v1beta1
+      versionPriority: 15
+  4: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -9642,6 +9809,31 @@ cert strategy initContainer, admission disabled, mtls enabled:
       version: v1beta1
       versionPriority: 15
   3: |
+    apiVersion: apiregistration.k8s.io/v1
+    kind: APIService
+    metadata:
+      annotations: null
+      labels:
+        app: storage
+        app.kubernetes.io/component: storage
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: kubescape-operator
+        app.kubernetes.io/part-of: kubescape
+        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
+        helm.sh/chart: kubescape-operator-1.41.0-duckling142
+        kubescape.io/ignore: "true"
+        tier: ks-control-plane
+      name: v1beta1.profiles.sbob
+    spec:
+      group: profiles.sbob
+      groupPriorityMinimum: 1000
+      service:
+        name: storage
+        namespace: kubescape
+      version: v1beta1
+      versionPriority: 15
+  4: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
@@ -9666,7 +9858,7 @@ cert strategy initContainer, admission disabled, mtls enabled:
         verbs:
           - get
           - patch
-  4: |
+  5: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -9691,7 +9883,7 @@ cert strategy initContainer, admission disabled, mtls enabled:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  5: |
+  6: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: Role
     metadata:
@@ -9717,7 +9909,7 @@ cert strategy initContainer, admission disabled, mtls enabled:
         verbs:
           - get
           - create
-  6: |
+  7: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
@@ -9743,7 +9935,7 @@ cert strategy initContainer, admission disabled, mtls enabled:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  7: |
+  8: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -9895,6 +10087,37 @@ cert strategy initContainer, admission disabled, mtls enabled:
               image: quay.io/kubescape/kubectl:1.36.1
               imagePullPolicy: IfNotPresent
               name: certgen-patch
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
+                runAsNonRoot: true
+                runAsUser: 65532
+              volumeMounts:
+                - mountPath: /scripts
+                  name: storage-certgen-scripts
+                  readOnly: true
+            - args:
+                - --namespace
+                - kubescape
+                - --secret-name
+                - storage-tls-init
+                - --ca-name
+                - ca.crt
+                - --resource-type
+                - apiservice
+                - --resource-name
+                - v1beta1.profiles.sbob
+                - --retries
+                - "60"
+                - --retry-interval
+                - "5"
+              command:
+                - /scripts/certgen-patch.sh
+              image: quay.io/kubescape/kubectl:1.36.1
+              imagePullPolicy: IfNotPresent
+              name: certgen-patch-profiles
               securityContext:
                 allowPrivilegeEscalation: false
                 capabilities:
@@ -10384,6 +10607,32 @@ cert strategy initContainer, admission enabled, mtls disabled:
       version: v1beta1
       versionPriority: 15
   9: |
+    apiVersion: apiregistration.k8s.io/v1
+    kind: APIService
+    metadata:
+      annotations: null
+      labels:
+        app: storage
+        app.kubernetes.io/component: storage
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: kubescape-operator
+        app.kubernetes.io/part-of: kubescape
+        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
+        helm.sh/chart: kubescape-operator-1.41.0-duckling142
+        kubescape.io/ignore: "true"
+        tier: ks-control-plane
+      name: v1beta1.profiles.sbob
+    spec:
+      group: profiles.sbob
+      groupPriorityMinimum: 1000
+      insecureSkipTLSVerify: true
+      service:
+        name: storage
+        namespace: kubescape
+      version: v1beta1
+      versionPriority: 15
+  10: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -10948,6 +11197,31 @@ cert strategy initContainer, admission enabled, mtls enabled:
       version: v1beta1
       versionPriority: 15
   9: |
+    apiVersion: apiregistration.k8s.io/v1
+    kind: APIService
+    metadata:
+      annotations: null
+      labels:
+        app: storage
+        app.kubernetes.io/component: storage
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: kubescape-operator
+        app.kubernetes.io/part-of: kubescape
+        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
+        helm.sh/chart: kubescape-operator-1.41.0-duckling142
+        kubescape.io/ignore: "true"
+        tier: ks-control-plane
+      name: v1beta1.profiles.sbob
+    spec:
+      group: profiles.sbob
+      groupPriorityMinimum: 1000
+      service:
+        name: storage
+        namespace: kubescape
+      version: v1beta1
+      versionPriority: 15
+  10: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
@@ -10972,7 +11246,7 @@ cert strategy initContainer, admission enabled, mtls enabled:
         verbs:
           - get
           - patch
-  10: |
+  11: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -10997,7 +11271,7 @@ cert strategy initContainer, admission enabled, mtls enabled:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  11: |
+  12: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: Role
     metadata:
@@ -11023,7 +11297,7 @@ cert strategy initContainer, admission enabled, mtls enabled:
         verbs:
           - get
           - create
-  12: |
+  13: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
@@ -11049,7 +11323,7 @@ cert strategy initContainer, admission enabled, mtls enabled:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  13: |
+  14: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -11201,6 +11475,37 @@ cert strategy initContainer, admission enabled, mtls enabled:
               image: quay.io/kubescape/kubectl:1.36.1
               imagePullPolicy: IfNotPresent
               name: certgen-patch
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
+                runAsNonRoot: true
+                runAsUser: 65532
+              volumeMounts:
+                - mountPath: /scripts
+                  name: storage-certgen-scripts
+                  readOnly: true
+            - args:
+                - --namespace
+                - kubescape
+                - --secret-name
+                - storage-tls-init
+                - --ca-name
+                - ca.crt
+                - --resource-type
+                - apiservice
+                - --resource-name
+                - v1beta1.profiles.sbob
+                - --retries
+                - "60"
+                - --retry-interval
+                - "5"
+              command:
+                - /scripts/certgen-patch.sh
+              image: quay.io/kubescape/kubectl:1.36.1
+              imagePullPolicy: IfNotPresent
+              name: certgen-patch-profiles
               securityContext:
                 allowPrivilegeEscalation: false
                 capabilities:
@@ -11427,6 +11732,32 @@ cert strategy template, admission disabled, mtls disabled:
       version: v1beta1
       versionPriority: 15
   3: |
+    apiVersion: apiregistration.k8s.io/v1
+    kind: APIService
+    metadata:
+      annotations: null
+      labels:
+        app: storage
+        app.kubernetes.io/component: storage
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: kubescape-operator
+        app.kubernetes.io/part-of: kubescape
+        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
+        helm.sh/chart: kubescape-operator-1.41.0-duckling142
+        kubescape.io/ignore: "true"
+        tier: ks-control-plane
+      name: v1beta1.profiles.sbob
+    spec:
+      group: profiles.sbob
+      groupPriorityMinimum: 1000
+      insecureSkipTLSVerify: true
+      service:
+        name: storage
+        namespace: kubescape
+      version: v1beta1
+      versionPriority: 15
+  4: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -11729,6 +12060,32 @@ cert strategy template, admission disabled, mtls enabled:
       version: v1beta1
       versionPriority: 15
   3: |
+    apiVersion: apiregistration.k8s.io/v1
+    kind: APIService
+    metadata:
+      annotations: null
+      labels:
+        app: storage
+        app.kubernetes.io/component: storage
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: kubescape-operator
+        app.kubernetes.io/part-of: kubescape
+        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
+        helm.sh/chart: kubescape-operator-1.41.0-duckling142
+        kubescape.io/ignore: "true"
+        tier: ks-control-plane
+      name: v1beta1.profiles.sbob
+    spec:
+      caBundle: bW9jay1jYS1jZXJ0
+      group: profiles.sbob
+      groupPriorityMinimum: 1000
+      service:
+        name: storage
+        namespace: kubescape
+      version: v1beta1
+      versionPriority: 15
+  4: |
     apiVersion: v1
     data:
       tls.crt: bW9jay1jYS1jZXJ0
@@ -11751,7 +12108,7 @@ cert strategy template, admission disabled, mtls enabled:
       name: storage-tls-ca
       namespace: kubescape
     type: kubernetes.io/tls
-  4: |
+  5: |
     apiVersion: v1
     data:
       ca.crt: bW9jay1jYS1jZXJ0
@@ -11774,7 +12131,7 @@ cert strategy template, admission disabled, mtls enabled:
       name: storage-tls
       namespace: kubescape
     type: kubernetes.io/tls
-  5: |
+  6: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -12222,6 +12579,32 @@ cert strategy template, admission enabled, mtls disabled:
       version: v1beta1
       versionPriority: 15
   7: |
+    apiVersion: apiregistration.k8s.io/v1
+    kind: APIService
+    metadata:
+      annotations: null
+      labels:
+        app: storage
+        app.kubernetes.io/component: storage
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: kubescape-operator
+        app.kubernetes.io/part-of: kubescape
+        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
+        helm.sh/chart: kubescape-operator-1.41.0-duckling142
+        kubescape.io/ignore: "true"
+        tier: ks-control-plane
+      name: v1beta1.profiles.sbob
+    spec:
+      group: profiles.sbob
+      groupPriorityMinimum: 1000
+      insecureSkipTLSVerify: true
+      service:
+        name: storage
+        namespace: kubescape
+      version: v1beta1
+      versionPriority: 15
+  8: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -12663,6 +13046,32 @@ cert strategy template, admission enabled, mtls enabled:
       version: v1beta1
       versionPriority: 15
   7: |
+    apiVersion: apiregistration.k8s.io/v1
+    kind: APIService
+    metadata:
+      annotations: null
+      labels:
+        app: storage
+        app.kubernetes.io/component: storage
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: kubescape-operator
+        app.kubernetes.io/part-of: kubescape
+        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
+        helm.sh/chart: kubescape-operator-1.41.0-duckling142
+        kubescape.io/ignore: "true"
+        tier: ks-control-plane
+      name: v1beta1.profiles.sbob
+    spec:
+      caBundle: bW9jay1jYS1jZXJ0
+      group: profiles.sbob
+      groupPriorityMinimum: 1000
+      service:
+        name: storage
+        namespace: kubescape
+      version: v1beta1
+      versionPriority: 15
+  8: |
     apiVersion: v1
     data:
       tls.crt: bW9jay1jYS1jZXJ0
@@ -12685,7 +13094,7 @@ cert strategy template, admission enabled, mtls enabled:
       name: storage-tls-ca
       namespace: kubescape
     type: kubernetes.io/tls
-  8: |
+  9: |
     apiVersion: v1
     data:
       ca.crt: bW9jay1jYS1jZXJ0
@@ -12708,7 +13117,7 @@ cert strategy template, admission enabled, mtls enabled:
       name: storage-tls
       namespace: kubescape
     type: kubernetes.io/tls
-  9: |
+  10: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -13476,6 +13885,18 @@ default capabilities:
           - spdx.softwarecomposition.kubescape.io
         resources:
           - containerprofiles
+        verbs:
+          - create
+          - get
+          - update
+          - watch
+          - list
+          - patch
+          - delete
+      - apiGroups:
+          - profiles.sbob
+        resources:
+          - runtimeprofiles
         verbs:
           - create
           - get
@@ -15158,6 +15579,15 @@ default capabilities:
           - list
           - delete
       - apiGroups:
+          - profiles.sbob
+        resources:
+          - runtimeprofiles
+        verbs:
+          - get
+          - watch
+          - list
+          - delete
+      - apiGroups:
           - kubescape.io
         resources:
           - runtimerulealertbindings
@@ -15668,6 +16098,32 @@ default capabilities:
       version: v1beta1
       versionPriority: 15
   44: |
+    apiVersion: apiregistration.k8s.io/v1
+    kind: APIService
+    metadata:
+      annotations: null
+      labels:
+        app: storage
+        app.kubernetes.io/component: storage
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: kubescape-operator
+        app.kubernetes.io/part-of: kubescape
+        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
+        helm.sh/chart: kubescape-operator-1.41.0-duckling142
+        kubescape.io/ignore: "true"
+        tier: ks-control-plane
+      name: v1beta1.profiles.sbob
+    spec:
+      caBundle: bW9jay1jYS1jZXJ0
+      group: profiles.sbob
+      groupPriorityMinimum: 1000
+      service:
+        name: storage
+        namespace: kubescape
+      version: v1beta1
+      versionPriority: 15
+  45: |
     apiVersion: v1
     data:
       tls.crt: bW9jay1jYS1jZXJ0
@@ -15690,7 +16146,7 @@ default capabilities:
       name: storage-tls-ca
       namespace: kubescape
     type: kubernetes.io/tls
-  45: |
+  46: |
     apiVersion: v1
     data:
       ca.crt: bW9jay1jYS1jZXJ0
@@ -15713,7 +16169,7 @@ default capabilities:
       name: storage-tls
       namespace: kubescape
     type: kubernetes.io/tls
-  46: |
+  47: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
@@ -15786,7 +16242,7 @@ default capabilities:
           - get
           - watch
           - list
-  47: |
+  48: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -15811,7 +16267,7 @@ default capabilities:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  48: |
+  49: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -15836,7 +16292,7 @@ default capabilities:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  49: |
+  50: |
     apiVersion: v1
     data:
       config.json: |
@@ -15872,7 +16328,7 @@ default capabilities:
         tier: ks-control-plane
       name: storage
       namespace: kubescape
-  50: |
+  51: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -15997,7 +16453,7 @@ default capabilities:
             - name: ca-certificates
               secret:
                 secretName: storage-tls
-  51: |
+  52: |
     apiVersion: networking.k8s.io/v1
     kind: NetworkPolicy
     metadata:
@@ -16048,7 +16504,7 @@ default capabilities:
       policyTypes:
         - Ingress
         - Egress
-  52: |
+  53: |
     apiVersion: v1
     kind: PersistentVolumeClaim
     metadata:
@@ -16072,7 +16528,7 @@ default capabilities:
       resources:
         requests:
           storage: 5Gi
-  53: |
+  54: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
@@ -16098,7 +16554,7 @@ default capabilities:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  54: |
+  55: |
     apiVersion: apiextensions.k8s.io/v1
     kind: CustomResourceDefinition
     metadata:
@@ -16422,7 +16878,7 @@ default capabilities:
           storage: true
           subresources:
             status: {}
-  55: |
+  56: |
     apiVersion: v1
     kind: Service
     metadata:
@@ -16451,7 +16907,7 @@ default capabilities:
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/name: kubescape-operator
       type: ClusterIP
-  56: |
+  57: |
     apiVersion: v1
     kind: ServiceAccount
     metadata:
@@ -17114,6 +17570,18 @@ disable otel:
           - spdx.softwarecomposition.kubescape.io
         resources:
           - containerprofiles
+        verbs:
+          - create
+          - get
+          - update
+          - watch
+          - list
+          - patch
+          - delete
+      - apiGroups:
+          - profiles.sbob
+        resources:
+          - runtimeprofiles
         verbs:
           - create
           - get
@@ -18051,6 +18519,15 @@ disable otel:
           - list
           - delete
       - apiGroups:
+          - profiles.sbob
+        resources:
+          - runtimeprofiles
+        verbs:
+          - get
+          - watch
+          - list
+          - delete
+      - apiGroups:
           - kubescape.io
         resources:
           - runtimerulealertbindings
@@ -18476,6 +18953,32 @@ disable otel:
       version: v1beta1
       versionPriority: 15
   43: |
+    apiVersion: apiregistration.k8s.io/v1
+    kind: APIService
+    metadata:
+      annotations: null
+      labels:
+        app: storage
+        app.kubernetes.io/component: storage
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: kubescape-operator
+        app.kubernetes.io/part-of: kubescape
+        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
+        helm.sh/chart: kubescape-operator-1.41.0-duckling142
+        kubescape.io/ignore: "true"
+        tier: ks-control-plane
+      name: v1beta1.profiles.sbob
+    spec:
+      caBundle: bW9jay1jYS1jZXJ0
+      group: profiles.sbob
+      groupPriorityMinimum: 1000
+      service:
+        name: storage
+        namespace: kubescape
+      version: v1beta1
+      versionPriority: 15
+  44: |
     apiVersion: v1
     data:
       tls.crt: bW9jay1jYS1jZXJ0
@@ -18498,7 +19001,7 @@ disable otel:
       name: storage-tls-ca
       namespace: kubescape
     type: kubernetes.io/tls
-  44: |
+  45: |
     apiVersion: v1
     data:
       ca.crt: bW9jay1jYS1jZXJ0
@@ -18521,7 +19024,7 @@ disable otel:
       name: storage-tls
       namespace: kubescape
     type: kubernetes.io/tls
-  45: |
+  46: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
@@ -18594,7 +19097,7 @@ disable otel:
           - get
           - watch
           - list
-  46: |
+  47: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -18619,7 +19122,7 @@ disable otel:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  47: |
+  48: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -18644,7 +19147,7 @@ disable otel:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  48: |
+  49: |
     apiVersion: v1
     data:
       config.json: |
@@ -18680,7 +19183,7 @@ disable otel:
         tier: ks-control-plane
       name: storage
       namespace: kubescape
-  49: |
+  50: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -18805,7 +19308,7 @@ disable otel:
             - name: ca-certificates
               secret:
                 secretName: storage-tls
-  50: |
+  51: |
     apiVersion: v1
     kind: PersistentVolumeClaim
     metadata:
@@ -18829,7 +19332,7 @@ disable otel:
       resources:
         requests:
           storage: 5Gi
-  51: |
+  52: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
@@ -18855,7 +19358,7 @@ disable otel:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  52: |
+  53: |
     apiVersion: apiextensions.k8s.io/v1
     kind: CustomResourceDefinition
     metadata:
@@ -19179,7 +19682,7 @@ disable otel:
           storage: true
           subresources:
             status: {}
-  53: |
+  54: |
     apiVersion: v1
     kind: Service
     metadata:
@@ -19208,7 +19711,7 @@ disable otel:
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/name: kubescape-operator
       type: ClusterIP
-  54: |
+  55: |
     apiVersion: v1
     kind: ServiceAccount
     metadata:
@@ -19871,6 +20374,18 @@ minimal capabilities:
           - spdx.softwarecomposition.kubescape.io
         resources:
           - containerprofiles
+        verbs:
+          - create
+          - get
+          - update
+          - watch
+          - list
+          - patch
+          - delete
+      - apiGroups:
+          - profiles.sbob
+        resources:
+          - runtimeprofiles
         verbs:
           - create
           - get
@@ -20810,6 +21325,15 @@ minimal capabilities:
           - list
           - delete
       - apiGroups:
+          - profiles.sbob
+        resources:
+          - runtimeprofiles
+        verbs:
+          - get
+          - watch
+          - list
+          - delete
+      - apiGroups:
           - kubescape.io
         resources:
           - runtimerulealertbindings
@@ -21234,6 +21758,32 @@ minimal capabilities:
       version: v1beta1
       versionPriority: 15
   43: |
+    apiVersion: apiregistration.k8s.io/v1
+    kind: APIService
+    metadata:
+      annotations: null
+      labels:
+        app: storage
+        app.kubernetes.io/component: storage
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: kubescape-operator
+        app.kubernetes.io/part-of: kubescape
+        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
+        helm.sh/chart: kubescape-operator-1.41.0-duckling142
+        kubescape.io/ignore: "true"
+        tier: ks-control-plane
+      name: v1beta1.profiles.sbob
+    spec:
+      caBundle: bW9jay1jYS1jZXJ0
+      group: profiles.sbob
+      groupPriorityMinimum: 1000
+      service:
+        name: storage
+        namespace: kubescape
+      version: v1beta1
+      versionPriority: 15
+  44: |
     apiVersion: v1
     data:
       tls.crt: bW9jay1jYS1jZXJ0
@@ -21256,7 +21806,7 @@ minimal capabilities:
       name: storage-tls-ca
       namespace: kubescape
     type: kubernetes.io/tls
-  44: |
+  45: |
     apiVersion: v1
     data:
       ca.crt: bW9jay1jYS1jZXJ0
@@ -21279,7 +21829,7 @@ minimal capabilities:
       name: storage-tls
       namespace: kubescape
     type: kubernetes.io/tls
-  45: |
+  46: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
@@ -21352,7 +21902,7 @@ minimal capabilities:
           - get
           - watch
           - list
-  46: |
+  47: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -21377,7 +21927,7 @@ minimal capabilities:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  47: |
+  48: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -21402,7 +21952,7 @@ minimal capabilities:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  48: |
+  49: |
     apiVersion: v1
     data:
       config.json: |
@@ -21438,7 +21988,7 @@ minimal capabilities:
         tier: ks-control-plane
       name: storage
       namespace: kubescape
-  49: |
+  50: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -21563,7 +22113,7 @@ minimal capabilities:
             - name: ca-certificates
               secret:
                 secretName: storage-tls
-  50: |
+  51: |
     apiVersion: v1
     kind: PersistentVolumeClaim
     metadata:
@@ -21587,7 +22137,7 @@ minimal capabilities:
       resources:
         requests:
           storage: 5Gi
-  51: |
+  52: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
@@ -21613,7 +22163,7 @@ minimal capabilities:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  52: |
+  53: |
     apiVersion: apiextensions.k8s.io/v1
     kind: CustomResourceDefinition
     metadata:
@@ -21937,7 +22487,7 @@ minimal capabilities:
           storage: true
           subresources:
             status: {}
-  53: |
+  54: |
     apiVersion: v1
     kind: Service
     metadata:
@@ -21966,7 +22516,7 @@ minimal capabilities:
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/name: kubescape-operator
       type: ClusterIP
-  54: |
+  55: |
     apiVersion: v1
     kind: ServiceAccount
     metadata:
@@ -22863,6 +23413,18 @@ multiple node agents:
           - spdx.softwarecomposition.kubescape.io
         resources:
           - containerprofiles
+        verbs:
+          - create
+          - get
+          - update
+          - watch
+          - list
+          - patch
+          - delete
+      - apiGroups:
+          - profiles.sbob
+        resources:
+          - runtimeprofiles
         verbs:
           - create
           - get
@@ -25010,6 +25572,15 @@ multiple node agents:
           - list
           - delete
       - apiGroups:
+          - profiles.sbob
+        resources:
+          - runtimeprofiles
+        verbs:
+          - get
+          - watch
+          - list
+          - delete
+      - apiGroups:
           - kubescape.io
         resources:
           - runtimerulealertbindings
@@ -25573,6 +26144,32 @@ multiple node agents:
       version: v1beta1
       versionPriority: 15
   58: |
+    apiVersion: apiregistration.k8s.io/v1
+    kind: APIService
+    metadata:
+      annotations: null
+      labels:
+        app: storage
+        app.kubernetes.io/component: storage
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: kubescape-operator
+        app.kubernetes.io/part-of: kubescape
+        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
+        helm.sh/chart: kubescape-operator-1.41.0-duckling142
+        kubescape.io/ignore: "true"
+        tier: ks-control-plane
+      name: v1beta1.profiles.sbob
+    spec:
+      group: profiles.sbob
+      groupPriorityMinimum: 1000
+      insecureSkipTLSVerify: true
+      service:
+        name: storage
+        namespace: kubescape
+      version: v1beta1
+      versionPriority: 15
+  59: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
@@ -25645,7 +26242,7 @@ multiple node agents:
           - get
           - watch
           - list
-  59: |
+  60: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -25670,7 +26267,7 @@ multiple node agents:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  60: |
+  61: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -25695,7 +26292,7 @@ multiple node agents:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  61: |
+  62: |
     apiVersion: v1
     data:
       config.json: |
@@ -25728,7 +26325,7 @@ multiple node agents:
         tier: ks-control-plane
       name: storage
       namespace: kubescape
-  62: |
+  63: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -25850,7 +26447,7 @@ multiple node agents:
                     path: config.json
                 name: storage
               name: config
-  63: |
+  64: |
     apiVersion: networking.k8s.io/v1
     kind: NetworkPolicy
     metadata:
@@ -25909,7 +26506,7 @@ multiple node agents:
       policyTypes:
         - Ingress
         - Egress
-  64: |
+  65: |
     apiVersion: v1
     kind: PersistentVolumeClaim
     metadata:
@@ -25933,7 +26530,7 @@ multiple node agents:
       resources:
         requests:
           storage: 5Gi
-  65: |
+  66: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
@@ -25959,7 +26556,7 @@ multiple node agents:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  66: |
+  67: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
@@ -25985,7 +26582,7 @@ multiple node agents:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  67: |
+  68: |
     apiVersion: apiextensions.k8s.io/v1
     kind: CustomResourceDefinition
     metadata:
@@ -26309,7 +26906,7 @@ multiple node agents:
           storage: true
           subresources:
             status: {}
-  68: |
+  69: |
     apiVersion: v1
     kind: Service
     metadata:
@@ -26338,7 +26935,7 @@ multiple node agents:
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/name: kubescape-operator
       type: ClusterIP
-  69: |
+  70: |
     apiVersion: v1
     kind: ServiceAccount
     metadata:
@@ -26999,6 +27596,18 @@ priority class scheduling:
           - spdx.softwarecomposition.kubescape.io
         resources:
           - containerprofiles
+        verbs:
+          - create
+          - get
+          - update
+          - watch
+          - list
+          - patch
+          - delete
+      - apiGroups:
+          - profiles.sbob
+        resources:
+          - runtimeprofiles
         verbs:
           - create
           - get
@@ -27936,6 +28545,15 @@ priority class scheduling:
           - list
           - delete
       - apiGroups:
+          - profiles.sbob
+        resources:
+          - runtimeprofiles
+        verbs:
+          - get
+          - watch
+          - list
+          - delete
+      - apiGroups:
           - kubescape.io
         resources:
           - runtimerulealertbindings
@@ -28362,6 +28980,32 @@ priority class scheduling:
       version: v1beta1
       versionPriority: 15
   43: |
+    apiVersion: apiregistration.k8s.io/v1
+    kind: APIService
+    metadata:
+      annotations: null
+      labels:
+        app: storage
+        app.kubernetes.io/component: storage
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: kubescape-operator
+        app.kubernetes.io/part-of: kubescape
+        app.kubernetes.io/version: v0.1.0-subtract-ecde94cd
+        helm.sh/chart: kubescape-operator-1.41.0-duckling142
+        kubescape.io/ignore: "true"
+        tier: ks-control-plane
+      name: v1beta1.profiles.sbob
+    spec:
+      caBundle: bW9jay1jYS1jZXJ0
+      group: profiles.sbob
+      groupPriorityMinimum: 1000
+      service:
+        name: storage
+        namespace: kubescape
+      version: v1beta1
+      versionPriority: 15
+  44: |
     apiVersion: v1
     data:
       tls.crt: bW9jay1jYS1jZXJ0
@@ -28384,7 +29028,7 @@ priority class scheduling:
       name: storage-tls-ca
       namespace: kubescape
     type: kubernetes.io/tls
-  44: |
+  45: |
     apiVersion: v1
     data:
       ca.crt: bW9jay1jYS1jZXJ0
@@ -28407,7 +29051,7 @@ priority class scheduling:
       name: storage-tls
       namespace: kubescape
     type: kubernetes.io/tls
-  45: |
+  46: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
@@ -28480,7 +29124,7 @@ priority class scheduling:
           - get
           - watch
           - list
-  46: |
+  47: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -28505,7 +29149,7 @@ priority class scheduling:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  47: |
+  48: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -28530,7 +29174,7 @@ priority class scheduling:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  48: |
+  49: |
     apiVersion: v1
     data:
       config.json: |
@@ -28566,7 +29210,7 @@ priority class scheduling:
         tier: ks-control-plane
       name: storage
       namespace: kubescape
-  49: |
+  50: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -28692,7 +29336,7 @@ priority class scheduling:
             - name: ca-certificates
               secret:
                 secretName: storage-tls
-  50: |
+  51: |
     apiVersion: v1
     kind: PersistentVolumeClaim
     metadata:
@@ -28716,7 +29360,7 @@ priority class scheduling:
       resources:
         requests:
           storage: 5Gi
-  51: |
+  52: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
@@ -28742,7 +29386,7 @@ priority class scheduling:
       - kind: ServiceAccount
         name: storage
         namespace: kubescape
-  52: |
+  53: |
     apiVersion: apiextensions.k8s.io/v1
     kind: CustomResourceDefinition
     metadata:
@@ -29066,7 +29710,7 @@ priority class scheduling:
           storage: true
           subresources:
             status: {}
-  53: |
+  54: |
     apiVersion: v1
     kind: Service
     metadata:
@@ -29095,7 +29739,7 @@ priority class scheduling:
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/name: kubescape-operator
       type: ClusterIP
-  54: |
+  55: |
     apiVersion: v1
     kind: ServiceAccount
     metadata:

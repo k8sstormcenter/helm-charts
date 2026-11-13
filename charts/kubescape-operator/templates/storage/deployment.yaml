@@ -123,6 +123,36 @@ spec:
             - name: storage-certgen-scripts
               mountPath: /scripts
               readOnly: true
+        - name: certgen-patch-profiles
+          image: {{ $certgenImage }}
+          imagePullPolicy: {{ .Values.certificates.certgen.image.pullPolicy }}
+          securityContext:
+            runAsUser: 65532
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          command: ["/scripts/certgen-patch.sh"]
+          args:
+            - --namespace
+            - {{ .Values.ksNamespace }}
+            - --secret-name
+            - {{ $certgenSecret }}
+            - --ca-name
+            - ca.crt
+            - --resource-type
+            - apiservice
+            - --resource-name
+            - {{ include "storage.profilesApiServiceName" . }}
+            - --retries
+            - {{ .Values.storage.mtls.certgen.retries | quote }}
+            - --retry-interval
+            - {{ .Values.storage.mtls.certgen.retryIntervalSeconds | quote }}
+          volumeMounts:
+            - name: storage-certgen-scripts
+              mountPath: /scripts
+              readOnly: true
       {{- end }}
       containers:
       - name: apiserver
