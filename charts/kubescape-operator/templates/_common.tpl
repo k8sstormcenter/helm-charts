@@ -47,7 +47,6 @@ nodeAgent:
    (eq .Values.capabilities.networkPolicyService "enable")
    (eq .Values.capabilities.runtimeDetection "enable")
    (eq .Values.capabilities.malwareDetection "enable")
-   (eq .Values.capabilities.nodeProfileService "enable")
    (eq .Values.capabilities.seccompProfileService "enable")
   }}
 operator:
@@ -83,25 +82,18 @@ that value can never drift apart. See issue #851.
 {{- $c := .Values.capabilities -}}
 {{- $configurations := fromYaml (include "configurations" .) -}}
 {{- $submit := $configurations.submit -}}
-{{- $synchronizerEnabled := (fromYaml (include "components" .)).synchronizer.enabled -}}
 {{- $backendStorage := $configurations.backendStorageEnabled -}}
 {{- $runtimeDetection := eq $c.runtimeDetection "enable" -}}
-{{- $nodeProfileService := and $synchronizerEnabled (eq $c.nodeProfileService "enable") -}}
 {{- $httpDetection := and (eq $c.httpDetection "enable") $runtimeDetection -}}
 {{- $hostProfile := and (eq ($c.hostProfileService | default "disable") "enable") $configurations.runtimeObservability -}}
 # effective.* are the node-agent config.json flags, consumed by node-agent/configmap.yaml
 effective:
-  nodeProfileServiceEnabled: {{ $nodeProfileService }}
   httpDetectionEnabled: {{ $httpDetection }}
   hostProfileServiceEnabled: {{ $hostProfile }}
 # effectiveCapabilities is requested-vs-effective per gated capability, consumed by ks-capabilities
 effectiveCapabilities:
-  nodeProfileService: {{ if $nodeProfileService }}enable{{ else }}disable{{ end }}
   httpDetection: {{ if $httpDetection }}enable{{ else }}disable{{ end }}
 warnings:
-{{- if and (eq $c.nodeProfileService "enable") (not $nodeProfileService) }}
-- "capabilities.nodeProfileService=enable but the backend is not configured (.Values.server is empty / submit is disabled). This capability requires the synchronizer, which is only enabled when connected to a backend, so nodeProfileServiceEnabled renders as FALSE in the node-agent configmap and node profiles will NOT be generated. To use it, set .Values.server (requires account and accessKey, or an existing credentials.cloudSecret)."
-{{- end }}
 {{- if and (eq $c.httpDetection "enable") (not $httpDetection) }}
 - "capabilities.httpDetection=enable but capabilities.runtimeDetection is not enabled. HTTP detection runs on top of runtime detection, so httpDetectionEnabled renders as FALSE in the node-agent configmap. To use it, set capabilities.runtimeDetection=enable."
 {{- end }}

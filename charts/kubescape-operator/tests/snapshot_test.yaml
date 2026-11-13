@@ -34,7 +34,6 @@ tests:
         runtimeDetection: enable
         httpDetection: enable
         malwareDetection: enable
-        nodeProfileService: enable
         nodeSbomGeneration: enable
         scanEmbeddedSBOMs: enable
         seccompProfileService: enable
@@ -117,7 +116,6 @@ tests:
         runtimeDetection: disable
         httpDetection: disable
         malwareDetection: disable
-        nodeProfileService: disable
         autoUpgrading: disable
         admissionController: disable
       server: api.armosec.io
@@ -332,7 +330,6 @@ tests:
         runtimeDetection: enable
         httpDetection: enable
         malwareDetection: enable
-        nodeProfileService: enable
         nodeSbomGeneration: enable
         scanEmbeddedSBOMs: enable
         seccompProfileService: enable
@@ -412,7 +409,6 @@ tests:
         backend-storage: enable
         runtimeObservability: enable
         networkPolicyService: enable
-        nodeProfileService: enable
       server: api.armosec.io
       clusterName: kind-kind
       excludeNamespaces: "kubescape,kube-system,kube-public,kube-node-lease"

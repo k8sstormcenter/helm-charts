@@ -37,7 +37,6 @@ data:
         "nestedContainerRules": {{ .Values.nodeAgent.config.nestedContainers.rules | toJson }},
         "hostSensorEnabled": {{ .Values.nodeAgent.config.hostSensor.enabled }},
         "hostSensorInterval": "{{ .Values.nodeAgent.config.hostSensor.interval }}",
-        "nodeProfileServiceEnabled": {{ $gates.nodeProfileServiceEnabled }},
         "maxImageSize": {{ .Values.kubevuln.config.maxImageSize }},
         "maxSBOMSize": {{ .Values.kubevuln.config.maxSBOMSize }},
         "sbomGenerationEnabled": {{ eq .Values.capabilities.nodeSbomGeneration "enable" }},
@@ -47,7 +46,6 @@ data:
         "initialDelay": "{{ .Values.nodeAgent.config.learningPeriod }}",
         "updateDataPeriod": "{{ .Values.nodeAgent.config.updatePeriod }}",
         "hostProfileUpdateDataPeriod": "{{ .Values.nodeAgent.config.hostProfileUpdatePeriod }}",
-        "nodeProfileInterval": "{{ .Values.nodeAgent.config.nodeProfileInterval }}",
         "maxSniffingTimePerContainer": "{{ .Values.nodeAgent.config.maxLearningPeriod }}",
         {{- if .Values.nodeAgent.bundleTrustPolicy.enabled }}
         "bundleTrustPolicyPath": "/etc/bundle/trust-policy.json",

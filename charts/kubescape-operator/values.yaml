@@ -113,7 +113,6 @@ capabilities:
   networkPolicyService: enable
   runtimeDetection: disable
   malwareDetection: disable
-  nodeProfileService: enable
   admissionController: enable
   httpDetection: enable
   hostProfileService: disable
@@ -403,7 +402,6 @@ nodeAgent:
     learningPeriod: 2m # duration string
     updatePeriod: 10m # duration string
     hostProfileUpdatePeriod: 30m # duration string
-    nodeProfileInterval: 10m # duration string
     # Builds the agent's counters AND starts its /metrics endpoint on :8080.
     # Scrape it with nodeAgent.serviceMonitor.enabled=true where a Prometheus
     # operator is installed, or with the pod annotations of your own scraper.
