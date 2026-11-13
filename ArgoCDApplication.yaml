@@ -17,10 +17,7 @@ spec:
         certificates:
           strategy: initContainer # Important - prevents ArgoCD drift!
         clusterName: '' # add cluster name
-        server: '' # add Kubescape-compatible backend service URL
         # imagePullSecrets: "" # reference to existing secret in same namespace
-        # credentials:
-        #   cloudSecret: "" # reference to existing secret in same namespace, contains `account` & `accessKey`
   project: default
   syncPolicy:
     syncOptions:
