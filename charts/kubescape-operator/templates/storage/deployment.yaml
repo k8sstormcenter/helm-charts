@@ -184,6 +184,9 @@ spec:
             value: "{{ .Values.logger.level }}"
           - name: KS_LOGGER_NAME
             value: "{{ .Values.logger.name }}"
+          {{- with .Values.storage.env }}
+          {{- toYaml . | nindent 10 }}
+          {{- end }}
         volumeMounts:
           - name: "data"
             mountPath: "/data"
