@@ -360,9 +360,6 @@ Parameters:
 {{- if .Values.volumes }}
 {{ toYaml .Values.volumes | trim }}
 {{- end }}
-{{- if .Values.clamav.volumes }}
-{{ toYaml .Values.clamav.volumes | trim }}
-{{- end }}
 {{- if .components.sbomScanner.enabled }}
 {{- if .Values.nodeAgent.sbomScanner.volumes }}
 {{ toYaml .Values.nodeAgent.sbomScanner.volumes | trim }}

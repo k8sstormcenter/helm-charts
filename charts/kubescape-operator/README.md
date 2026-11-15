@@ -105,7 +105,7 @@ Configuration scanning, vulnerability scanning, the Prometheus exporter for scan
 * `kubevuln.*` except `kubevuln.config.maxImageSize`, `kubevuln.config.maxSBOMSize` and `kubevuln.config.storeFilteredSboms`
 * `kubevulnScheduler.*`, `registryScanScheduler.*`, `grypeOfflineDB.*`, `imageScanning.*`, `persistence.size.kubevuln`
 * `prometheusExporter.*`, `synchronizer.*`
-* `clamav.*` except `clamav.volumes`
+* `clamav.*`
 * `cloudProviderMetadata.cloudRegion`, `cloudProviderMetadata.gkeProject`, `cloudProviderMetadata.secretRef`
 * `operator.triggerSecurityFramework`, `operator.podScanGuardTime`
 * `storage.forceVirtualCrds`

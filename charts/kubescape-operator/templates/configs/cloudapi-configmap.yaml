@@ -14,9 +14,6 @@ data:
   clusterData: |
     {
       "serviceDiscovery": false,
-      "vulnScanURL": "kubevuln:8080",
-      "kubevulnURL": "kubevuln:8080",
-      "kubescapeURL": "kubescape:8080",
       "clusterName": "{{ regexReplaceAll "\\W+" .Values.clusterName "-" }}",
       "storage": {{ $components.storage.enabled }},
       "relevantImageVulnerabilitiesEnabled": false,

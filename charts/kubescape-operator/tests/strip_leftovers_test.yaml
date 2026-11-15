@@ -1,0 +1,51 @@
+suite: Leftovers of removed components are gone
+set:
+  clusterName: kind-kind
+tests:
+  - it: node agent mounts no scanner volume
+    template: node-agent/daemonset.yaml
+    asserts:
+      - notContains:
+          path: spec.template.spec.volumes
+          any: true
+          content:
+            name: clamdb
+      - notContains:
+          path: spec.template.spec.volumes
+          any: true
+          content:
+            name: clamrun
+      - notContains:
+          path: spec.template.spec.volumes
+          any: true
+          content:
+            name: etc
+      - notContains:
+          path: spec.template.spec.containers[0].volumeMounts
+          any: true
+          content:
+            mountPath: /clamav
+  - it: cluster data names no removed service
+    template: configs/cloudapi-configmap.yaml
+    asserts:
+      - notMatchRegex:
+          path: data.clusterData
+          pattern: vulnScanURL|kubevulnURL|kubescapeURL
+      - matchRegex:
+          path: data.clusterData
+          pattern: '"clusterName": "kind-kind"'
+  - it: node agent writes profiles only through profiles.sbob
+    template: node-agent/clusterrole.yaml
+    asserts:
+      - contains:
+          path: rules
+          content:
+            apiGroups: ["spdx.softwarecomposition.kubescape.io"]
+            resources: ["containerprofiles"]
+            verbs: ["get", "watch", "list", "delete"]
+      - contains:
+          path: rules
+          content:
+            apiGroups: ["profiles.sbob"]
+            resources: ["runtimeprofiles"]
+            verbs: ["create", "get", "update", "watch", "list", "patch", "delete"]

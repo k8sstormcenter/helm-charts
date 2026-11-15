@@ -503,9 +503,6 @@ nodeAgent:
     - mountPath: /boot
       name: boot
       readOnly: true
-    - mountPath: /clamav
-      name: clamrun
-      # readOnly: false # EmptyDir volume
   volumes:
     - hostPath:
         path: /
@@ -643,22 +640,6 @@ nodeAgent:
           sizeLimit: 10Mi
       - name: sbom-scanner-tmp
         emptyDir: {}
-
-# +++++++++++++++++++++++++++++++ ClamAV ++++++++++++++++++++++++++++++++++++++++++++++++
-clamav:
-  volumes:
-    - name: clamdb
-      emptyDir: {}
-    - name: clamrun
-      emptyDir: {}
-    - name: etc
-      configMap:
-        name: clamav
-        items:
-          - key: clamd.conf
-            path: clamd.conf
-          - key: freshclam.conf
-            path: freshclam.conf
 
 # -----------------------------------------------------------------------------------------
 # ------------------------ Microservice - helpers -----------------------------------------

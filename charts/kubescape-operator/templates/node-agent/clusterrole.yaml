@@ -38,7 +38,7 @@ rules:
 {{- end }}
 - apiGroups: ["spdx.softwarecomposition.kubescape.io"]
   resources: ["containerprofiles"]
-  verbs: ["create", "get", "update", "watch", "list", "patch", "delete"]
+  verbs: ["get", "watch", "list", "delete"]
 - apiGroups: ["profiles.sbob"]
   resources: ["runtimeprofiles"]
   verbs: ["create", "get", "update", "watch", "list", "patch", "delete"]
