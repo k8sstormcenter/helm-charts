@@ -22,9 +22,18 @@ spec:
     spec:
       serviceAccountName: node-agent-direct-keygen
       restartPolicy: OnFailure
-      {{- with .Values.imagePullSecrets }}
+      {{- if include "kubescape-operator.createsPullSecret" . }}
       imagePullSecrets:
+        - name: node-agent-direct-keygen-pull
+      {{- else if .Values.imagePullSecrets }}
+      imagePullSecrets:
+      {{- if kindIs "string" .Values.imagePullSecrets }}
+        - name: {{ .Values.imagePullSecrets }}
+      {{- else }}
+      {{- range .Values.imagePullSecrets }}
         - name: {{ . }}
+      {{- end }}
+      {{- end }}
       {{- end }}
       containers:
         - name: keygen
