@@ -2177,7 +2177,10 @@ all capabilities:
           | kubectl -n "$PUB_NS" create secret generic "$PUB" --from-file=public.pem=/dev/stdin
     kind: ConfigMap
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -2195,7 +2198,10 @@ all capabilities:
     apiVersion: batch/v1
     kind: Job
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "0"
       labels:
         app: node-agent-direct-keygen
         app.kubernetes.io/component: node-agent-direct-keygen
@@ -2271,7 +2277,10 @@ all capabilities:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: Role
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -2298,7 +2307,10 @@ all capabilities:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -2324,7 +2336,10 @@ all capabilities:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -2349,7 +2364,10 @@ all capabilities:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -2374,7 +2392,10 @@ all capabilities:
     apiVersion: v1
     kind: ServiceAccount
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -4975,7 +4996,10 @@ autoscaler mode with sbom sidecar:
           | kubectl -n "$PUB_NS" create secret generic "$PUB" --from-file=public.pem=/dev/stdin
     kind: ConfigMap
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -4993,7 +5017,10 @@ autoscaler mode with sbom sidecar:
     apiVersion: batch/v1
     kind: Job
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "0"
       labels:
         app: node-agent-direct-keygen
         app.kubernetes.io/component: node-agent-direct-keygen
@@ -5066,7 +5093,10 @@ autoscaler mode with sbom sidecar:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: Role
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -5093,7 +5123,10 @@ autoscaler mode with sbom sidecar:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -5119,7 +5152,10 @@ autoscaler mode with sbom sidecar:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -5144,7 +5180,10 @@ autoscaler mode with sbom sidecar:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -5169,7 +5208,10 @@ autoscaler mode with sbom sidecar:
     apiVersion: v1
     kind: ServiceAccount
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -7553,7 +7595,10 @@ autoscaler mode without sbom sidecar:
           | kubectl -n "$PUB_NS" create secret generic "$PUB" --from-file=public.pem=/dev/stdin
     kind: ConfigMap
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -7571,7 +7616,10 @@ autoscaler mode without sbom sidecar:
     apiVersion: batch/v1
     kind: Job
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "0"
       labels:
         app: node-agent-direct-keygen
         app.kubernetes.io/component: node-agent-direct-keygen
@@ -7644,7 +7692,10 @@ autoscaler mode without sbom sidecar:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: Role
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -7671,7 +7722,10 @@ autoscaler mode without sbom sidecar:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -7697,7 +7751,10 @@ autoscaler mode without sbom sidecar:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -7722,7 +7779,10 @@ autoscaler mode without sbom sidecar:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -7747,7 +7807,10 @@ autoscaler mode without sbom sidecar:
     apiVersion: v1
     kind: ServiceAccount
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -15150,7 +15213,10 @@ default capabilities:
           | kubectl -n "$PUB_NS" create secret generic "$PUB" --from-file=public.pem=/dev/stdin
     kind: ConfigMap
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -15168,7 +15234,10 @@ default capabilities:
     apiVersion: batch/v1
     kind: Job
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "0"
       labels:
         app: node-agent-direct-keygen
         app.kubernetes.io/component: node-agent-direct-keygen
@@ -15241,7 +15310,10 @@ default capabilities:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: Role
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -15268,7 +15340,10 @@ default capabilities:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -15294,7 +15369,10 @@ default capabilities:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -15319,7 +15397,10 @@ default capabilities:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -15344,7 +15425,10 @@ default capabilities:
     apiVersion: v1
     kind: ServiceAccount
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -17983,7 +18067,10 @@ disable otel:
           | kubectl -n "$PUB_NS" create secret generic "$PUB" --from-file=public.pem=/dev/stdin
     kind: ConfigMap
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -18001,7 +18088,10 @@ disable otel:
     apiVersion: batch/v1
     kind: Job
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "0"
       labels:
         app: node-agent-direct-keygen
         app.kubernetes.io/component: node-agent-direct-keygen
@@ -18074,7 +18164,10 @@ disable otel:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: Role
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -18101,7 +18194,10 @@ disable otel:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -18127,7 +18223,10 @@ disable otel:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -18152,7 +18251,10 @@ disable otel:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -18177,7 +18279,10 @@ disable otel:
     apiVersion: v1
     kind: ServiceAccount
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -20769,7 +20874,10 @@ minimal capabilities:
           | kubectl -n "$PUB_NS" create secret generic "$PUB" --from-file=public.pem=/dev/stdin
     kind: ConfigMap
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -20787,7 +20895,10 @@ minimal capabilities:
     apiVersion: batch/v1
     kind: Job
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "0"
       labels:
         app: node-agent-direct-keygen
         app.kubernetes.io/component: node-agent-direct-keygen
@@ -20860,7 +20971,10 @@ minimal capabilities:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: Role
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -20887,7 +21001,10 @@ minimal capabilities:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -20913,7 +21030,10 @@ minimal capabilities:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -20938,7 +21058,10 @@ minimal capabilities:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -20963,7 +21086,10 @@ minimal capabilities:
     apiVersion: v1
     kind: ServiceAccount
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -24894,7 +25020,10 @@ multiple node agents:
           | kubectl -n "$PUB_NS" create secret generic "$PUB" --from-file=public.pem=/dev/stdin
     kind: ConfigMap
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -24912,7 +25041,10 @@ multiple node agents:
     apiVersion: batch/v1
     kind: Job
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "0"
       labels:
         app: node-agent-direct-keygen
         app.kubernetes.io/component: node-agent-direct-keygen
@@ -24988,7 +25120,10 @@ multiple node agents:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: Role
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -25015,7 +25150,10 @@ multiple node agents:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -25041,7 +25179,10 @@ multiple node agents:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -25066,7 +25207,10 @@ multiple node agents:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -25091,7 +25235,10 @@ multiple node agents:
     apiVersion: v1
     kind: ServiceAccount
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -27935,7 +28082,10 @@ priority class scheduling:
           | kubectl -n "$PUB_NS" create secret generic "$PUB" --from-file=public.pem=/dev/stdin
     kind: ConfigMap
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -27953,7 +28103,10 @@ priority class scheduling:
     apiVersion: batch/v1
     kind: Job
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "0"
       labels:
         app: node-agent-direct-keygen
         app.kubernetes.io/component: node-agent-direct-keygen
@@ -28026,7 +28179,10 @@ priority class scheduling:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: Role
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -28053,7 +28209,10 @@ priority class scheduling:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -28079,7 +28238,10 @@ priority class scheduling:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -28104,7 +28266,10 @@ priority class scheduling:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
@@ -28129,7 +28294,10 @@ priority class scheduling:
     apiVersion: v1
     kind: ServiceAccount
     metadata:
-      annotations: null
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-5"
       labels:
         app: node-agent
         app.kubernetes.io/component: node-agent
