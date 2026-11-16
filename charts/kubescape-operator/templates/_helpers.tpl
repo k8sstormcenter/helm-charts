@@ -39,6 +39,21 @@ Common annotations
 {{- end }}
 {{- end }}
 
+{{- define "kubescape-operator.createsPullSecret" -}}
+{{- if and .Values.imagePullSecrets .Values.imagePullSecret.server .Values.imagePullSecret.username .Values.imagePullSecret.password -}}
+true
+{{- end -}}
+{{- end }}
+
+{{- define "kubescape-operator.dockerconfigjson" -}}
+{{ printf "{\"auths\":{\"%s\":{\"username\":\"%s\",\"password\":\"%s\",\"email\":\"%s\",\"auth\":\"%s\"}}}"
+    .Values.imagePullSecret.server
+    .Values.imagePullSecret.username
+    .Values.imagePullSecret.password
+    .Values.imagePullSecret.email
+    (printf "%s:%s" .Values.imagePullSecret.username .Values.imagePullSecret.password | b64enc) | b64enc }}
+{{- end }}
+
 {{/*
 Common labels
 */}}

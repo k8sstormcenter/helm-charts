@@ -2261,8 +2261,8 @@ all capabilities:
                 - mountPath: /tmp
                   name: tmp
           imagePullSecrets:
-            - name:
-                - foo bar
+            - name: foo
+            - name: bar
           restartPolicy: OnFailure
           serviceAccountName: node-agent-direct-keygen
           volumes:
@@ -25104,8 +25104,8 @@ multiple node agents:
                 - mountPath: /tmp
                   name: tmp
           imagePullSecrets:
-            - name:
-                - foo bar
+            - name: foo
+            - name: bar
           restartPolicy: OnFailure
           serviceAccountName: node-agent-direct-keygen
           volumes:
