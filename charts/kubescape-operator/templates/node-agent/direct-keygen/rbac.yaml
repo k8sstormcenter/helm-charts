@@ -7,6 +7,9 @@ metadata:
   namespace: {{ .Values.ksNamespace }}
   annotations:
     {{- include "kubescape-operator.annotations" (dict "Values" .Values) | nindent 4 }}
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
   labels:
     {{- include "kubescape-operator.labels" (dict "Chart" .Chart "Release" .Release "Values" .Values "app" .Values.nodeAgent.name "tier" .Values.global.namespaceTier) | nindent 4 }}
 rules:
@@ -21,6 +24,9 @@ metadata:
   namespace: {{ .Values.ksNamespace }}
   annotations:
     {{- include "kubescape-operator.annotations" (dict "Values" .Values) | nindent 4 }}
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
   labels:
     {{- include "kubescape-operator.labels" (dict "Chart" .Chart "Release" .Release "Values" .Values "app" .Values.nodeAgent.name "tier" .Values.global.namespaceTier) | nindent 4 }}
 subjects:
@@ -40,6 +46,9 @@ metadata:
   namespace: {{ $consumerNs }}
   annotations:
     {{- include "kubescape-operator.annotations" (dict "Values" .Values) | nindent 4 }}
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
   labels:
     {{- include "kubescape-operator.labels" (dict "Chart" .Chart "Release" .Release "Values" .Values "app" .Values.nodeAgent.name "tier" .Values.global.namespaceTier) | nindent 4 }}
 rules:
@@ -54,6 +63,9 @@ metadata:
   namespace: {{ $consumerNs }}
   annotations:
     {{- include "kubescape-operator.annotations" (dict "Values" .Values) | nindent 4 }}
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
   labels:
     {{- include "kubescape-operator.labels" (dict "Chart" .Chart "Release" .Release "Values" .Values "app" .Values.nodeAgent.name "tier" .Values.global.namespaceTier) | nindent 4 }}
 subjects:
@@ -72,6 +84,9 @@ metadata:
   name: {{ .Release.Namespace }}-node-agent-direct-keygen
   annotations:
     {{- include "kubescape-operator.annotations" (dict "Values" .Values) | nindent 4 }}
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
   labels:
     {{- include "kubescape-operator.labels" (dict "Chart" .Chart "Release" .Release "Values" .Values "app" .Values.nodeAgent.name "tier" .Values.global.namespaceTier) | nindent 4 }}
 rules:
@@ -85,6 +100,9 @@ metadata:
   name: {{ .Release.Namespace }}-node-agent-direct-keygen
   annotations:
     {{- include "kubescape-operator.annotations" (dict "Values" .Values) | nindent 4 }}
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
   labels:
     {{- include "kubescape-operator.labels" (dict "Chart" .Chart "Release" .Release "Values" .Values "app" .Values.nodeAgent.name "tier" .Values.global.namespaceTier) | nindent 4 }}
 subjects:

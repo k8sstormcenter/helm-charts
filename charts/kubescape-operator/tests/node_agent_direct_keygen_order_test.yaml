@@ -1,0 +1,106 @@
+suite: node-agent direct-alerts keygen runs before the node agent
+templates:
+  - node-agent/direct-keygen/job.yaml
+  - node-agent/direct-keygen/serviceaccount.yaml
+  - node-agent/direct-keygen/configmap.yaml
+  - node-agent/direct-keygen/rbac.yaml
+capabilities:
+  apiVersions:
+    - batch/v1
+tests:
+  - it: runs the keygen job as a pre-install and pre-upgrade hook so the public key secret exists before the node agent pods mount it
+    template: node-agent/direct-keygen/job.yaml
+    set:
+      unittest: true
+      clusterName: kind-kind
+    asserts:
+      - equal:
+          path: metadata.annotations["helm.sh/hook"]
+          value: pre-install,pre-upgrade
+      - equal:
+          path: metadata.annotations["helm.sh/hook-weight"]
+          value: "0"
+      - equal:
+          path: metadata.annotations["helm.sh/hook-delete-policy"]
+          value: before-hook-creation,hook-succeeded
+
+  - it: creates the keygen service account ahead of the job
+    template: node-agent/direct-keygen/serviceaccount.yaml
+    set:
+      unittest: true
+      clusterName: kind-kind
+    asserts:
+      - equal:
+          path: metadata.annotations["helm.sh/hook"]
+          value: pre-install,pre-upgrade
+      - equal:
+          path: metadata.annotations["helm.sh/hook-weight"]
+          value: "-5"
+      - equal:
+          path: metadata.annotations["helm.sh/hook-delete-policy"]
+          value: before-hook-creation,hook-succeeded
+
+  - it: creates the keygen script ahead of the job
+    template: node-agent/direct-keygen/configmap.yaml
+    set:
+      unittest: true
+      clusterName: kind-kind
+    asserts:
+      - equal:
+          path: metadata.annotations["helm.sh/hook"]
+          value: pre-install,pre-upgrade
+      - equal:
+          path: metadata.annotations["helm.sh/hook-weight"]
+          value: "-5"
+      - equal:
+          path: metadata.annotations["helm.sh/hook-delete-policy"]
+          value: before-hook-creation,hook-succeeded
+
+  - it: creates every keygen access rule ahead of the job
+    template: node-agent/direct-keygen/rbac.yaml
+    set:
+      unittest: true
+      clusterName: kind-kind
+    asserts:
+      - hasDocuments:
+          count: 4
+      - equal:
+          path: metadata.annotations["helm.sh/hook"]
+          value: pre-install,pre-upgrade
+      - equal:
+          path: metadata.annotations["helm.sh/hook-weight"]
+          value: "-5"
+      - equal:
+          path: metadata.annotations["helm.sh/hook-delete-policy"]
+          value: before-hook-creation,hook-succeeded
+
+  - it: creates the access rules in a separate consumer namespace ahead of the job
+    template: node-agent/direct-keygen/rbac.yaml
+    set:
+      unittest: true
+      clusterName: kind-kind
+      nodeAgent.directAlerts.consumerNamespace: alert-consumer
+    asserts:
+      - hasDocuments:
+          count: 6
+      - equal:
+          path: metadata.annotations["helm.sh/hook"]
+          value: pre-install,pre-upgrade
+      - equal:
+          path: metadata.annotations["helm.sh/hook-weight"]
+          value: "-5"
+
+  - it: keeps the extra annotations set by the operator on the hook resources
+    template: node-agent/direct-keygen/job.yaml
+    set:
+      unittest: true
+      clusterName: kind-kind
+      additionalAnnotations:
+        team: alerts
+    asserts:
+      - equal:
+          path: metadata.annotations.team
+          value: alerts
+      - equal:
+          path: metadata.annotations["helm.sh/hook"]
+          value: pre-install,pre-upgrade
