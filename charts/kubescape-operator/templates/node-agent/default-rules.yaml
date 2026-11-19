@@ -400,7 +400,7 @@ spec:
         message: "'Kernel module (' + event.module + ') loading attempt with syscall (' + event.syscallName + ') was called by process (' + event.comm + ')'"
         ruleExpression:
           - eventType: kmod
-            expression: "event.syscallName == 'init_module' || event.syscallName == 'finit_module'"
+            expression: "event.syscallName == 'init_module' || event.syscallName == 'finit_module' || event.syscallName == 'request_module'"
         uniqueId: "event.comm + '_' + event.syscallName + '_' + event.module"
       id: R1002
       isTriggerAlert: true
