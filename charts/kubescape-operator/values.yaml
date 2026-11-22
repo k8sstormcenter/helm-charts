@@ -302,8 +302,8 @@ storage:
   # -- source code: https://github.com/kubescape/storage
   image:
     repository: docker.io/entlein/duckling
-    tag: storage-m3-a4040ca3
-    digest: sha256:483a53ab337e6a04defb53cc7a939260281b28c8667d6c63fc3c1e702fad31f6
+    tag: storage-m3-45aec556
+    digest: sha256:0b5ef627b1f0ab506defcb2b3f1b6e8743297bafaa1a522c070b17a38de368d8
     pullPolicy: IfNotPresent
 
   nodeSelector:
@@ -358,8 +358,8 @@ nodeAgent:
     # imagePullSecrets (and optionally the imagePullSecret generator) with
     # docker.io credentials authorized for entlein/duckling.
     repository: docker.io/entlein/duckling
-    tag: v0.1.0-m3-9dd149a1
-    digest: sha256:2e74bb28d251851eb1189967ef1e3b6e646633760a8a7f1c784c05cf6e98aaa5
+    tag: v0.1.0-m3-31e7ea35
+    digest: sha256:5b80c77a37c98a4279226853015d0b4712791b9001899a665b6a636de939f998
     pullPolicy: IfNotPresent
 
   # Root-signed trust policy for signed-bundle (SBoB) overlays: mounts the
