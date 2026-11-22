@@ -303,7 +303,7 @@ storage:
   image:
     repository: docker.io/entlein/duckling
     tag: storage-m3-282eab43
-    digest: sha256:3b975b3a5339bc7b0ad0a3fe996123751728d7f6cfe063abd8ed0b5422b4e9b4
+    digest: sha256:88e5297661c0935e6b62d53e3200ffec129d35d3b53f8b86054d92bf441428ca
     pullPolicy: IfNotPresent
 
   nodeSelector:
@@ -358,8 +358,8 @@ nodeAgent:
     # imagePullSecrets (and optionally the imagePullSecret generator) with
     # docker.io credentials authorized for entlein/duckling.
     repository: docker.io/entlein/duckling
-    tag: v0.1.0-m3-9714fd58
-    digest: sha256:2371b7c95a046c18947fffc0cc06da5ee18c41e9d72724bbc7819eb00f130a3e
+    tag: v0.1.0-m3-69809d6c
+    digest: sha256:6407d290eb8a1a5c2a9c976b26a09b8ba81e12ab9bae266ec1b8150975eb39c5
     pullPolicy: IfNotPresent
 
   # Root-signed trust policy for signed-bundle (SBoB) overlays: mounts the
