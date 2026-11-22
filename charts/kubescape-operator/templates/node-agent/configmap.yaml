@@ -68,6 +68,14 @@ data:
         "alertDeduplication": {
             "bypass": {{ .Values.nodeAgent.config.alertDeduplication.bypass }}
         },
+        "eventDedup": {
+            "enabled": {{ .Values.nodeAgent.config.eventDedup.enabled }}
+        },
+        "fim": {
+            "dedupConfig": {
+                "dedupEnabled": {{ .Values.nodeAgent.config.fim.dedupConfig.dedupEnabled }}
+            }
+        },
         "scanFailureReporting": {{ .Values.nodeAgent.config.scanFailureReporting | default false }},
         {{- $suggester := .Values.nodeAgent.config.suggester | default (dict "enabled" false) }}
         {{- if not (hasKey $suggester "skipNamespaces") }}

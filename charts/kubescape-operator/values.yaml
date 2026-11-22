@@ -403,7 +403,12 @@ nodeAgent:
       ruleCooldownOnProfileFailure: true
       ruleCooldownMaxSize: 20000
     alertDeduplication:
-      bypass: true # sensor-side dedup and cooldown stay off: suppression belongs at display time, never at the sensor
+      bypass: false
+    eventDedup:
+      enabled: false
+    fim:
+      dedupConfig:
+        dedupEnabled: false
     scanFailureReporting: false
     suggester:
       enabled: false
