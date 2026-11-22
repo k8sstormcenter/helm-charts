@@ -1,0 +1,36 @@
+suite: node-agent liveness probe
+templates:
+  - node-agent/daemonset.yaml
+  - configs/components-configmap.yaml
+  - configs/cloudapi-configmap.yaml
+  - configs/cloud-secret.yaml
+  - proxy-support/proxy-secret.yaml
+  - node-agent/configmap.yaml
+  - operator/configmap.yaml
+  - operator/admission-webhook/configmap.yaml
+  - storage/configmap.yaml
+  - storage/certgen/configmap.yaml
+set:
+  unittest: true
+  clusterName: kind-kind
+  capabilities:
+    runtimeObservability: enable
+    runtimeDetection: enable
+capabilities:
+  apiVersions:
+    - batch/v1
+tests:
+  - it: checks liveness with a TCP connect that the kernel answers while the agent is CPU-starved
+    template: node-agent/daemonset.yaml
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.tcpSocket.port
+          value: 7888
+      - notExists:
+          path: spec.template.spec.containers[0].livenessProbe.httpGet
+      - equal:
+          path: spec.template.spec.containers[0].readinessProbe.httpGet.path
+          value: /readyz
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.httpGet.path
+          value: /readyz
