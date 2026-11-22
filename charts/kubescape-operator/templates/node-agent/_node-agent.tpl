@@ -199,8 +199,7 @@ Parameters:
       protocol: TCP
 {{- end }}
   livenessProbe:
-    httpGet:
-      path: /livez
+    tcpSocket:
       port: 7888
     periodSeconds: 10
     timeoutSeconds: 5
