@@ -65,7 +65,7 @@ spec:
         ruleExpression:
           - eventType: open
             expression: "!cp.was_path_opened_by(event.containerId, event.path, event.exepath)"
-        uniqueId: "event.comm + '_' + event.path"
+        uniqueId: "(event.exepath != '' ? event.exepath : event.comm) + '_' + event.path"
       id: R0002
       isTriggerAlert: true
       mitreTactic: TA0009
@@ -112,7 +112,7 @@ spec:
         ruleExpression:
           - eventType: capabilities
             expression: "!cp.was_capability_used(event.containerId, event.capName)"
-        uniqueId: "event.comm + '_' + event.capName"
+        uniqueId: "(event.exepath != '' ? event.exepath : event.comm) + '_' + event.capName"
       id: R0004
       isTriggerAlert: false
       mitreTactic: TA0002
@@ -135,7 +135,7 @@ spec:
         ruleExpression:
           - eventType: dns
             expression: "event.rcode == 0 && !event.name.endsWith('.svc.cluster.local.') && !cp.is_domain_in_egress(event.containerId, event.name)"
-        uniqueId: "event.comm + '_' + event.name"
+        uniqueId: "(event.exepath != '' ? event.exepath : event.comm) + '_' + event.name"
       id: R0005
       isTriggerAlert: true
       mitreTactic: TA0011
@@ -156,7 +156,7 @@ spec:
         ruleExpression:
           - eventType: dns
             expression: "event.rcode == 0 && event.numAnswers > 0 && cp.is_domain_in_egress(event.containerId, event.name) && !cp.is_dns_answer_in_egress(event.containerId, event.name, event.addresses)"
-        uniqueId: "event.comm + '_' + event.name + '_' + event.addresses.join(',')"
+        uniqueId: "(event.exepath != '' ? event.exepath : event.comm) + '_' + event.name + '_' + event.addresses.join(',')"
       id: R0013
       isTriggerAlert: true
       mitreTactic: TA0006
@@ -179,7 +179,7 @@ spec:
         ruleExpression:
           - eventType: dns
             expression: "event.rcode == 3 && !event.name.endsWith('.cluster.local.') && !event.name.endsWith('.in-addr.arpa.') && event.name.split('.').exists(l, size(l) >= 30) && !cp.is_domain_in_egress(event.containerId, event.name)"
-        uniqueId: "event.comm + '_' + event.name"
+        uniqueId: "(event.exepath != '' ? event.exepath : event.comm) + '_' + event.name"
       id: R1032
       isTriggerAlert: true
       mitreTactic: TA0010
@@ -200,7 +200,7 @@ spec:
         ruleExpression:
           - eventType: open
             expression: "((event.path.startsWith('/run/secrets/kubernetes.io/serviceaccount') && event.path.endsWith('/token')) || \n (event.path.startsWith('/var/run/secrets/kubernetes.io/serviceaccount') && event.path.endsWith('/token')) ||\n (event.path.startsWith('/run/secrets/eks.amazonaws.com/serviceaccount') && event.path.endsWith('/token')) ||\n (event.path.startsWith('/var/run/secrets/eks.amazonaws.com/serviceaccount') && event.path.endsWith('/token'))) &&\n!cp.was_path_opened_with_suffix_by(event.containerId, '/token', event.exepath)\n"
-        uniqueId: "event.comm"
+        uniqueId: "(event.exepath != '' ? event.exepath : event.comm)"
       id: R0006
       isTriggerAlert: true
       mitreTactic: TA0006
@@ -223,7 +223,7 @@ spec:
             expression: "(event.comm == 'kubectl' || event.exepath.endsWith('/kubectl')) && !cp.was_executed(event.containerId, parse.get_exec_path(event.args, event.comm, event.exepath))"
           - eventType: network
             expression: "event.pktType == 'OUTGOING' && k8s.is_api_server_address(event.dstAddr, event.dstPort) && !cp.was_address_in_egress(event.containerId, event.dstAddr)"
-        uniqueId: "eventType == 'exec' ? 'exec_' + event.comm : 'network_' + event.dstAddr"
+        uniqueId: "eventType == 'exec' ? 'exec_' + (event.exepath != '' ? event.exepath : event.comm) : 'network_' + event.dstAddr"
       id: R0007
       isTriggerAlert: false
       mitreTactic: TA0007
@@ -247,7 +247,7 @@ spec:
             expression: 'event.path.startsWith(''/proc/'') &&  event.path.endsWith(''/environ'') && !cp.was_path_opened_with_suffix(event.containerId, ''/environ'')
 
               '
-        uniqueId: "event.comm + '_' + event.path"
+        uniqueId: "(event.exepath != '' ? event.exepath : event.comm) + '_' + event.path"
       id: R0008
       isTriggerAlert: true
       mitreTactic: TA0006
@@ -269,7 +269,7 @@ spec:
         ruleExpression:
           - eventType: bpf
             expression: "event.cmd == uint(5) && !cp.was_syscall_used(event.containerId, 'bpf')"
-        uniqueId: "event.comm + '_' + 'bpf' + '_' + string(event.cmd)"
+        uniqueId: "(event.exepath != '' ? event.exepath : event.comm) + '_' + 'bpf' + '_' + string(event.cmd)"
       id: R0009
       isTriggerAlert: true
       mitreTactic: TA0002
@@ -290,7 +290,7 @@ spec:
         ruleExpression:
           - eventType: open
             expression: "event.path.startsWith('/etc/shadow') && !cp.was_path_opened(event.containerId, event.path)"
-        uniqueId: "event.comm + '_' + event.path"
+        uniqueId: "(event.exepath != '' ? event.exepath : event.comm) + '_' + event.path"
       id: R0010
       isTriggerAlert: true
       mitreTactic: TA0006
@@ -401,7 +401,7 @@ spec:
         ruleExpression:
           - eventType: kmod
             expression: "event.syscallName == 'init_module' || event.syscallName == 'finit_module' || event.syscallName == 'request_module'"
-        uniqueId: "event.comm + '_' + event.syscallName + '_' + event.module"
+        uniqueId: "(event.exepath != '' ? event.exepath : event.comm) + '_' + event.syscallName + '_' + event.module"
       id: R1002
       isTriggerAlert: true
       mitreTactic: TA0005
@@ -423,7 +423,7 @@ spec:
         ruleExpression:
           - eventType: ssh
             expression: "dyn(event.srcPort) >= 32768 && dyn(event.srcPort) <= 60999 && !(dyn(event.dstPort) in [22, 2022]) && !cp.was_address_in_egress(event.containerId, event.dstIp)"
-        uniqueId: "event.comm + '_' + event.dstIp + '_' + string(dyn(event.dstPort))"
+        uniqueId: "(event.exepath != '' ? event.exepath : event.comm) + '_' + event.dstIp + '_' + string(dyn(event.dstPort))"
       id: R1003
       isTriggerAlert: true
       mitreTactic: TA0008
@@ -446,7 +446,7 @@ spec:
         ruleExpression:
           - eventType: exec
             expression: "!cp.was_executed(event.containerId, parse.get_exec_path(event.args, event.comm, event.exepath)) && k8s.get_container_mount_paths(event.namespace, event.podName, event.containerName).exists(mount, event.exepath.startsWith(mount) || parse.get_exec_path(event.args, event.comm, event.exepath).startsWith(mount))"
-        uniqueId: "event.comm"
+        uniqueId: "(event.exepath != '' ? event.exepath : event.comm)"
       id: R1004
       isTriggerAlert: true
       mitreTactic: TA0002
@@ -488,7 +488,7 @@ spec:
         ruleExpression:
           - eventType: unshare
             expression: "event.pcomm != 'runc' && !cp.was_syscall_used(event.containerId, 'unshare')"
-        uniqueId: "event.comm + '_' + 'unshare'"
+        uniqueId: "(event.exepath != '' ? event.exepath : event.comm) + '_' + 'unshare'"
       id: R1006
       isTriggerAlert: true
       mitreTactic: TA0004
@@ -532,7 +532,7 @@ spec:
         ruleExpression:
           - eventType: dns
             expression: "event.name in ['2cryptocalc.com.', '2miners.com.', 'antpool.com.', 'asia1.ethpool.org.', 'bohemianpool.com.', 'botbox.dev.', 'btm.antpool.com.', 'c3pool.com.', 'c4pool.org.', 'ca.minexmr.com.', 'cn.stratum.slushpool.com.', 'dash.antpool.com.', 'data.miningpoolstats.stream.', 'de.minexmr.com.', 'eth-ar.dwarfpool.com.', 'eth-asia.dwarfpool.com.', 'eth-asia1.nanopool.org.', 'eth-au.dwarfpool.com.', 'eth-au1.nanopool.org.', 'eth-br.dwarfpool.com.', 'eth-cn.dwarfpool.com.', 'eth-cn2.dwarfpool.com.', 'eth-eu.dwarfpool.com.', 'eth-eu1.nanopool.org.', 'eth-eu2.nanopool.org.', 'eth-hk.dwarfpool.com.', 'eth-jp1.nanopool.org.', 'eth-ru.dwarfpool.com.', 'eth-ru2.dwarfpool.com.', 'eth-sg.dwarfpool.com.', 'eth-us-east1.nanopool.org.', 'eth-us-west1.nanopool.org.', 'eth-us.dwarfpool.com.', 'eth-us2.dwarfpool.com.', 'eth.antpool.com.', 'eu.stratum.slushpool.com.', 'eu1.ethermine.org.', 'eu1.ethpool.org.', 'fastpool.xyz.', 'fr.minexmr.com.', 'kriptokyng.com.', 'mine.moneropool.com.', 'mine.xmrpool.net.', 'miningmadness.com.', 'monero.cedric-crispin.com.', 'monero.crypto-pool.fr.', 'monero.fairhash.org.', 'monero.hashvault.pro.', 'monero.herominers.com.', 'monerod.org.', 'monerohash.com.', 'moneroocean.stream.', 'monerop.com.', 'multi-pools.com.', 'p2pool.io.', 'pool.kryptex.com.', 'pool.minexmr.com.', 'pool.monero.hashvault.pro.', 'pool.rplant.xyz.', 'pool.supportxmr.com.', 'pool.xmr.pt.', 'prohashing.com.', 'rx.unmineable.com.', 'sg.minexmr.com.', 'sg.stratum.slushpool.com.', 'skypool.org.', 'solo-xmr.2miners.com.', 'ss.antpool.com.', 'stratum-btm.antpool.com.', 'stratum-dash.antpool.com.', 'stratum-eth.antpool.com.', 'stratum-ltc.antpool.com.', 'stratum-xmc.antpool.com.', 'stratum-zec.antpool.com.', 'stratum.antpool.com.', 'supportxmr.com.', 'trustpool.cc.', 'us-east.stratum.slushpool.com.', 'us1.ethermine.org.', 'us1.ethpool.org.', 'us2.ethermine.org.', 'us2.ethpool.org.', 'web.xmrpool.eu.', 'www.domajorpool.com.', 'www.dxpool.com.', 'www.mining-dutch.nl.', 'xmc.antpool.com.', 'xmr-asia1.nanopool.org.', 'xmr-au1.nanopool.org.', 'xmr-eu1.nanopool.org.', 'xmr-eu2.nanopool.org.', 'xmr-jp1.nanopool.org.', 'xmr-us-east1.nanopool.org.', 'xmr-us-west1.nanopool.org.', 'xmr.2miners.com.', 'xmr.crypto-pool.fr.', 'xmr.gntl.uk.', 'xmr.nanopool.org.', 'xmr.pool-pay.com.', 'xmr.pool.minergate.com.', 'xmr.solopool.org.', 'xmr.volt-mine.com.', 'xmr.zeropool.io.', 'zec.antpool.com.', 'zergpool.com.', 'auto.c3pool.org.', 'us.monero.herominers.com.', 'xmr.kryptex.network.']"
-        uniqueId: "event.name + '_' + event.comm"
+        uniqueId: "event.name + '_' + (event.exepath != '' ? event.exepath : event.comm)"
       id: R1008
       isTriggerAlert: true
       mitreTactic: TA0011
@@ -555,7 +555,7 @@ spec:
         ruleExpression:
           - eventType: network
             expression: "event.proto == 'TCP' && event.pktType == 'OUTGOING' && event.dstPort in [3333, 45700] && !cp.was_address_in_egress(event.containerId, event.dstAddr)"
-        uniqueId: "event.comm + '_' + string(event.dstPort)"
+        uniqueId: "(event.exepath != '' ? event.exepath : event.comm) + '_' + string(event.dstPort)"
       id: R1009
       isTriggerAlert: false
       mitreTactic: TA0040
@@ -578,7 +578,7 @@ spec:
         ruleExpression:
           - eventType: symlink
             expression: "(event.oldPath.startsWith('/etc/shadow') || event.oldPath.startsWith('/etc/sudoers')) && !cp.was_path_opened(event.containerId, event.oldPath)"
-        uniqueId: "event.comm + '_' + event.oldPath"
+        uniqueId: "(event.exepath != '' ? event.exepath : event.comm) + '_' + event.oldPath"
       id: R1010
       isTriggerAlert: true
       mitreTactic: TA0006
@@ -601,7 +601,7 @@ spec:
             expression: "event.comm != 'java' && event.containerName != 'matlab' && process.get_ld_hook_var(event.pid) != ''"
           - eventType: open
             expression: "event.path == '/etc/ld.so.preload' && has(event.flagsRaw) && event.flagsRaw != 0"
-        uniqueId: "eventType == 'exec' ? 'exec_' + event.comm : 'open_' + event.path"
+        uniqueId: "eventType == 'exec' ? 'exec_' + (event.exepath != '' ? event.exepath : event.comm) : 'open_' + event.path"
       id: R1011
       isTriggerAlert: true
       mitreTactic: TA0005
@@ -622,7 +622,7 @@ spec:
         ruleExpression:
           - eventType: hardlink
             expression: "(event.oldPath.startsWith('/etc/shadow') || event.oldPath.startsWith('/etc/sudoers')) && !cp.was_path_opened(event.containerId, event.oldPath)"
-        uniqueId: "event.comm + '_' + event.oldPath"
+        uniqueId: "(event.exepath != '' ? event.exepath : event.comm) + '_' + event.oldPath"
       id: R1012
       isTriggerAlert: true
       mitreTactic: TA0006
@@ -663,7 +663,7 @@ spec:
         ruleExpression:
           - eventType: iouring
             expression: "!(string(event.opcode) in ['0', '6', '7', '11', '12', '14', '15', '29'])"
-        uniqueId: "string(event.opcode) + '_' + event.comm"
+        uniqueId: "string(event.opcode) + '_' + (event.exepath != '' ? event.exepath : event.comm)"
       id: R1030
       isTriggerAlert: true
       mitreTactic: TA0005
