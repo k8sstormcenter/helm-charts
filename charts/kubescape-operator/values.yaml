@@ -358,8 +358,8 @@ nodeAgent:
     # imagePullSecrets (and optionally the imagePullSecret generator) with
     # docker.io credentials authorized for entlein/duckling.
     repository: docker.io/entlein/duckling
-    tag: v0.1.0-m3-aa681323
-    digest: sha256:4e571efbb18ac70e735e9e8d4da9a7e1aeaf94fd1f7614ae27999a3c800cdedc
+    tag: v0.1.0-m3-97919c7e
+    digest: sha256:a64ae650fafc292b2d1e65302af39e153ea462c738029a73d8131b7c086863a3
     pullPolicy: IfNotPresent
 
   # Root-signed trust policy for signed-bundle (SBoB) overlays: mounts the
