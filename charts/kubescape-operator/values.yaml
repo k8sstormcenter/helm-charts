@@ -302,8 +302,8 @@ storage:
   # -- source code: https://github.com/kubescape/storage
   image:
     repository: docker.io/entlein/duckling
-    tag: storage-m3-2d42df4b
-    digest: sha256:e5701908f0c74ac3e220c8b31fbdae00a3303d71f4f6d1aba43c0fd7987af338
+    tag: storage-m3-30a2f494
+    digest: sha256:6a2a9c5dece8b379d5233b426128bb8d69500cbfd32b0c3178219b5840b41a56
     pullPolicy: IfNotPresent
 
   nodeSelector:
